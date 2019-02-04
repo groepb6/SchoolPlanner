@@ -2,15 +2,17 @@ package data;
 
 import data.person.Teacher;
 
+import java.time.LocalTime;
+
 public class Lesson {
     private Teacher teacher;
     private Group group;
     private Period period;
 
-    public Lesson(Teacher teacher, Group group, Period period) {
+    public Lesson(Teacher teacher, Group group, LocalTime startTime, LocalTime endTime) {
         this.teacher = teacher;
         this.group = group;
-        this.period = period;
+        this.period = new Period(startTime, endTime);
     }
 
     public Teacher getTeacher() {
