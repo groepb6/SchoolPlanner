@@ -1,4 +1,4 @@
-package gui.data.room;
+package data.room;
 
 abstract public class Room {
     private String name;

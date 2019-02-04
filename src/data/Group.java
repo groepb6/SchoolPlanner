@@ -1,6 +1,6 @@
-package gui.data;
+package data;
 
-import gui.data.person.Student;
+import data.person.Student;
 
 import java.util.ArrayList;
 

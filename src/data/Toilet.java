@@ -1,4 +1,4 @@
-package gui.data;
+package data;
 
 public class Toilet {
     private int id;

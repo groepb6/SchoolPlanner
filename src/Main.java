@@ -1,4 +1,4 @@
-import gui.data.room.Classroom;
+import data.room.Classroom;
 
 public class Main {
     public static void main(String[] args) {
