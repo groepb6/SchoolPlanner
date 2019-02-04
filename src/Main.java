@@ -1,12 +1,10 @@
-import data.Group;
-import data.School;
-import data.person.*;
-import data.room.*;
+import data.*;
+import data.person.Student;
 
 public class Main {
     public static void main(String[] args) {
 
-        School school = new School("School A");
+        Schedule schedule = new Schedule("School A");
 
         Group groupA = new Group("Group A");
         Group groupB = new Group("Group B");
@@ -17,7 +15,10 @@ public class Main {
         groupB.addStudents(new Student("Hans", 3));
         groupB.addStudents(new Student("Karel", 4));
 
-        school.addGroup(groupA);
+        schedule.addGroup(groupA);
+
+        schedule.saveToFile();
+//        Schedule schedule = ScheduleLoader.loadFile();
 
     }
 }

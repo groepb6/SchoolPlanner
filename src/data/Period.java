@@ -1,8 +1,9 @@
 package data;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Period {
+public class Period implements Serializable {
     private LocalTime startTime;
     private LocalTime endTime;
 

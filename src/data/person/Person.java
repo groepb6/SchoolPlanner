@@ -1,6 +1,8 @@
 package data.person;
 
-abstract public class Person {
+import java.io.Serializable;
+
+abstract public class Person implements Serializable {
     private String name;
     private int id;
 

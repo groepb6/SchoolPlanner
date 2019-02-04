@@ -17,7 +17,6 @@ public class ScheduleLoader {
         String loadPath = fileName + ".txt";
         System.out.println("Attempting to load schedule from " + loadPath);
         try {
-            System.out.println("Schedule loaded successfully.");
             File saveFile = new File(loadPath);
             FileInputStream fileInputStream = new FileInputStream(saveFile);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
@@ -30,7 +29,7 @@ public class ScheduleLoader {
             System.out.println("No object found in file!");
         }
         System.out.println("Loading has failed!");
-        return new Schedule();
+        return new Schedule(null);
     }
 
     /**

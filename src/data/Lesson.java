@@ -2,9 +2,10 @@ package data;
 
 import data.person.Teacher;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Lesson {
+public class Lesson implements Serializable {
     private Teacher teacher;
     private Group group;
     private Period period;
