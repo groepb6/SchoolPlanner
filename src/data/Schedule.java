@@ -33,7 +33,13 @@ public class Schedule implements Serializable {
             System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
             System.out.println("Please try again.");
         }
+    }
 
+    /**
+     * Method to save this Schedule to the save test file
+     */
+    public void saveToFile() {
+        this.saveToFile("saveTest");
     }
 
 }

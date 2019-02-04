@@ -33,4 +33,12 @@ public class ScheduleLoader {
         return new Schedule();
     }
 
+    /**
+     * Method to load the Schedule from the test save file
+     * @return
+     */
+    public static Schedule loadFile() {
+        return ScheduleLoader.loadFile("testSave");
+    }
+
 }
