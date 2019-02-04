@@ -1,6 +1,6 @@
-package gui.data;
+package data;
 
-import gui.data.person.Student;
+import data.person.Student;
 
 import java.util.ArrayList;
 
@@ -8,9 +8,17 @@ public class Group {
     private String name;
     private ArrayList<Student> students;
 
-    public Group(String name, ArrayList<Student> students) {
+    public Group(String name) {
         this.name = name;
-        this.students = students;
+        this.students = new ArrayList<>();
+    }
+
+    public void addStudents(Student student) {
+        this.students.add(student);
+    }
+
+    public void addStudents(String name, int id) {
+        this.students.add(new Student(name, id));
     }
 
     public String getName() {

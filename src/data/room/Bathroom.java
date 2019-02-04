@@ -1,4 +1,4 @@
-package gui.data.room;
+package data.room;
 
 public class Bathroom extends Room {
 

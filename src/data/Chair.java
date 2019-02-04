@@ -1,4 +1,4 @@
-package gui.data;
+package data;
 
 public class Chair {
     private int id;
