@@ -3,9 +3,9 @@ package data;
 import java.io.*;
 
 /**
- * Class to load new schedules
+ * Class to load saved objects
  */
-public class ScheduleLoader {
+public class Loader {
 
     /**
      * Method to load a Schedule from a file
@@ -37,7 +37,7 @@ public class ScheduleLoader {
      * @return
      */
     public static Schedule loadFile() {
-        return ScheduleLoader.loadFile("testSave");
+        return Loader.loadFile("testSave");
     }
 
 }
