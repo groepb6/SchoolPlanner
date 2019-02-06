@@ -17,7 +17,8 @@ public class Main {
 
         schedule.addGroup(groupA);
 
-        schedule.saveToFile();
+        schedule.saveToFile("scheduleTest1");
+        groupA.saveToFile("groupTest1");
 //        Schedule schedule = Loader.loadFile();
 
     }
