@@ -14,7 +14,7 @@ public class ScheduleLoader {
      * @return
      */
     public static Schedule loadFile(String fileName) {
-        String loadPath = fileName + ".txt";
+        String loadPath = "saves/schedules/" + fileName + ".txt";
         System.out.println("Attempting to load schedule from " + loadPath);
         try {
             File saveFile = new File(loadPath);

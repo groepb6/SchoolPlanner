@@ -45,7 +45,7 @@ public class Schedule implements Serializable {
      * @param fileName
      */
     public void saveToFile(String fileName) {
-        String savePath = fileName + ".txt";
+        String savePath = "saves/schedules/" + fileName + ".txt";
         System.out.println("Attempting to save schedule to " + savePath);
         try {
             File saveFile = new File(savePath);

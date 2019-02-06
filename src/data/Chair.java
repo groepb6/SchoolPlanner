@@ -1,8 +1,6 @@
 package data;
 
-import java.io.Serializable;
-
-public class Chair implements Serializable {
+public class Chair {
     private int id;
     private boolean isAvailable;
 

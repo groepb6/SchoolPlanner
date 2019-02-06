@@ -1,8 +1,6 @@
 package data;
 
-import java.io.Serializable;
-
-public class Toilet implements Serializable {
+public class Toilet {
     private int id;
     private boolean isAvailable;
 
