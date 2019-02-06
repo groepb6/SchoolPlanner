@@ -1,5 +1,5 @@
 import data.*;
-import data.person.Student;
+import data.person.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,11 +15,14 @@ public class Main {
         groupB.addStudents(new Student("Hans", 3));
         groupB.addStudents(new Student("Karel", 4));
 
-        schedule.addGroup(groupA);
+        schedule.addGroup(groupB);
 
-        schedule.saveToFile("scheduleTest1");
-        groupA.saveToFile("groupTest1");
+        schedule.saveToFile();
+        groupB.saveToFile();
 //        Schedule schedule = Loader.loadFile();
+
+        Teacher teacher = new Teacher("John", 25, "Lesson");
+        teacher.saveToFile();
 
     }
 }

@@ -1,5 +1,7 @@
 package data;
 
+import data.person.Teacher;
+
 import java.io.*;
 
 /**
@@ -37,7 +39,7 @@ public class Loader {
      * @return
      */
     public static Schedule loadSchedule() {
-        return Loader.loadSchedule("testSave");
+        return Loader.loadSchedule("scheduleTest1");
     }
 
     /**
@@ -62,6 +64,46 @@ public class Loader {
         }
         System.out.println("Loading has failed!");
         return new Group(null);
+    }
+
+    /**
+     * Loads a Group from the test save file
+     * @return
+     */
+    public static Group loadGroup() {
+        return Loader.loadGroup("groupTest1");
+    }
+
+    /**
+     * Method to load a saved Teacher from a file
+     * @param fileName
+     * @return
+     */
+    public static Teacher loadTeacher(String fileName) {
+        String loadPath = "saves/teachers/" + fileName + ".txt";
+        System.out.println("Attempting to load teacher from " + loadPath);
+        try {
+            File saveFile = new File(loadPath);
+            FileInputStream fileInputStream = new FileInputStream(saveFile);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            return (Teacher) objectInputStream.readObject();
+        } catch (FileNotFoundException exception) {
+            System.out.println("Save file not found!");
+        } catch (IOException exception) {
+            System.out.println("An IOException has occurred!");
+        } catch (ClassNotFoundException exception) {
+            System.out.println("No object found in file!");
+        }
+        System.out.println("Loading has failed!");
+        return new Teacher(null, -1, null);
+    }
+
+    /**
+     * Loads a Teacher from the test save file
+     * @return
+     */
+    public static Teacher loadTeacher() {
+        return Loader.loadTeacher("teacherTest1");
     }
 
 }

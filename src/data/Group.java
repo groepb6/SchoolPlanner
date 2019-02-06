@@ -61,4 +61,11 @@ public class Group implements Serializable {
         }
     }
 
+    /**
+     * Method to save this Group to the save test file
+     */
+    public void saveToFile() {
+        this.saveToFile("groupTest1");
+    }
+
 }
