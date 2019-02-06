@@ -68,7 +68,7 @@ public class Schedule implements Serializable {
      * Method to save this Schedule to the save test file
      */
     public void saveToFile() {
-        this.saveToFile("testSave");
+        this.saveToFile("scheduleTest1");
     }
 
 }

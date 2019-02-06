@@ -1,8 +1,7 @@
 package data;
 
 import data.person.Student;
-
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Group implements Serializable {
@@ -37,4 +36,36 @@ public class Group implements Serializable {
     public void setStudents(ArrayList<Student> students) {
         this.students = students;
     }
+
+    /**
+     * Saves this Group to a file
+     * @param fileName
+     */
+    public void saveToFile(String fileName) {
+        String savePath = "saves/groups/" + fileName + ".txt";
+        System.out.println("Attempting to save group to " + savePath);
+        try {
+            File saveFile = new File(savePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(this);
+            System.out.println("group saved successfully.");
+        } catch (FileNotFoundException exception) {
+            System.out.println("Save destination not found!");
+            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
+            System.out.println("Please try again.");
+        } catch (IOException exception) {
+            System.out.println("An IOException has occurred!");
+            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
+            System.out.println("Please try again.");
+        }
+    }
+
+    /**
+     * Method to save this Group to the save test file
+     */
+    public void saveToFile() {
+        this.saveToFile("groupTest1");
+    }
+
 }
