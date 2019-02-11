@@ -1,7 +1,5 @@
 package data;
 
-import data.person.Teacher;
-
 import java.io.Serializable;
 import java.time.LocalTime;
 

@@ -1,7 +1,6 @@
 package data;
 
-import data.person.Student;
-import java.io.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Group implements Serializable {

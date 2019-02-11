@@ -3,6 +3,7 @@ package data;
 import java.io.Serializable;
 
 public class Subject implements Serializable {
+
     private String name;
 
     public Subject(String name) {

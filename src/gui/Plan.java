@@ -1,11 +1,9 @@
 package gui;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 
-import java.io.*;
+public class Plan {
 
-public class Plan implements Serializable {
     private SimpleStringProperty time;
     private SimpleStringProperty group;
     private SimpleStringProperty location;
@@ -64,36 +62,4 @@ public class Plan implements Serializable {
     public String toString() {
         return (time.get() + group.get() + location.get() + teacher.get() + subject.get());
     }
-
-    /**
-     * Method to save the Plan to a file
-     * @param fileName
-     */
-    public void saveToFile(String fileName) {
-        String savePath = "saves/" + fileName + ".txt";
-        System.out.println("Attempting to save schedule to " + savePath);
-        try {
-            File saveFile = new File(savePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(this);
-            System.out.println("Plan saved successfully.");
-        } catch (FileNotFoundException exception) {
-            System.out.println("Save destination not found!");
-            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
-            System.out.println("Please try again.");
-        } catch (IOException exception) {
-            System.out.println("An IOException has occurred!");
-            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
-            System.out.println("Please try again.");
-        }
-    }
-
-    /**
-     * Method to save this Plan to the save test file
-     */
-    public void saveToFile() {
-        this.saveToFile("planTest1");
-    }
-
 }

@@ -1,74 +1,76 @@
 package data;
 
-import data.person.Teacher;
-import data.room.Classroom;
-import data.room.Room;
-import java.util.ArrayList;
-import java.io.*;
+
+import gui.Plan;
+
+import java.io.Serializable;
 
 public class Schedule implements Serializable {
 
-    private String name;
-    private ArrayList<Room> rooms;
-    private ArrayList<Teacher> teachers;
-    private ArrayList<Group> groups;
+    private transient Plan plan;
+    private String time;
+    private String group;
+    private String location;
+    private String teacher;
+    private String subject;
 
-    public Schedule(String name) {
-        this.name = name;
-        this.rooms = new ArrayList<>();
-        this.teachers = new ArrayList<>();
-        this.groups = new ArrayList<>();
+    public Schedule(Plan plan) {
+        this.plan = plan;
+        this.time = this.plan.getTime();
+        this.group = this.plan.getGroup();
+        this.location = this.plan.getLocation();
+        this.teacher = this.plan.getTeacher();
+        this.subject = this.plan.getSubject();
     }
 
-    public void addClassroom(String name, int capacity) {
-        this.rooms.add(new Classroom(name, capacity));
+    public String getTime() {
+        return time;
     }
 
-    public void addClassroom(Classroom classroom) {
-        this.rooms.add(classroom);
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public void addTeacher(String name, int id, String subjectName) {
-        this.teachers.add(new Teacher(name, id, subjectName));
+    public String getGroup() {
+        return group;
     }
 
-    public void addTeacher(Teacher teacher) {
-        this.teachers.add(teacher);
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    public void addGroup(Group group) {
-        this.groups.add(group);
+    public String getLocation() {
+        return location;
     }
 
-    /**
-     * Method to save the Schedule to a file
-     * @param fileName
-     */
-    public void saveToFile(String fileName) {
-        String savePath = "saves/schedules/" + fileName + ".txt";
-        System.out.println("Attempting to save schedule to " + savePath);
-        try {
-            File saveFile = new File(savePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(this);
-            System.out.println("Schedule saved successfully.");
-        } catch (FileNotFoundException exception) {
-            System.out.println("Save destination not found!");
-            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
-            System.out.println("Please try again.");
-        } catch (IOException exception) {
-            System.out.println("An IOException has occurred!");
-            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
-            System.out.println("Please try again.");
-        }
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    /**
-     * Method to save this Schedule to the save test file
-     */
-    public void saveToFile() {
-        this.saveToFile("scheduleTest1");
+    public String getTeacher() {
+        return teacher;
     }
 
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "time='" + time + '\'' +
+                ", group='" + group + '\'' +
+                ", location='" + location + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", subject='" + subject + '\'' +
+                '}';
+    }
 }
