@@ -1,7 +1,5 @@
 package gui;
 
-import gui.SchoolManager;
-
 import static javafx.application.Application.launch;
 
 public class GuiMain {
