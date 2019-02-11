@@ -6,17 +6,25 @@ import java.nio.file.Paths;
  */
 public class DevSetup {
 
+    /**
+     * Executes all DevSetup methods (might not be safe to run multiple
+     */
     public static void setupEverything() {
         DevSetup.setupSaveDirectories();
     }
 
+    /**
+     * Sets up the save directories (safe to run multiple times)
+     */
     public static void setupSaveDirectories() {
         try {
-            if(Files.exists(Paths.get("saves/groups"))) {
+            if (Files.exists(Paths.get("saves/groups"))) {
                 Files.createDirectories(Paths.get("saves/groups"));
-            } if(Files.exists(Paths.get("saves/schedules"))) {
+            }
+            if (Files.exists(Paths.get("saves/schedules"))) {
                 Files.createDirectories(Paths.get("saves/schedules"));
-            } if(Files.exists(Paths.get("saves/teachers"))) {
+            }
+            if (Files.exists(Paths.get("saves/teachers"))) {
                 Files.createDirectories(Paths.get("saves/teachers"));
             }
         } catch (Exception exception) {
