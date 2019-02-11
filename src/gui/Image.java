@@ -2,6 +2,9 @@ package gui;
 
 import javafx.scene.image.ImageView;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class Image {
     private String name;
     private String originalName;
@@ -23,7 +26,7 @@ public class Image {
     }
 
     private void buildImageView() {
-             imageView = new ImageView("file:///"+getClass().getResource("images").getPath()+"\\"+folder+"\\"+name+extension);
+        imageView = new ImageView(getClass().getResource("/images/" + folder + "/" + name + extension).toString());
     }
 
     public ImageView getImageView() {

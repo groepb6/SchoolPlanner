@@ -15,6 +15,8 @@ public class SchoolManager extends javafx.application.Application {
     private BorderPane layoutPane;
 
     public void start(Stage stage) {
+        System.out.println(getClass().getResource("images"));
+
         stage.setTitle("School manager");
         layoutPane = new BorderPane();
         Scene scene = new Scene(layoutPane);
@@ -25,6 +27,8 @@ public class SchoolManager extends javafx.application.Application {
         stage.setScene(scene);
         stage.show();
     }
+
+
 
 
 }
