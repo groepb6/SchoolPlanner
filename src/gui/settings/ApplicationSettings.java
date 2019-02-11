@@ -1,12 +1,8 @@
 package gui.settings;
 
-import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class ApplicationSettings {
     public static final Color themeColor = Color.CORNFLOWERBLUE;
