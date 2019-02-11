@@ -1,6 +1,6 @@
 import data.DataReader;
 import data.DataWriter;
-import data.Schedule;
+import gui.Schedule;
 import gui.Plan;
 import java.util.ArrayList;
 

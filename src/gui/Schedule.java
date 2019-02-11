@@ -1,4 +1,4 @@
-package data;
+package gui;
 
 
 import gui.Plan;
