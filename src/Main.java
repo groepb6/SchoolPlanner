@@ -3,7 +3,7 @@ import data.person.*;
 
 public class Main {
     public static void main(String[] args) {
-
+        DevSetup.setupEverything();
         Group groupA = new Group("Group A");
         Group groupB = new Group("Group B");
 
