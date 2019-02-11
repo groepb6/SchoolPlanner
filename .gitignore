@@ -1,5 +1,4 @@
-# IntelliJ
-out/*
 .idea/
+out/
 *.iml
-saves/*
+saves/
