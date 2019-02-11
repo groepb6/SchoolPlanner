@@ -1,7 +1,6 @@
 package data;
 
 import gui.Schedule;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
