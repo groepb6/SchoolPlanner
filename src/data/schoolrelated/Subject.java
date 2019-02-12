@@ -1,4 +1,4 @@
-package data;
+package data.schoolrelated;
 
 import java.io.Serializable;
 

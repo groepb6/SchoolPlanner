@@ -1,4 +1,4 @@
-package data;
+package data.schoolrelated;
 
 import data.persons.Person;
 import data.persons.Teacher;

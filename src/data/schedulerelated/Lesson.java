@@ -1,4 +1,7 @@
-package data;
+package data.schedulerelated;
+
+import data.schoolrelated.Group;
+import data.persons.Teacher;
 
 import java.io.Serializable;
 import java.time.LocalTime;

@@ -1,4 +1,6 @@
-package data;
+package data.persons;
+
+import data.schoolrelated.Subject;
 
 public class Teacher extends Person {
 

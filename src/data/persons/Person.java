@@ -1,4 +1,4 @@
-package data;
+package data.persons;
 
 import java.io.Serializable;
 

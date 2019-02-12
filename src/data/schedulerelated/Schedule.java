@@ -1,4 +1,4 @@
-package data;
+package data.schedulerelated;
 
 import gui.assistclasses.Plan;
 
@@ -20,6 +20,10 @@ public class Schedule implements Serializable {
         this.location = this.plan.getLocation();
         this.teacher = this.plan.getTeacher();
         this.subject = this.plan.getSubject();
+    }
+
+    public Plan getPlan() {
+        return new Plan(this.time, this.group, this.location, this.teacher, this.subject);
     }
 
     public String getTime() {

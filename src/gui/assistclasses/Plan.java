@@ -1,4 +1,4 @@
-package supportparts;
+package gui.assistclasses;
 
 import javafx.beans.property.SimpleStringProperty;
 
@@ -19,23 +19,23 @@ public class Plan {
         this.subject = new SimpleStringProperty(subject);
     }
 
-    public void setTime(String time) {
+    public void setTime(final String time) {
         this.time.set(time);
     }
 
-    public void setGroup(String group) {
+    public void setGroup(final String group) {
         this.group.set(group);
     }
 
-    public void setLocation(String location) {
+    public void setLocation(final String location) {
         this.location.set(location);
     }
 
-    public void setTeacher(String teacher) {
+    public void setTeacher(final String teacher) {
         this.teacher.set(teacher);
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(final String subject) {
         this.subject.set(subject);
     }
 
@@ -59,19 +59,12 @@ public class Plan {
         return this.subject.get();
     }
 
-    @Override
-    public String toString() {
-        return ("Group " + group.get() + " from "+time.get() + " at "+location.get()  + " subject "+subject.get()) + " by "+teacher.get();
+    public boolean isEqualTo(Plan plan) {
+        return (plan.getGroup().equals(getGroup()) && plan.getTime().equals(getTime()) && plan.getSubject().equals(getSubject()) && plan.getLocation().equals(getLocation()) && plan.getTeacher().equals(getTeacher()));
     }
 
-    public static ArrayList getTestData() {
-        ArrayList list = new ArrayList();
-        list.add(new Plan("08:45 - 09:45", "23TIVT1B6", "LA424", "Johan", "OGP"));
-        list.add(new Plan("10:00 - 12:00", "23TIVT1B6", "LA218", "Pieter", "Maths"));
-        list.add(new Plan("13:30 - 14:00", "23TIVT1B6", "LA672", "Genevieve", "P&OC"));
-        list.add(new Plan("15:00 - 16:30", "23TIVT1B6", "LD726", "Jan", "OOM"));
-        list.add(new Plan("17:00 - 20:00", "23TIVT1B6", "HA300", "Peter", "Hardware"));
-
-        return list;
+    @Override
+    public String toString() {
+        return ("Group " + group.get() + " from " + time.get() + " at " + location.get() + " subject " + subject.get()) + " by " + teacher.get();
     }
 }

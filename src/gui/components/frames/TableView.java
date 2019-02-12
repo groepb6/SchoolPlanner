@@ -1,11 +1,13 @@
 package gui.components.frames;
 
-import gui.Plan;
+import data.schedulerelated.Schedule;
+import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -51,12 +53,11 @@ public class TableView extends Sizeable {
         teacherCol.setPrefWidth(200);
         subjectCol.setPrefWidth(200);
 
-
         tableView.getColumns().setAll(groupCol, timeCol, locationCol, subjectCol, teacherCol);
     }
 
     private ObservableList getData() {
-        ObservableList data = FXCollections.observableList(getTestData());
+        ObservableList data = FXCollections.observableList(retrieveDataList());
         return data;
     }
 
@@ -64,9 +65,15 @@ public class TableView extends Sizeable {
         return tableView;
     }
 
-    private List getTestData() {
-        List list;
-        list = Plan.getTestData();
+    private List retrieveDataList() {
+        List list = new ArrayList<Plan>();
+        try {
+            ArrayList<Schedule> schedules = data.DataReader.readObject();
+            for (Schedule schedule : schedules) {
+                list.add(schedule.getPlan());
+            }
+
+        } catch (Exception e) {}
         return list;
     }
 

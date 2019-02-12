@@ -1,5 +1,7 @@
 package gui.components.frames;
 
+import data.DataReader;
+import data.DataWriter;
 import data.schedulerelated.Schedule;
 import gui.assistclasses.Image;
 import gui.assistclasses.Plan;
@@ -27,6 +29,7 @@ public class FancyView extends Sizeable {
     private Button searchGroupButton = new Button("Search");
     private Button submitGroupButton = new Button("Submit");
     private Button clearViewButton = new Button("Clear last plan");
+    private Button removePlanButton = new Button("Remove plan completely");
     private Image errorMessageSearch = new Image("errormessage", "functionimages", ".png", "error", "No results found");
     private Image successMessageSearch = new Image("successfulmessage", "functionimages", ".png", "successful", "Search successful");
     private Image errorMessageSubmit = new Image("errorMessage", "functionimages", ".png", "error", "No group selected");
@@ -44,21 +47,51 @@ public class FancyView extends Sizeable {
         searchResults.setPromptText("Select group");
         searchGroupBar.setSpacing(5);
         selectGroupBar.setSpacing(5);
-        searchResults.setMinWidth(200);
-        searchResults.setMaxWidth(200);
-        textField.setMinWidth(200);
-        textField.setMaxWidth(200);
+        graphGroupBar.setSpacing(5);
+        graphDrawBar.setSpacing(5);
+        searchResults.setMinWidth(250);
+        searchResults.setMaxWidth(250);
+        textField.setMinWidth(250);
+        textField.setMaxWidth(250);
         submitGroupButton.setMinWidth(100);
         submitGroupButton.setMaxWidth(100);
         searchGroupButton.setMinWidth(100);
         searchGroupButton.setMaxWidth(100);
         searchGroupBar.setMinWidth(500);
+        removePlanButton.setMinWidth(260);
+    }
+
+    private void setRemovePlanButton() {
+        removePlanButton.setOnMouseClicked(event -> {
+            boolean foundDuplicate = false;
+            try {
+                ArrayList<Schedule> scheduleData = DataReader.readObject();
+                if (searchResults.getSelectionModel().getSelectedItem() != null) {
+                    Plan plan;
+                    for (int i = 0; i < scheduleData.size(); i++) {
+                        plan = (Plan) searchResults.getSelectionModel().getSelectedItem();
+                        if (plan.isEqualTo(scheduleData.get(i).getPlan())) {
+                            scheduleData.remove(i);
+                            i--;
+                            foundDuplicate = true;
+                        }
+                    }
+                }
+                searchResults.getSelectionModel().selectFirst();
+                if (foundDuplicate) {
+                    DataWriter.writeObject(scheduleData);
+                    search(textField.getText());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void buildSearchSelectGraphGroupBar() {
         searchGroupBar.getChildren().addAll(textField, searchGroupButton);
         selectGroupBar.getChildren().addAll(searchResults, submitGroupButton);
-        graphGroupBar.getChildren().addAll(clearViewButton);
+        graphGroupBar.getChildren().addAll(clearViewButton, removePlanButton);
         graphDrawBar.getChildren().addAll(VirtualizedView.drawTimePanel());
         topElements.getChildren().addAll(searchGroupBar, selectGroupBar, graphGroupBar, graphDrawBar);
         borderPane.setTop(topElements);
@@ -66,6 +99,7 @@ public class FancyView extends Sizeable {
         setSearchButtonActionOnClick();
         setSubmitButtonActionOnClick();
         setClearViewButtonActionOnClick();
+        setRemovePlanButton();
     }
 
     //=======================BEGIN OF CODE FOR ALL ACTION ON CLICK EVENTS================================
@@ -109,8 +143,9 @@ public class FancyView extends Sizeable {
                 list.add(schedule.getPlan());
             }
 
-        } catch (Exception e) {}
-        return (ArrayList<Plan>)list;
+        } catch (Exception e) {
+        }
+        return (ArrayList<Plan>) list;
     }
 
 

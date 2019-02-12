@@ -1,4 +1,4 @@
-package data;
+package data.schedulerelated;
 
 import java.io.Serializable;
 import java.time.LocalTime;

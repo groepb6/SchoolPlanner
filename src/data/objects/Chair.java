@@ -1,4 +1,4 @@
-package data;
+package data.objects;
 
 public class Chair {
     private int id;

@@ -1,4 +1,4 @@
-package supportparts;
+package gui.assistclasses;
 
 import javafx.scene.image.ImageView;
 
