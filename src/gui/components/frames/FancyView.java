@@ -4,11 +4,15 @@ import gui.Image;
 import gui.Plan;
 import gui.components.window.Sizeable;
 import javafx.collections.FXCollections;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-
+import javafx.*;
 import java.util.ArrayList;
 
 public class FancyView extends Sizeable {
@@ -16,11 +20,13 @@ public class FancyView extends Sizeable {
     private BorderPane borderPane = new BorderPane();
     private HBox searchGroupBar = new HBox();
     private HBox selectGroupBar = new HBox();
+    private HBox graphGroupBar = new HBox();
+    private HBox graphDrawBar = new HBox();
     private VBox topElements = new VBox();
     private TextField textField = new TextField("Search group");
     private Button searchGroupButton = new Button("Search");
     private Button submitGroupButton = new Button("Submit");
-    private Button openViewButton = new Button("OpenView");
+    private Button clearViewButton = new Button("Clear last plan");
     private Image errorMessageSearch = new Image("errormessage", "functionimages", ".png", "error", "No results found");
     private Image successMessageSearch = new Image("successfulmessage", "functionimages", ".png", "successful", "Search successful");
     private Image errorMessageSubmit = new Image("errorMessage", "functionimages", ".png", "error", "No group selected");
@@ -32,8 +38,8 @@ public class FancyView extends Sizeable {
     private ComboBox searchResults = new ComboBox();
 
     public FancyView(Stage stage) {
-        super.setProportions(500,2560,0, 1080, Sizeable.ignore, 500, stage);
-        buildSearchSelectGroupBar();
+        super.setProportions(500, 2560, 0, 1080, Sizeable.ignore, 500, stage);
+        buildSearchSelectGraphGroupBar();
         topElements.setSpacing(5);
         searchResults.setPromptText("Select group");
         searchGroupBar.setSpacing(5);
@@ -42,8 +48,6 @@ public class FancyView extends Sizeable {
         searchResults.setMaxWidth(200);
         textField.setMinWidth(200);
         textField.setMaxWidth(200);
-        selectGroupBar.getChildren().add(searchResults);
-        selectGroupBar.getChildren().add(submitGroupButton);
         submitGroupButton.setMinWidth(100);
         submitGroupButton.setMaxWidth(100);
         searchGroupButton.setMinWidth(100);
@@ -51,22 +55,26 @@ public class FancyView extends Sizeable {
         searchGroupBar.setMinWidth(500);
     }
 
-    private void buildSearchSelectGroupBar() {
+    private void buildSearchSelectGraphGroupBar() {
         searchGroupBar.getChildren().addAll(textField, searchGroupButton);
-        topElements.getChildren().add(searchGroupBar);
-        topElements.getChildren().add(selectGroupBar);
+        selectGroupBar.getChildren().addAll(searchResults, submitGroupButton);
+        graphGroupBar.getChildren().addAll(clearViewButton);
+        graphDrawBar.getChildren().addAll(VirtualizedView.drawTimePanel());
+        topElements.getChildren().addAll(searchGroupBar, selectGroupBar, graphGroupBar, graphDrawBar);
         borderPane.setTop(topElements);
 
         setSearchButtonActionOnClick();
         setSubmitButtonActionOnClick();
+        setClearViewButtonActionOnClick();
     }
+
+    //=======================BEGIN OF CODE FOR ALL ACTION ON CLICK EVENTS================================
 
     private void setSearchButtonActionOnClick() {
         searchGroupButton.setOnMouseClicked(event -> {
             String input = textField.getText();
             ArrayList<Plan> filteredData = search(input);
             if (filteredData.size() >= 1) {
-                System.out.println(filteredData.toString());
                 addSearchSuccessfulMessage();
             } else addSearchErrorMessage();
         });
@@ -78,13 +86,24 @@ public class FancyView extends Sizeable {
                 addSubmitErrorMessage();
             else {
                 addSubmitSuccessfulMessage();
-                launchPopUp();
+                Plan plan = (Plan) searchResults.getSelectionModel().getSelectedItem();
+                graphDrawBar.getChildren().add(VirtualizedView.schedule(testDataToBeginTime(plan.getTime()), testDataToEndTime(plan.getTime()), plan.getSubject()));
             }
         });
     }
 
+    private void setClearViewButtonActionOnClick() {
+        clearViewButton.setOnMouseClicked(event -> {
+            if (graphDrawBar.getChildren().size() > 1)
+                graphDrawBar.getChildren().remove(graphDrawBar.getChildren().size() - 1);
+        });
+    }
+
+    //=========================END OF CODE FOR ALL ACTION ON CLICK EVENTS==================================
+
+
     private ArrayList<Plan> search(String search) {
-        ArrayList<Plan> data = getTestData();
+        ArrayList<Plan> data = Plan.getTestData();
         ArrayList<Plan> filteredData = new ArrayList<>();
         boolean strictSearch = false;
 
@@ -94,7 +113,7 @@ public class FancyView extends Sizeable {
             search = fixStringForStrictSearching(search);
         }
 
-        for (int i = 0; i < getTestData().size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
             if (strictSearch)
                 if (data.get(i).getGroup().trim().equals(search))
                     filteredData.add(data.get(i));
@@ -112,6 +131,9 @@ public class FancyView extends Sizeable {
 
     private void displayClassSearchResults(ArrayList filteredData) {
         searchResults.setItems(FXCollections.observableList(filteredData));
+        if (searchResults.getItems().size() > 1)
+            searchResults.setPromptText(searchResults.getItems().toString());
+        else searchResults.setPromptText("");
         searchResults.autosize();
     }
 
@@ -127,7 +149,6 @@ public class FancyView extends Sizeable {
             initActionSearchErrorMessage();
             errorMessageSearch.getImageView().setOnMouseEntered(eventEnter -> {
                 Label errorMessage = new Label(this.errorMessageSearch.getDescription());
-                // errorMessageSearch.setBorder(new Border(new BorderStroke(Color.INDIANRED, BorderStrokeStyle.DASHED, null, new BorderWidths(5))));
                 searchGroupBar.getChildren().add(errorMessage);
                 this.errorMessageSearch.getImageView().setOnMouseExited(eventExit -> {
                     searchGroupBar.getChildren().remove(searchGroupBar.getChildren().size() - 1);
@@ -201,7 +222,6 @@ public class FancyView extends Sizeable {
             initActionSubmitErrorMessage();
             errorMessageSubmit.getImageView().setOnMouseEntered(eventEnter -> {
                 Label errorMessage = new Label(this.errorMessageSubmit.getDescription());
-                // errorMessageSearch.setBorder(new Border(new BorderStroke(Color.INDIANRED, BorderStrokeStyle.DASHED, null, new BorderWidths(5))));
                 selectGroupBar.getChildren().add(errorMessage);
                 this.errorMessageSubmit.getImageView().setOnMouseExited(eventExit -> {
                     selectGroupBar.getChildren().remove(selectGroupBar.getChildren().size() - 1);
@@ -261,33 +281,22 @@ public class FancyView extends Sizeable {
             selectGroupBar.getChildren().remove(selectGroupBar.getChildren().size() - 1);
         }
     }
-    //====================================================END OF CODE FOR FEEDBACK SUBMIT BOX=======================================================================
 
-
-
-    //================================================BEGIN OF CODE FOR OPENING THE VIRTUAL VIEW MODE===============================================================
-    public void setOpenViewButtonActions() {
-        submitGroupButton.setOnMouseClicked(event -> {
-            //VirtualizedSchedule virtualizedSchedule = new VirtualizedSchedule();
-        });
+    private int testDataToBeginTime(String data) {
+        int seperator = data.indexOf("-");
+        data = data.substring(0, seperator - 1);
+        seperator = data.indexOf(":");
+        return (Integer.parseInt(data.substring(0, seperator)) - 8) * 60 + Integer.parseInt(data.substring(seperator + 1));
     }
 
-    //=================================================END OF CODE FOR OPENING THE VIRTUAL VIEW MODE================================================================
-
-    private void launchPopUp() {
-        stage = new Stage();
-
+    private int testDataToEndTime(String data) {
+        int seperator = data.indexOf("-");
+        data = data.substring(seperator + 2);
+        seperator = data.indexOf(":");
+        return (Integer.parseInt(data.substring(0, seperator)) - 8) * 60 + Integer.parseInt(data.substring(seperator + 1));
     }
 
     public BorderPane getFancyView() {
         return borderPane;
-    }
-
-    private ArrayList getTestData() {
-        ArrayList list = new ArrayList();
-        for (int i = 0; i < 100; i++) {
-            list.add(new Plan("time" + Integer.toString(i), " group" + Integer.toString(i), " location" + Integer.toString(i), " teacher" + Integer.toString(i), " subject" + Integer.toString(i)));
-        }
-        return list;
     }
 }

@@ -2,8 +2,9 @@ package gui;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class Plan {
+import java.util.ArrayList;
 
+public class Plan {
     private SimpleStringProperty time;
     private SimpleStringProperty group;
     private SimpleStringProperty location;
@@ -60,6 +61,17 @@ public class Plan {
 
     @Override
     public String toString() {
-        return (time.get() + group.get() + location.get() + teacher.get() + subject.get());
+        return ("Group " + group.get() + " from "+time.get() + " at "+location.get()  + " subject "+subject.get()) + " by "+teacher.get();
+    }
+
+    public static ArrayList getTestData() {
+        ArrayList list = new ArrayList();
+        list.add(new Plan("08:45 - 09:45", "23TIVT1B6", "LA424", "Johan", "OGP"));
+        list.add(new Plan("10:00 - 12:00", "23TIVT1B6", "LA218", "Pieter", "Maths"));
+        list.add(new Plan("13:30 - 14:00", "23TIVT1B6", "LA672", "Genevieve", "P&OC"));
+        list.add(new Plan("15:00 - 16:30", "23TIVT1B6", "LD726", "Jan", "OOM"));
+        list.add(new Plan("17:00 - 20:00", "23TIVT1B6", "HA300", "Peter", "Hardware"));
+
+        return list;
     }
 }

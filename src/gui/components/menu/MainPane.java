@@ -155,7 +155,6 @@ public class MainPane {
 
     private void setActionOnClick(int image) {
         buttonImages.get(image).getImageView().setOnMouseClicked(event -> {
-            System.out.println("Clicked on: " + buttonImages.get(image).getIdentifier());
                 new Window(buttonImages.get(image).getIdentifier(), stage, scene);
            });
     }
