@@ -1,4 +1,6 @@
-package gui;
+package data;
+
+import gui.assistclasses.Plan;
 
 import java.io.Serializable;
 

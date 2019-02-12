@@ -1,7 +1,8 @@
 package gui.components.frames;
 
-import gui.Image;
-import gui.Plan;
+import data.schedulerelated.Schedule;
+import gui.assistclasses.Image;
+import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -9,11 +10,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import javafx.*;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class FancyView extends Sizeable {
     private Stage stage;
@@ -101,9 +101,21 @@ public class FancyView extends Sizeable {
 
     //=========================END OF CODE FOR ALL ACTION ON CLICK EVENTS==================================
 
+    private ArrayList<Plan> retrieveScheduleData() {
+        List list = new ArrayList<Plan>();
+        try {
+            ArrayList<Schedule> schedules = data.DataReader.readObject();
+            for (Schedule schedule : schedules) {
+                list.add(schedule.getPlan());
+            }
+
+        } catch (Exception e) {}
+        return (ArrayList<Plan>)list;
+    }
+
 
     private ArrayList<Plan> search(String search) {
-        ArrayList<Plan> data = Plan.getTestData();
+        ArrayList<Plan> data = retrieveScheduleData();
         ArrayList<Plan> filteredData = new ArrayList<>();
         boolean strictSearch = false;
 

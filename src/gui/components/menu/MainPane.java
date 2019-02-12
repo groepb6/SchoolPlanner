@@ -1,7 +1,7 @@
 package gui.components.menu;
 
 import gui.components.window.Window;
-import gui.Image;
+import gui.assistclasses.Image;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
@@ -85,7 +85,7 @@ public class MainPane {
     }
 
     /**
-     * When a specific image is selected the mainPane should be prepared for a rebuild. This is why all children objects are being removed, and the images are being reloaded and placed in the grid.
+     * When a specific image is selected the mainPane should be prepared for a rebuild. This is why all children rooms are being removed, and the images are being reloaded and placed in the grid.
      */
 
     private void selectedImage() {

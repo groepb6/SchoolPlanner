@@ -1,6 +1,6 @@
 package data;
 
-import gui.Schedule;
+import data.schedulerelated.Schedule;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,21 +10,13 @@ import java.util.ArrayList;
 
 public class DataReader {
 
-    public static void readObject() throws IOException, FileNotFoundException, ClassNotFoundException {
-
-        FileInputStream fileInputStream = null;
+    public static ArrayList<Schedule> readObject() throws IOException, FileNotFoundException, ClassNotFoundException {
+        FileInputStream fileInputStream;
         ObjectInputStream objectInputStream = null;
-
         try {
-            fileInputStream = new FileInputStream("saves/schedulesTest2.txt");
+            fileInputStream = new FileInputStream("saves/schedulesData.txt");
             objectInputStream = new ObjectInputStream(fileInputStream);
-
-            ArrayList<Schedule> schedules = (ArrayList<Schedule>) objectInputStream.readObject();
-
-            for (Schedule s : schedules) {
-                System.out.println(s);
-            }
-
+            return (ArrayList<Schedule>) objectInputStream.readObject();
         } finally {
             if (objectInputStream != null) {
                 objectInputStream.close();

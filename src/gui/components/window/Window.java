@@ -1,9 +1,8 @@
 package gui.components.window;
 
-import gui.Image;
+import gui.assistclasses.Image;
 import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -27,21 +26,20 @@ public class Window {
         switch (identifier) {
             case "tableview":
                 windowPane.setCenter(new gui.components.frames.TableView(stage).getTableView());
-                scene = new Scene(windowPane);
-                stage.setScene(scene);
                 break;
             case "fancyview":
                 windowPane.setCenter(new gui.components.frames.FancyView(stage).getFancyView());
-                scene = new Scene(windowPane);
-                stage.setScene(scene);
                 break;
             case "startsim":
                 //windowPane.setCenter(new gui.components.frames.StartSim().getSim());
                 break;
             case "editschedule":
-                //windowPane.setCenter(new gui.components.frames.EditSchedule().getSchedule);
+                windowPane.setCenter(new gui.components.frames.EditSchedule(stage).getEditSchedule());
+
                 break;
         }
+        scene = new Scene(windowPane);
+        stage.setScene(scene);
     }
 
     private void buildBackButton() {

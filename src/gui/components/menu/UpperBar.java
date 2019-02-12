@@ -1,6 +1,6 @@
 package gui.components.menu;
 
-import gui.Image;
+import gui.assistclasses.Image;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;

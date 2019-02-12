@@ -52,7 +52,7 @@ public class TableView extends Sizeable {
         subjectCol.setPrefWidth(200);
 
 
-        tableView.getColumns().setAll(groupCol, locationCol, timeCol, subjectCol, teacherCol);
+        tableView.getColumns().setAll(groupCol, timeCol, locationCol, subjectCol, teacherCol);
     }
 
     private ObservableList getData() {

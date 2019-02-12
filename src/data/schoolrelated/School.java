@@ -1,5 +1,10 @@
 package data;
 
+import data.persons.Person;
+import data.persons.Teacher;
+import data.rooms.Classroom;
+import data.rooms.Room;
+
 import java.util.ArrayList;
 import java.io.*;
 

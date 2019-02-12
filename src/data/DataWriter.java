@@ -1,6 +1,7 @@
 package data;
 
-import gui.Schedule;
+import data.schedulerelated.Schedule;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class DataWriter {
         ObjectOutputStream objectOutputStream = null;
 
         try {
-            fileOutputStream = new FileOutputStream("saves/schedulesTest2.txt");
+            fileOutputStream = new FileOutputStream("saves/schedulesData.txt");
             objectOutputStream = new ObjectOutputStream(fileOutputStream);
 
             objectOutputStream.writeObject(schedules);
