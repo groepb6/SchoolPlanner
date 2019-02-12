@@ -43,6 +43,8 @@ public class TableView extends Sizeable {
         teacherCol.setCellValueFactory(new PropertyValueFactory<Plan, String>("teacher"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Plan, String>("subject"));
 
+        tableView.setEditable(true);
+
         timeCol.setPrefWidth(200);
         groupCol.setPrefWidth(200);
         locationCol.setPrefWidth(200);
@@ -50,7 +52,7 @@ public class TableView extends Sizeable {
         subjectCol.setPrefWidth(200);
 
 
-        tableView.getColumns().setAll(timeCol, groupCol, locationCol, teacherCol, subjectCol);
+        tableView.getColumns().setAll(groupCol, locationCol, timeCol, subjectCol, teacherCol);
     }
 
     private ObservableList getData() {
@@ -63,10 +65,8 @@ public class TableView extends Sizeable {
     }
 
     private List getTestData() {
-        List list = new ArrayList();
-        for (int i = 0; i < 100; i++) {
-            list.add(new Plan("time" + Integer.toString(i), "group" + Integer.toString(i), "location" + Integer.toString(i), "teacher" + Integer.toString(i), "subject"+Integer.toString(i)));
-        }
+        List list;
+        list = Plan.getTestData();
         return list;
     }
 

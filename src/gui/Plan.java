@@ -3,9 +3,9 @@ package gui;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.io.*;
+import java.util.ArrayList;
 
-public class Plan implements Serializable {
+public class Plan {
     private SimpleStringProperty time;
     private SimpleStringProperty group;
     private SimpleStringProperty location;
@@ -62,38 +62,17 @@ public class Plan implements Serializable {
 
     @Override
     public String toString() {
-        return (time.get() + group.get() + location.get() + teacher.get() + subject.get());
+        return ("Group " + group.get() + " from "+time.get() + " at "+location.get()  + " subject "+subject.get()) + " by "+teacher.get();
     }
 
-    /**
-     * Method to save the Plan to a file
-     * @param fileName
-     */
-    public void saveToFile(String fileName) {
-        String savePath = "saves/" + fileName + ".txt";
-        System.out.println("Attempting to save schedule to " + savePath);
-        try {
-            File saveFile = new File(savePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(this);
-            System.out.println("Plan saved successfully.");
-        } catch (FileNotFoundException exception) {
-            System.out.println("Save destination not found!");
-            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
-            System.out.println("Please try again.");
-        } catch (IOException exception) {
-            System.out.println("An IOException has occurred!");
-            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
-            System.out.println("Please try again.");
-        }
-    }
+    public static ArrayList getTestData() {
+        ArrayList list = new ArrayList();
+        list.add(new Plan("08:45 - 09:45", "23TIVT1B6", "LA424", "Johan", "OGP"));
+        list.add(new Plan("10:00 - 12:00", "23TIVT1B6", "LA218", "Pieter", "Maths"));
+        list.add(new Plan("13:30 - 14:00", "23TIVT1B6", "LA672", "Genevieve", "P&OC"));
+        list.add(new Plan("15:00 - 16:30", "23TIVT1B6", "LD726", "Jan", "OOM"));
+        list.add(new Plan("17:00 - 20:00", "23TIVT1B6", "HA300", "Peter", "Hardware"));
 
-    /**
-     * Method to save this Plan to the save test file
-     */
-    public void saveToFile() {
-        this.saveToFile("planTest1");
+        return list;
     }
-
 }

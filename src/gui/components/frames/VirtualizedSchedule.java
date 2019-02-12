@@ -11,11 +11,14 @@ class VirtualizedSchedule  {
 
     private VirtualizedSchedule() {
         borderPane.setCenter(canvas);
-        drawTime();
+        putTime();
     }
 
-    private void drawTime() {
-
+    private void putTime() {
+        String text="08:00";
+        float x=100;
+        float y=100;
+        g2d.drawString(text, x, y);
     }
 
     BorderPane getCanvasWithPane = new BorderPane();
