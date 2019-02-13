@@ -66,12 +66,12 @@ public class EditSchedule extends Sizeable {
     private void setActions() {
         addPlan.setOnMouseClicked(event -> {
             boolean everythingCorrect = true;
-            if (!checkGroup()) everythingCorrect=false;
-            if (!checkBeginTime()) everythingCorrect=false;
-            if (!checkEndTime()) everythingCorrect=false;
-            if (!checkLocation()) everythingCorrect=false;
-            if (!checkSubject()) everythingCorrect=false;
-            if (!checkTeacher()) everythingCorrect=false;
+            if (!checkGroup()) everythingCorrect = false;
+            if (!checkBeginTime()) everythingCorrect = false;
+            if (!checkEndTime()) everythingCorrect = false;
+            if (!checkLocation()) everythingCorrect = false;
+            if (!checkSubject()) everythingCorrect = false;
+            if (!checkTeacher()) everythingCorrect = false;
             if (everythingCorrect)
                 addPlan();
         });
@@ -96,8 +96,15 @@ public class EditSchedule extends Sizeable {
         try {
             Schedule schedule = new Schedule(new Plan(timeFieldBegin.getText() + " - " + timeFieldEnd.getText(), groupField.getText(), locationField.getText(), teacherField.getText(), subjectField.getText()));
             scheduleArrayList = DataReader.readObject();
-            scheduleArrayList.add(schedule);
-            DataWriter.writeObject(scheduleArrayList);
+            boolean canAdd=true;
+            for (int i = 0; i < scheduleArrayList.size(); i++) {
+                if (scheduleArrayList.get(i).getPlan().isEqualTo(schedule.getPlan()))
+                    canAdd = false;
+            }
+            if (canAdd) {
+                scheduleArrayList.add(schedule);
+                DataWriter.writeObject(scheduleArrayList);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
