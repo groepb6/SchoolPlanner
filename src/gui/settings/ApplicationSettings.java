@@ -2,6 +2,7 @@ package gui.settings;
 
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+
 import java.util.ArrayList;
 
 public class ApplicationSettings {
@@ -13,7 +14,7 @@ public class ApplicationSettings {
     public static final int margin = 5;
     public static final int standardTextSize = 10;
     public static final int headerTextSize = 20;
-    public static final Font headerFont = new Font(javafx.scene.text.Font.getFamilies().get(7),30);
+    public static final Font headerFont = new Font(javafx.scene.text.Font.getFamilies().get(7), 30);
 
     public static ArrayList getTestNames() {
         ArrayList<String> testNames = new ArrayList<String>();

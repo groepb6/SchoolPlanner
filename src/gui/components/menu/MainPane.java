@@ -33,6 +33,7 @@ public class MainPane {
         initialize();
         this.scene = scene;
         this.stage = stage;
+        this.stage.getIcons().add(new javafx.scene.image.Image("images/functionimages/schoolplannericon.png"));
         mainPane.setHgap(5);
         mainPane.setVgap(5);
         mainPane.setBackground(new Background(new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY, Insets.EMPTY)));

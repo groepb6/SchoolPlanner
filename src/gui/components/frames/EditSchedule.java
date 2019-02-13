@@ -16,21 +16,18 @@ import java.util.ArrayList;
 public class EditSchedule extends Sizeable {
     private BorderPane borderPane = new BorderPane();
     private HBox fieldBox = new HBox();
-
     private VBox groupColom = new VBox();
     private VBox timeColomBegin = new VBox();
     private VBox timeColomEnd = new VBox();
     private VBox locationColom = new VBox();
     private VBox subjectColom = new VBox();
     private VBox teacherColom = new VBox();
-
     private TextField groupField = new TextField();
     private TextField timeFieldBegin = new TextField();
     private TextField timeFieldEnd = new TextField();
     private TextField locationField = new TextField();
     private TextField subjectField = new TextField();
     private TextField teacherField = new TextField();
-
     private Label groupMessage = new Label();
     private Label timeBeginMessage = new Label();
     private Label timeEndMessage = new Label();
@@ -96,7 +93,7 @@ public class EditSchedule extends Sizeable {
         try {
             Schedule schedule = new Schedule(new Plan(timeFieldBegin.getText() + " - " + timeFieldEnd.getText(), groupField.getText(), locationField.getText(), teacherField.getText(), subjectField.getText()));
             scheduleArrayList = DataReader.readObject();
-            boolean canAdd=true;
+            boolean canAdd = true;
             for (int i = 0; i < scheduleArrayList.size(); i++) {
                 if (scheduleArrayList.get(i).getPlan().isEqualTo(schedule.getPlan()))
                     canAdd = false;
