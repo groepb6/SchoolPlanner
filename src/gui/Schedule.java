@@ -1,8 +1,10 @@
 package gui;
 
+import data.Saveable;
+
 import java.io.Serializable;
 
-public class Schedule implements Serializable {
+public class Schedule implements Serializable, Saveable {
 
     private transient Plan plan;
     private String time;
@@ -58,6 +60,15 @@ public class Schedule implements Serializable {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    /**
+     * Gets the path to the directory that Schedule objects should be saved to
+     *
+     * @return "saves/schedules/" which is the directory where the schedules should be saved
+     */
+    public String getPath() {
+        return "saves/schedules/";
     }
 
     @Override
