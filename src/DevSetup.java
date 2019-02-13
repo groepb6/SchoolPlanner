@@ -7,6 +7,14 @@ import java.nio.file.Paths;
 public class DevSetup {
 
     /**
+     * Main method to run the setup
+     * @param args
+     */
+    public static void main(String[] args) {
+        DevSetup.setupEverything();
+    }
+
+    /**
      * Executes all DevSetup methods (might not be safe to run multiple
      */
     public static void setupEverything() {
@@ -14,6 +22,7 @@ public class DevSetup {
     }
 
     /**
+     * OUTDATED, but can be used as an example
      * Sets up the save directories (safe to run multiple times)
      */
     public static void setupSaveDirectories() {
