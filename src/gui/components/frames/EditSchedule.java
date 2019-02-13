@@ -1,7 +1,7 @@
 package gui.components.frames;
 
-import data.DataReader;
-import data.DataWriter;
+import data.readwrite.DataReader;
+import data.readwrite.DataWriter;
 import data.schedulerelated.Schedule;
 import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;

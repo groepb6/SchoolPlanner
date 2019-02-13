@@ -1,4 +1,4 @@
-package data;
+package data.readwrite;
 
 import data.schedulerelated.Schedule;
 

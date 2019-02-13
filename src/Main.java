@@ -1,12 +1,7 @@
-
-
-import data.schedulerelated.Schedule;
+import data.readwrite.DataWriter;
 import data.schedulerelated.TempSchedule;
 import gui.SchoolManager;
 import gui.assistclasses.Plan;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static javafx.application.Application.launch;
 
@@ -27,7 +22,7 @@ public class Main {
                 new Plan("15:20 - 17:39", "23TIVT1A0", "LD212", "Hans", "Alg")
         );
         try {
-            data.DataWriter.writeObject(tempSchedule.getData());
+            DataWriter.writeObject(tempSchedule.getData());
         } catch (Exception e) {e.printStackTrace();}
 
         launch(SchoolManager.class);

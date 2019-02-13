@@ -1,7 +1,7 @@
 package gui.components.frames;
 
-import data.DataReader;
-import data.DataWriter;
+import data.readwrite.DataReader;
+import data.readwrite.DataWriter;
 import data.schedulerelated.Schedule;
 import gui.assistclasses.Image;
 import gui.assistclasses.Plan;
@@ -138,7 +138,7 @@ public class FancyView extends Sizeable {
     private ArrayList<Plan> retrieveScheduleData() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = data.DataReader.readObject();
+            ArrayList<Schedule> schedules = DataReader.readObject();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }
