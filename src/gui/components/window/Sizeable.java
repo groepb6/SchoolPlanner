@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 public abstract class Sizeable {
     public static final int ignore = -1;
 
-    public void setProportions(int minWidth, int maxWidth, int minHeight, int maxHeight, int prefWidth, int prefHeight, Stage stage) {
+    protected void setProportions(int minWidth, int maxWidth, int minHeight, int maxHeight, int prefWidth, int prefHeight, Stage stage) {
         if (minWidth != -1)
             stage.setMinWidth(minWidth);
         if (maxWidth != -1)

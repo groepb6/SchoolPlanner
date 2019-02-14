@@ -36,7 +36,6 @@ class VirtualizedView {
         int beginPixels = (int) (pixelsPerMinute * minutesBegin);
         int endPixels = (int) (pixelsPerMinute * minutesEnd);
         graphics.setColor(new Color((int) (Math.random() * 0x1000000)));
-        new Color(0x1000000);
         Rectangle2D rectangle2D = new Rectangle2D.Double(0, beginPixels + yCorrection, planWidth, endPixels - beginPixels);
         graphics.draw(rectangle2D);
         graphics.fill(rectangle2D);
