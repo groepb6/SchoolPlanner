@@ -2,6 +2,14 @@ package gui.components.window;
 
 import javafx.stage.Stage;
 
+/**
+ * @author Dustin Hendriks
+ * @since 10-02-2019
+ *
+ * The class Sizeable is used to change the size of a stage fast, this way you don't have to do this over and over again in each method / class or function.
+ * Notice that typing "super.setProportions(vars)" is way faster than typing: "stage.setMinWidth(); stage.setMinHeight(); stage.setMaxWidth(); stage.setMaxHeight(); stage.setWidth(); stage.setHeight();"
+ */
+
 public abstract class Sizeable {
     public static final int ignore = -1;
 
