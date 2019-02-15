@@ -66,7 +66,8 @@ public class Window {
     }
 
     /**
-     * If somebody clicks on the back button, the previous scene should be put in place (which is the tile menu). 
+     * If somebody clicks on the back button, the previous scene should be put in place (which is the tile menu).
+     * After this click the stage is being locked to a certain width and height.
      */
 
     private void setActionOnClick() {
