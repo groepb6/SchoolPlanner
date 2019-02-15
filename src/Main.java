@@ -5,6 +5,13 @@ import gui.assistclasses.Plan;
 
 import static javafx.application.Application.launch;
 
+/**
+ * @author Dustin Hendriks
+ * @since 11-02-2019
+ *
+ * The main class writes some test data to a .txt file, which can later be read by DataReader. (new plans are added using DataWriter, for example: the GUI uses dataWriter to add new plans and dataReader to read plans and put them in a table).
+ */
+
 public class Main {
     public static void main (String args[]) {
         TempSchedule tempSchedule = new TempSchedule();
