@@ -151,13 +151,13 @@ public class MainPane {
     /**
      * The setActionOnClick function sets a specific action using
      *
-     * @param image
+     * @param image The image parameter defines which image was clicked and the identifier of this image is being retrieved to help open a new Window.
      */
 
     private void setActionOnClick(int image) {
         buttonImages.get(image).getImageView().setOnMouseClicked(event -> {
-                new Window(buttonImages.get(image).getIdentifier(), stage, scene);
-           });
+            new Window(buttonImages.get(image).getIdentifier(), stage, scene);
+        });
     }
 
     /**
