@@ -13,6 +13,14 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * @author Dustin Hendriks
+ * @since 12-02-2019
+ * <p>
+ * The class "EditSchedule" builds a borderPane which can add new Plans to the storage .txt file. This pane exists out of a few TextField objects and a Button object.
+ * On a button click the inserted information (in the text fields) is being converted to a plan and written to a file, but only if the plan did not exist already.
+ */
+
 public class EditSchedule extends Sizeable {
     private BorderPane borderPane = new BorderPane();
     private HBox fieldBox = new HBox();
@@ -34,9 +42,13 @@ public class EditSchedule extends Sizeable {
     private Label locationMessage = new Label();
     private Label subjectMessage = new Label();
     private Label teacherMessage = new Label();
-
     private Button addPlan = new Button("Add plan");
 
+
+    /**
+     * The "EditSchedule" constructor puts all elements in the correct place on a borderPane. This borderPane can be sent to the Window class later, as seen with other classes located in the frames package.
+     * @param stage Is needed to scale the scene to a minimum width and height (so no elements would be cut off).
+     */
 
     public EditSchedule(Stage stage) {
         fieldBox.getChildren().addAll(groupColom, timeColomBegin, timeColomEnd, locationColom, subjectColom, teacherColom, addPlan);
@@ -55,10 +67,13 @@ public class EditSchedule extends Sizeable {
         locationField.setPromptText("Location");
         subjectField.setPromptText("Subject");
         teacherField.setPromptText("Teacher");
-
         super.setProportions(0, 2560, 0, 1080, 1100, 500, stage);
         setActions();
     }
+
+    /**
+     * If the addPlan method is called a check will need to be performed on all fields, since you wouldn't want invalid data to be written to the Plan save file.
+     */
 
     private void setActions() {
         addPlan.setOnMouseClicked(event -> {
@@ -87,9 +102,12 @@ public class EditSchedule extends Sizeable {
         teacherMessage.setOnMouseDragged(event -> teacherMessage.setText(""));
     }
 
+    /**
+     * If all previous checks are performed there is one check remaining, we do not want any double data in our plane file. This is why the boolean canAdd is set to false if any double plan is found.
+     */
+
     private void addPlan() {
         ArrayList<Schedule> scheduleArrayList;
-
         try {
             Schedule schedule = new Schedule(new Plan(timeFieldBegin.getText() + " - " + timeFieldEnd.getText(), groupField.getText(), locationField.getText(), teacherField.getText(), subjectField.getText()));
             scheduleArrayList = DataReader.readObject();
@@ -107,6 +125,11 @@ public class EditSchedule extends Sizeable {
         }
     }
 
+    /**
+     * Check if the input is correct in the checkGroup field.
+     * @return Boolean which defines whether the input was correct or not.
+     */
+
     private boolean checkGroup() {
         if (groupField.getText().length() >= 1)
             return true;
@@ -115,6 +138,11 @@ public class EditSchedule extends Sizeable {
 
     }
 
+    /**
+     * Check if the input is correct in the CheckBeginTime field.
+     * @return Boolean which defines whether the input was correct or not.
+     */
+
     private boolean checkBeginTime() {
         if (checkTime(timeFieldBegin.getText()))
             return true;
@@ -122,12 +150,23 @@ public class EditSchedule extends Sizeable {
         return false;
     }
 
+    /**
+     * Check if the input is correct in the CheckEndTime field.
+     * @return Boolean which defines whether the input was correct or not.
+     */
+
     private boolean checkEndTime() {
         if (checkTime(timeFieldEnd.getText()))
             return true;
         timeEndMessage.setText("Enter time between 08:00 and 20:00");
         return false;
     }
+
+    /**
+     * Check if the input format of a time is in the format of ab:xy, if not false is returned.
+     * @param timeString The String which should be checked.
+     * @return Return a true or false value depending on the check on the timeString.
+     */
 
     private boolean checkTime(String timeString) {
         if (timeString.length() == 5)
@@ -137,6 +176,10 @@ public class EditSchedule extends Sizeable {
         return false;
     }
 
+    /**
+     * Check if the location input is valid
+     * @return If the location input is valid (=not null) return true, else return false.
+     */
 
     private boolean checkLocation() {
         if (locationField.getText().length() > 0)
@@ -145,6 +188,11 @@ public class EditSchedule extends Sizeable {
         return false;
     }
 
+    /**
+     * Check if the subject input is valid
+     * @return If the subject input is valid (=not null) return true, else return false.
+     */
+
     private boolean checkSubject() {
         if (subjectField.getText().length() > 0)
             return true;
@@ -152,12 +200,22 @@ public class EditSchedule extends Sizeable {
         return false;
     }
 
+    /**
+     * Check if the teacher input is valid
+     * @return If the teacher input is valid (=not null) return true, else return false.
+     */
+
     private boolean checkTeacher() {
         if (teacherField.getText().length() > 0)
             return true;
         teacherMessage.setText("Teacher is empty");
         return false;
     }
+
+    /**
+     * Retrieve the borderPane with all components on it.
+     * @return Receive the borderPane with all components on it.
+     */
 
     public BorderPane getEditSchedule() {
         return borderPane;
