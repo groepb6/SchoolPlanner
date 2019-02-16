@@ -13,6 +13,18 @@ import javafx.stage.Stage;
 public abstract class Sizeable {
     public static final int ignore = -1;
 
+
+    /**
+     * This method sets the proportions of a stage, if the proportion is set to -1, it is ignored.
+     * @param minWidth Defines the minimum window size (width).
+     * @param maxWidth Defines the maximum window size (width).
+     * @param minHeight Defines the minimum window size (height).
+     * @param maxHeight Defines the maximum window size (height).
+     * @param prefWidth Defines the preferable window size (width).
+     * @param prefHeight Defines the preferable window size (height).
+     * @param stage Defines the stage that should be scaled according to all parameters.
+     */
+
     protected void setProportions(int minWidth, int maxWidth, int minHeight, int maxHeight, int prefWidth, int prefHeight, Stage stage) {
         if (minWidth != -1)
             stage.setMinWidth(minWidth);
