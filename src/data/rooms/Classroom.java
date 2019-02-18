@@ -1,6 +1,6 @@
 package data.rooms;
 
-import data.Lesson;
+import data.schedulerelated.Lesson;
 
 import java.util.ArrayList;
 import java.util.List;

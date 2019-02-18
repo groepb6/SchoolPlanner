@@ -1,13 +1,5 @@
 package data.schedulerelated;
 
-import data.Lesson;
-import data.persons.Teacher;
-import data.rooms.Classroom;
-import data.schoolrelated.Group;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Class currently not working as intended
  */

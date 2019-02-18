@@ -1,8 +1,7 @@
-package data;
+package data.schedulerelated;
 
 import data.persons.Teacher;
 import data.rooms.Classroom;
-import data.schedulerelated.Period;
 import data.schoolrelated.Group;
 
 public class Lesson {
