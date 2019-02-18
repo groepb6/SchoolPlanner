@@ -156,7 +156,7 @@ public class DataWriter {
      *
      * @param group
      */
-    public void writeGroup(Group group) {
+    public static void writeGroup(Group group) {
         DataWriter.writeGroup(group, "groupTest1");
     }
 
