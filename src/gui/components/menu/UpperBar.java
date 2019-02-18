@@ -1,9 +1,16 @@
 package gui.components.menu;
 
-import gui.Image;
+import gui.assistclasses.Image;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+
+/**
+ * @author Dustin Hendriks
+ * @since 03-02-2019
+ * <p>
+ * This class creates a nice HBox filled with some pushpin icons for a fancy bar. No functionality's whatsoever, so feel free to ignore this class.
+ */
 
 public class UpperBar {
     private BorderPane upperBar = new BorderPane();
@@ -21,6 +28,11 @@ public class UpperBar {
         upperBar.setBackground(new Background(new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
 
     }
+
+
+    /**
+     * @return Returns the HBox object (can add this to a node later).
+     */
 
     public BorderPane getUpperBar() {
         return upperBar;

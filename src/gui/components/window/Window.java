@@ -1,9 +1,8 @@
 package gui.components.window;
 
-import gui.Image;
+import gui.assistclasses.Image;
 import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -16,6 +15,16 @@ public class Window {
     private Stage stage;
     private Scene scene;
 
+    /**
+     * @author Dustin Hendriks
+     * @since 04-02-2019
+     * @param identifier The identifier is being passed to the Window to know which frame should be loaded in.
+     * @param stage Since new frames also should have some application settings - such as width, height etc - an instance of Stage is needed.
+     * @param originalScene When someone wants to go back to the menu - also called tile menu - a replacement scene is needed, this is originalScene and enables stepping back in menu's.
+     *
+     * The window class adds the functionality to load in a frame object, it is a basic application function which enables navigating forward and back from and back to the menu.
+     */
+
     public Window(String identifier, Stage stage, Scene originalScene) {
         this.originalScene = originalScene;
         buildBackButton();
@@ -27,22 +36,26 @@ public class Window {
         switch (identifier) {
             case "tableview":
                 windowPane.setCenter(new gui.components.frames.TableView(stage).getTableView());
-                scene = new Scene(windowPane);
-                stage.setScene(scene);
                 break;
             case "fancyview":
                 windowPane.setCenter(new gui.components.frames.FancyView(stage).getFancyView());
-                scene = new Scene(windowPane);
-                stage.setScene(scene);
                 break;
             case "startsim":
                 //windowPane.setCenter(new gui.components.frames.StartSim().getSim());
                 break;
             case "editschedule":
-                //windowPane.setCenter(new gui.components.frames.EditSchedule().getSchedule);
+                windowPane.setCenter(new gui.components.frames.EditSchedule(stage).getEditSchedule());
+
                 break;
         }
+        scene = new Scene(windowPane);
+        stage.setScene(scene);
     }
+
+    /**
+     * Every new opened frame should have a back button, this back button is always added as top bar.
+     * Hence that the command "backbutton.getImageView().setPickOnBounds(true)" enables clicking on a transparent part of the button to go back, otherwise you would have to click on non-transparent parts.
+     */
 
     private void buildBackButton() {
         backButton = new Image("back", "functionimages", ".png", "backButton", "Go back to previous menu");
@@ -51,6 +64,11 @@ public class Window {
         backButton.getImageView().setFitWidth(40);
         backButton.getImageView().setPickOnBounds(true);
     }
+
+    /**
+     * If somebody clicks on the back button, the previous scene should be put in place (which is the tile menu).
+     * After this click the stage is being locked to a certain width and height.
+     */
 
     private void setActionOnClick() {
         backButton.getImageView().setOnMouseClicked(event -> {

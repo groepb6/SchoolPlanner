@@ -1,7 +1,7 @@
 package gui.components.menu;
 
 import gui.components.window.Window;
-import gui.Image;
+import gui.assistclasses.Image;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
@@ -33,6 +33,7 @@ public class MainPane {
         initialize();
         this.scene = scene;
         this.stage = stage;
+        this.stage.getIcons().add(new javafx.scene.image.Image("images/functionimages/schoolplannericon.png"));
         mainPane.setHgap(5);
         mainPane.setVgap(5);
         mainPane.setBackground(new Background(new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -85,7 +86,7 @@ public class MainPane {
     }
 
     /**
-     * When a specific image is selected the mainPane should be prepared for a rebuild. This is why all children objects are being removed, and the images are being reloaded and placed in the grid.
+     * When a specific image is selected the mainPane should be prepared for a rebuild. This is why all children rooms are being removed, and the images are being reloaded and placed in the grid.
      */
 
     private void selectedImage() {
@@ -150,13 +151,13 @@ public class MainPane {
     /**
      * The setActionOnClick function sets a specific action using
      *
-     * @param image
+     * @param image The image parameter defines which image was clicked and the identifier of this image is being retrieved to help open a new Window.
      */
 
     private void setActionOnClick(int image) {
         buttonImages.get(image).getImageView().setOnMouseClicked(event -> {
-                new Window(buttonImages.get(image).getIdentifier(), stage, scene);
-           });
+            new Window(buttonImages.get(image).getIdentifier(), stage, scene);
+        });
     }
 
     /**

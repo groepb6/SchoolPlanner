@@ -1,4 +1,9 @@
-package data;
+package data.schoolrelated;
+
+import data.persons.Person;
+import data.persons.Teacher;
+import data.rooms.Classroom;
+import data.rooms.Room;
 
 import java.util.ArrayList;
 import java.io.*;

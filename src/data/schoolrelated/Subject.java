@@ -1,14 +1,13 @@
-package data;
+package data.schoolrelated;
 
 import java.io.Serializable;
 
-abstract public class Person implements Serializable {
-    private String name;
-    private int id;
+public class Subject implements Serializable {
 
-    public Person(String name, int id) {
+    private String name;
+
+    public Subject(String name) {
         this.name = name;
-        this.id = id;
     }
 
     public String getName() {

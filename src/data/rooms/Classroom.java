@@ -1,4 +1,8 @@
-package data;
+package data.rooms;
+
+import data.schoolrelated.Group;
+import data.schedulerelated.Lesson;
+import data.persons.Teacher;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

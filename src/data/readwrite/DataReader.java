@@ -1,6 +1,6 @@
-package data;
+package data.readwrite;
 
-import gui.Schedule;
+import data.schedulerelated.Schedule;
 
 import java.io.*;
 import java.util.List;
@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class DataReader {
 
+<<<<<<< HEAD:src/data/DataReader.java
     /**
      * CURRENTLY DYSFUNCTIONAL
      * Loads an object saved to a file
@@ -78,6 +79,19 @@ public class DataReader {
         } catch (ClassNotFoundException exception) {
             System.out.println("No object found in file!");
             System.out.println("YOUR FILE COULD NOT BE LOADED!");
+=======
+    public static ArrayList<Schedule> readObject() throws IOException, FileNotFoundException, ClassNotFoundException {
+        FileInputStream fileInputStream;
+        ObjectInputStream objectInputStream = null;
+        try {
+            fileInputStream = new FileInputStream("saves/schedulesData.txt");
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            return (ArrayList<Schedule>) objectInputStream.readObject();
+        } finally {
+            if (objectInputStream != null) {
+                objectInputStream.close();
+            }
+>>>>>>> GUIdevbydustin:src/data/readwrite/DataReader.java
         }
         System.out.println("Loading has failed!");
         System.out.println("The program will probably stop working now.");

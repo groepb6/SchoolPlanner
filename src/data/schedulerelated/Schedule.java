@@ -1,4 +1,6 @@
-package gui;
+package data.schedulerelated;
+
+import gui.assistclasses.Plan;
 
 import data.Saveable;
 
@@ -6,7 +8,6 @@ import java.io.Serializable;
 
 public class Schedule implements Serializable, Saveable {
 
-    private transient Plan plan;
     private String time;
     private String group;
     private String location;
@@ -14,12 +15,15 @@ public class Schedule implements Serializable, Saveable {
     private String subject;
 
     public Schedule(Plan plan) {
-        this.plan = plan;
-        this.time = this.plan.getTime();
-        this.group = this.plan.getGroup();
-        this.location = this.plan.getLocation();
-        this.teacher = this.plan.getTeacher();
-        this.subject = this.plan.getSubject();
+        this.time = plan.getTime();
+        this.group = plan.getGroup();
+        this.location = plan.getLocation();
+        this.teacher = plan.getTeacher();
+        this.subject = plan.getSubject();
+    }
+
+    public Plan getPlan() {
+        return new Plan(this.time, this.group, this.location, this.teacher, this.subject);
     }
 
     public String getTime() {
