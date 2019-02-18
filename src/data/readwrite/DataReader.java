@@ -116,7 +116,7 @@ public class DataReader {
             System.out.println("No object found in file!");
         }
         System.out.println("Loading has failed!");
-        return new Group(null);
+        return null;
     }
 
     /**
@@ -150,7 +150,7 @@ public class DataReader {
             System.out.println("No object found in file!");
         }
         System.out.println("Loading has failed!");
-        return new Teacher(null, -1, null);
+        return null;
     }
 
     /**
