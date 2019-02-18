@@ -16,6 +16,7 @@ public class DataWriter {
      * @param object   Has to implement Saveable to save successfully
      * @param fileName The file name for the save file
      */
+    /*
     private static void writeObject(Object object, String fileName) {
         String savePath = getSaveDirectory(object) + fileName + ".txt";
         System.out.println("Attempting to save object to " + savePath);
@@ -35,6 +36,7 @@ public class DataWriter {
             System.out.println("Please try again.");
         }
     }
+    */
 
     /**
      * CURRENTLY DYSFUNCTIONAL
@@ -42,9 +44,11 @@ public class DataWriter {
      *
      * @param object Has to implement Saveable to save successfully
      */
+    /*
     private static void writeObject(Object object) {
         DataWriter.writeObject(object, "testSave");
     }
+    */
 
     /**
      * CURRENTLY DYSFUNCTIONAL
@@ -53,6 +57,7 @@ public class DataWriter {
      * @param object Has to implement Saveable or be a list containing objects implementing Saveable
      * @return The save directory.
      */
+    /*
     private static String getSaveDirectory(Object object) {
         if (object.getClass().equals(List.class)) {
             try {
@@ -75,10 +80,16 @@ public class DataWriter {
         System.out.println("YOUR FILE COULD NOT BE SAVED!");
         return "saves/junk/";
     }
+    */
 
 
+    /**
+     * Saves a List of schedules to a file
+     * @param schedules The List of schedules that need to be saved
+     * @param fileName The file name of the save file
+     */
     public static void writeScheduleList(List<Schedule> schedules, String fileName) {
-        String savePath = "schedules/" + fileName + ".txt";
+        String savePath = "saves/schedules/" + fileName + ".txt";
         System.out.println("Attempting to save object to " + savePath);
         try {
             File saveFile = new File(savePath);
@@ -97,6 +108,11 @@ public class DataWriter {
         }
     }
 
+    /**
+     * Saves a List of schedules to a file with the standard file name
+     *
+     * @param schedules The List of schedules that need to be saved
+     */
     public static void writeScheduleList(List<Schedule> schedules) {
         DataWriter.writeScheduleList(schedules, "scheduleTest1");
     }
