@@ -27,13 +27,13 @@ public class DevSetup {
      */
     public static void setupSaveDirectories() {
         try {
-            if (Files.exists(Paths.get("saves/groups"))) {
+            if (Files.notExists(Paths.get("saves/groups"))) {
                 Files.createDirectories(Paths.get("saves/groups"));
             }
-            if (Files.exists(Paths.get("saves/schedules"))) {
+            if (Files.notExists(Paths.get("saves/schedules"))) {
                 Files.createDirectories(Paths.get("saves/schedules"));
             }
-            if (Files.exists(Paths.get("saves/teachers"))) {
+            if (Files.notExists(Paths.get("saves/teachers"))) {
                 Files.createDirectories(Paths.get("saves/teachers"));
             }
         } catch (Exception exception) {

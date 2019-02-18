@@ -1,7 +1,8 @@
 package data.readwrite;
 
+import data.persons.Teacher;
 import data.schedulerelated.Schedule;
-
+import data.schoolrelated.Group;
 import java.io.*;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class DataReader {
     */
 
     /**
-     * Loads a list of schedules saved from a file
+     * Loads a list of schedules from a save file
      *
      * @param fileName The file name of the save file
      * @return Either a List of schedules or null
@@ -91,6 +92,74 @@ public class DataReader {
      */
     public static List<Schedule> readScheduleList() {
         return DataReader.readScheduleList("scheduleTest1");
+    }
+
+    /**
+     * Loads a group from a save file
+     *
+     * @param fileName The file name of the save file
+     * @return Either a List of schedules or null
+     */
+    public static Group readGroup(String fileName) {
+        String loadPath = "saves/groups/" + fileName + ".txt";
+        System.out.println("Attempting to load group from " + loadPath);
+        try {
+            File saveFile = new File(loadPath);
+            FileInputStream fileInputStream = new FileInputStream(saveFile);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            return (Group) objectInputStream.readObject();
+        } catch (FileNotFoundException exception) {
+            System.out.println("Save file not found!");
+        } catch (IOException exception) {
+            System.out.println("An IOException has occurred!");
+        } catch (ClassNotFoundException exception) {
+            System.out.println("No object found in file!");
+        }
+        System.out.println("Loading has failed!");
+        return new Group(null);
+    }
+
+    /**
+     * Loads a group from a file that has the standard file name, should only be used by developers
+     *
+     * @return Either a List of schedules or null
+     */
+    public static Group readGroup() {
+        return DataReader.readGroup("groupTest1");
+    }
+
+    /**
+     * Loads a teacher from a save file
+     *
+     * @param fileName The file name of the save file
+     * @return Either a List of schedules or null
+     */
+    public static Teacher readTeacher(String fileName) {
+        String loadPath = "saves/teachers/" + fileName + ".txt";
+        System.out.println("Attempting to load teacher from " + loadPath);
+        try {
+            File saveFile = new File(loadPath);
+            FileInputStream fileInputStream = new FileInputStream(saveFile);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            return (Teacher) objectInputStream.readObject();
+        } catch (FileNotFoundException exception) {
+            System.out.println("Save file not found!");
+        } catch (IOException exception) {
+            System.out.println("An IOException has occurred!");
+        } catch (ClassNotFoundException exception) {
+            System.out.println("No object found in file!");
+        }
+        System.out.println("Loading has failed!");
+        return new Teacher(null, -1, null);
+    }
+
+    /**
+     * Loads a teacher from a file that has the standard file name, should only be used by developers
+     *
+     * @return Either a List of schedules or null
+     */
+    public static Teacher readTeacher() {
+        return DataReader.readTeacher("teacherTest1");
     }
 
 }
