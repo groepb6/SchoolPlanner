@@ -4,10 +4,11 @@ import data.persons.Student;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Group implements Serializable {
     private String name;
-    private ArrayList<Student> students;
+    private List<Student> students;
 
     public Group(String name) {
         this.name = name;
@@ -18,23 +19,11 @@ public class Group implements Serializable {
         this.students.add(student);
     }
 
-    public void addStudents(String name, int id) {
-        this.students.add(new Student(name, id));
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ArrayList<Student> getStudents() {
+    public List<Student> getStudents() {
         return students;
-    }
-
-    public void setStudents(ArrayList<Student> students) {
-        this.students = students;
     }
 }

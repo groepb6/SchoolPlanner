@@ -6,12 +6,12 @@ import data.persons.Teacher;
 import java.io.Serializable;
 import java.time.LocalTime;
 
-public class Lesson implements Serializable {
+public class GraphicLesson implements Serializable {
     private Teacher teacher;
     private Group group;
     private Period period;
 
-    public Lesson(Teacher teacher, Group group, LocalTime startTime, LocalTime endTime) {
+    public GraphicLesson(Teacher teacher, Group group, LocalTime startTime, LocalTime endTime) {
         this.teacher = teacher;
         this.group = group;
         this.period = new Period(startTime, endTime);
