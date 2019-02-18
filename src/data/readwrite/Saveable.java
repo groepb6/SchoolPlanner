@@ -1,4 +1,4 @@
-package data;
+package data.readwrite;
 
 /**
  * PACKAGE LOCATION STILL UP FOR DEBATE
@@ -6,5 +6,4 @@ package data;
 public interface Saveable {
 
     String getPath();
-
 }

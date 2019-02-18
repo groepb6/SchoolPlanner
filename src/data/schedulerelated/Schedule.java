@@ -2,7 +2,7 @@ package data.schedulerelated;
 
 import gui.assistclasses.Plan;
 
-import data.Saveable;
+import data.readwrite.Saveable;
 
 import java.io.Serializable;
 
