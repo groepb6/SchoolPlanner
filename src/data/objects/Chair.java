@@ -1,11 +1,13 @@
 package data.objects;
 
 public class Chair {
-    private int id;
     private boolean isAvailable;
 
-    public Chair(int id, boolean isAvailable) {
-        this.id = id;
+    public Chair() {
+        this.isAvailable = true;
+    }
+
+    public void setAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
 }
