@@ -8,13 +8,14 @@ import java.io.*;
 public class DataReader {
 
     /**
+     * CURRENTLY DYSFUNCTIONAL
      * Loads an object saved to a file
      *
      * @param object   Has to implement Saveable to save successfully
      * @param fileName The file name for the save file
      * @return An object that has to be casted to the intended class;
      */
-    public static Object readObject(Object object, String fileName) {
+    private static Object readObject(Object object, String fileName) {
         String loadPath = DataWriter.getSaveDirectory(object) + fileName + ".txt";
         System.out.println("Attempting to load schedule from " + loadPath);
         try {
@@ -38,11 +39,12 @@ public class DataReader {
     }
 
     /**
+     * CURRENTLY DYSFUNCTIONAL
      * Loads an object from a file that has the standard file name, should only be used by developers
      *
      * @param object Has to implement Saveable to save successfully
      */
-    public static Object readObject(Object object) {
+    private static Object readObject(Object object) {
         return DataReader.readObject(object, "testSave");
     }
 
