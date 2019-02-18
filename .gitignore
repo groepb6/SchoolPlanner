@@ -1,7 +1,4 @@
-# IntelliJ
-out/
 .idea/
+out/
 *.iml
-
-
-testSave\.txt
+saves/
