@@ -110,7 +110,7 @@ public class EditSchedule extends Sizeable {
         ArrayList<Schedule> scheduleArrayList;
         try {
             Schedule schedule = new Schedule(new Plan(timeFieldBegin.getText() + " - " + timeFieldEnd.getText(), groupField.getText(), locationField.getText(), teacherField.getText(), subjectField.getText()));
-            scheduleArrayList = DataReader.readObject();
+            scheduleArrayList = (ArrayList<Schedule>) DataReader.readScheduleList();
             boolean canAdd = true;
             for (int i = 0; i < scheduleArrayList.size(); i++) {
                 if (scheduleArrayList.get(i).getPlan().isEqualTo(schedule.getPlan()))
@@ -118,7 +118,7 @@ public class EditSchedule extends Sizeable {
             }
             if (canAdd) {
                 scheduleArrayList.add(schedule);
-                DataWriter.writeObject(scheduleArrayList);
+                DataWriter.writeScheduleList(scheduleArrayList);
             }
         } catch (Exception e) {
             e.printStackTrace();

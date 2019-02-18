@@ -1,18 +1,13 @@
 package data.readwrite;
 
 import data.schedulerelated.Schedule;
-
-<<<<<<< HEAD:src/data/DataWriter.java
-import gui.Schedule;
 import java.io.*;
 import java.util.List;
-=======
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
->>>>>>> GUIdevbydustin:src/data/readwrite/DataWriter.java
 
 /**
  * Class to save objects to a file
@@ -91,13 +86,6 @@ public class DataWriter {
         return "saves/junk/";
     }
     */
-
-<<<<<<< HEAD:src/data/DataWriter.java
-=======
-        try {
-            fileOutputStream = new FileOutputStream("saves/schedulesData.txt");
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
->>>>>>> GUIdevbydustin:src/data/readwrite/DataWriter.java
 
     /**
      * Saves a List of schedules to a file

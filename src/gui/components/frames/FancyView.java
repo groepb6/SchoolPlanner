@@ -82,7 +82,7 @@ public class FancyView extends Sizeable {
         removePlanButton.setOnMouseClicked(event -> {
             boolean foundDuplicate = false;
             try {
-                ArrayList<Schedule> scheduleData = DataReader.readObject();
+                ArrayList<Schedule> scheduleData = (ArrayList<Schedule>) DataReader.readScheduleList();
                 if (searchResults.getSelectionModel().getSelectedItem() != null) {
                     Plan plan;
                     for (int i = 0; i < scheduleData.size(); i++) {
@@ -96,7 +96,7 @@ public class FancyView extends Sizeable {
                 }
                 searchResults.getSelectionModel().selectFirst();
                 if (foundDuplicate) {
-                    DataWriter.writeObject(scheduleData);
+                    DataWriter.writeScheduleList(scheduleData);
                     search(textField.getText());
                 }
             } catch (Exception e) {
@@ -176,7 +176,7 @@ public class FancyView extends Sizeable {
     private ArrayList<Plan> retrieveScheduleData() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = DataReader.readObject();
+            ArrayList<Schedule> schedules = (ArrayList<Schedule>) DataReader.readScheduleList();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }
