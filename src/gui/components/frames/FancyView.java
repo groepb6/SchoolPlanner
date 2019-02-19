@@ -33,7 +33,7 @@ public class FancyView extends Sizeable {
     private HBox graphDrawBar = new HBox();
     private VBox topElements = new VBox();
     private ArrayList<Plan> allVirtualizedItems = new ArrayList<>();
-    private TextField textField = new TextField("Search group");
+    private TextField textField = new TextField("Search string");
     private Button searchGroupButton = new Button("Search");
     private Button submitGroupButton = new Button("Submit");
     private Button addAll = new Button("Add all");
@@ -59,7 +59,7 @@ public class FancyView extends Sizeable {
         super.setProportions(500, 2560, 0, 1080, Sizeable.ignore, 500, stage);
         buildSearchSelectGraphGroupBar();
         topElements.setSpacing(5);
-        searchResults.setPromptText("Select group");
+        searchResults.setPromptText("Select plan");
         searchGroupBar.setSpacing(5);
         selectGroupBar.setSpacing(5);
         graphGroupBar.setSpacing(5);
@@ -240,13 +240,11 @@ public class FancyView extends Sizeable {
         ArrayList<Plan> data = retrieveScheduleData();
         ArrayList<Plan> filteredData = new ArrayList<>();
         boolean strictSearch = false;
-
         if (search.contains("[strict]")) {
             fixStringForStrictSearching(search);
             strictSearch = true;
             search = fixStringForStrictSearching(search);
         }
-
         for (Plan plan : data) {
             if (strictSearch)
                 if (plan.getGroup().trim().equals(search) || plan.getTeacher().trim().equals(search) || plan.getLocation().trim().equals(search))
@@ -254,7 +252,6 @@ public class FancyView extends Sizeable {
             if (((plan.getGroup().trim().toLowerCase().contains(search.trim().toLowerCase())) || plan.getTeacher().trim().toLowerCase().contains(search.trim().toLowerCase()) || plan.getLocation().trim().toLowerCase().contains(search.trim().toLowerCase()) || plan.getSubject().trim().toLowerCase().contains(search.trim())) && !strictSearch)
                 filteredData.add(plan);
         }
-
         displayClassSearchResults(filteredData);
         return (filteredData);
     }
