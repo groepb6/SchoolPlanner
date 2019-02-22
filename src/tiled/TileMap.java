@@ -24,7 +24,8 @@ public class TileMap {
 
     public TileMap(JsonObject jsonTileMap) {
         try {
-            File imageFile = new File(this.getClass().getResource("tiled/tilemaps/") + jsonTileMap.getString("image") + ".bmp");
+            //File imageFile = new File(this.getClass().getResource("tiled/tilemaps/") + jsonTileMap.getString("image") + ".bmp");
+            File imageFile = new File("D:\\School\\Avans jaar 1\\Periode 3\\Proftaak\\SchoolPlanner\\resources\\tiled\\tilemaps\\Test.bmp");
             System.out.println("Attempting to load from: " + imageFile);
             this.image = ImageIO.read(imageFile);
         } catch (IOException exception) {

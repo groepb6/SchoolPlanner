@@ -17,10 +17,11 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of TileMap
      */
     public static JsonObject readTileMap(String fileName) {
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        //String loadPath = MethodHandles.lookup().lookupClass().getResource("tiled/tileMaps") + fileName + ".json";
-        //String loadPath = classLoader.getResource("tiled/tileMaps") + fileName + ".json";
-        String loadPath = TiledReader.class.getResource("tiled/tileMaps") + fileName + ".json";
+        //ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        //String loadPath = MethodHandles.lookup().lookupClass().getResource("tiled/tileMaps/") + fileName + ".json";
+        //String loadPath = classLoader.getResource("tiled/tileMaps/") + fileName + ".json";
+        //String loadPath = TiledReader.class.getResource("tiled/tileMaps/") + fileName + ".json";
+        String loadPath = "D:\\School\\Avans jaar 1\\Periode 3\\Proftaak\\SchoolPlanner\\resources\\tiled\\tilemaps\\Testj.json";
         System.out.println("Attempting to json file from " + loadPath);
         try {
             File saveFile = new File(loadPath);
