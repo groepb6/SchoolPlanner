@@ -2,12 +2,14 @@ package data.persons;
 
 import data.schoolrelated.Subject;
 
-public class Teacher extends Person {
+import java.io.Serializable;
+
+public class Teacher extends Person implements Serializable {
 
     private Subject subject;
 
-    public Teacher(String name, int id, String subjectName) {
-        super(name, id);
-        this.subject = new Subject(subjectName);
+    public Teacher(String name) {
+        super(name);
+        this.subject = subject;
     }
 }

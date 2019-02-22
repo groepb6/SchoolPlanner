@@ -1,14 +1,16 @@
 package data.rooms;
 
-abstract public class Room {
+import java.io.Serializable;
+
+abstract public class Room implements Serializable {
 
     private String name;
     private int capacity;
     private boolean isAvailable;
 
-    public Room(String name, int capacity) {
+    public Room(String name) {
         this.name = name;
-        this.capacity = capacity;
+        //his.capacity = capacity;
         this.isAvailable = true;
     }
 

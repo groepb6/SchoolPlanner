@@ -3,6 +3,7 @@ package gui.components.frames;
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
 import data.schedulerelated.Schedule;
+import data.schoolrelated.School;
 import gui.assistclasses.Image;
 import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;
@@ -112,7 +113,9 @@ public class FancyView extends Sizeable {
         removePlanButton.setOnMouseClicked(event -> {
             boolean foundDuplicate = false;
             try {
-                ArrayList<Schedule> scheduleData = (ArrayList<Schedule>) DataReader.readScheduleList();
+                School school = DataReader.readSchool();
+
+                ArrayList<Schedule> scheduleData = school.getSchedules();
                 if (searchResults.getSelectionModel().getSelectedItem() != null) {
                     Plan plan;
                     for (int i = 0; i < scheduleData.size(); i++) {
@@ -126,7 +129,8 @@ public class FancyView extends Sizeable {
                 }
                 searchResults.getSelectionModel().selectFirst();
                 if (foundDuplicate) {
-                    DataWriter.writeScheduleList(scheduleData);
+                    school.setSchedules(scheduleData);
+                    DataWriter.writeSchool(school);
                     search(textField.getText());
                 }
             } catch (Exception e) {
@@ -220,7 +224,7 @@ public class FancyView extends Sizeable {
     private ArrayList<Plan> retrieveScheduleData() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = (ArrayList<Schedule>) DataReader.readScheduleList();
+            ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }

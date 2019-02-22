@@ -1,6 +1,8 @@
 package data.schedulerelated;
 
-public enum Hour {
+import java.io.Serializable;
+
+public enum Hour implements Serializable {
     FIRST("8:00 - 9:00"),
     SECOND("9:00 - 10:00"),
     THIRD("10:00 - 11:00"),
@@ -11,7 +13,7 @@ public enum Hour {
     EIGHTH("15:00 - 16:00"),
     NINTH("16:00 - 17:00");
 
-    private String time;
+    public String time;
 
     Hour(String time) {
         this.time = time;

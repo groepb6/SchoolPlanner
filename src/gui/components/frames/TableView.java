@@ -106,7 +106,8 @@ public class TableView extends Sizeable {
     private List retrieveDataList() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = (ArrayList<Schedule>) DataReader.readScheduleList();
+            ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
+            System.out.println(schedules.get(0).getGroup().getName());
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }
