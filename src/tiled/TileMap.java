@@ -1,16 +1,15 @@
 package tiled;
 
 import javax.imageio.ImageIO;
-import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonReader;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
+/**
+ * Class to represent a tilemap. Contains a list of the types of tiles it has.
+ */
 public class TileMap {
     private BufferedImage image;
     private int imageHeight;
@@ -25,7 +24,8 @@ public class TileMap {
 
     public TileMap(JsonObject jsonTileMap) {
         try {
-            File imageFile = new File(this.getClass().getResource("tiled/tilemaps/") + jsonTileMap.getString("image"));
+            File imageFile = new File(this.getClass().getResource("tiled/tilemaps/") + jsonTileMap.getString("image") + ".bmp");
+            System.out.println("Attempting to load from: " + imageFile);
             this.image = ImageIO.read(imageFile);
         } catch (IOException exception) {
             System.out.println("Image loading failed!");
@@ -41,6 +41,9 @@ public class TileMap {
         this.addTiles();
     }
 
+    /**
+     * Adds all of the tiles to the tiles list
+     */
     private void addTiles() {
         int rows = imageHeight / tileHeight;
         int columns = imageWidth / tileWidth;
@@ -52,5 +55,12 @@ public class TileMap {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public List<Tile> getTiles() {
+        return tiles;
+    }
 
 }

@@ -6,6 +6,7 @@ import javax.json.JsonReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.invoke.MethodHandles;
 
 public class TiledReader {
 
@@ -16,8 +17,11 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of TileMap
      */
     public static JsonObject readTileMap(String fileName) {
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        //String loadPath = MethodHandles.lookup().lookupClass().getResource("tiled/tileMaps") + fileName + ".json";
+        //String loadPath = classLoader.getResource("tiled/tileMaps") + fileName + ".json";
         String loadPath = TiledReader.class.getResource("tiled/tileMaps") + fileName + ".json";
-        System.out.println("Attempting to load group from " + loadPath);
+        System.out.println("Attempting to json file from " + loadPath);
         try {
             File saveFile = new File(loadPath);
             FileInputStream fileInputStream = new FileInputStream(saveFile);
