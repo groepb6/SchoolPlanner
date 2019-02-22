@@ -42,7 +42,14 @@ public class TileMap {
     }
 
     private void addTiles() {
-        
+        int rows = imageHeight / tileHeight;
+        int columns = imageWidth / tileWidth;
+        for (int i = 0; i < this.tileCount; i++) {
+            this.tiles.add(new Tile(this.image.getSubimage(this.tileWidth * (i%columns),
+                    this.tileHeight * (i/rows),
+                    this.tileWidth,
+                    this.tileHeight)));
+        }
     }
 
 
