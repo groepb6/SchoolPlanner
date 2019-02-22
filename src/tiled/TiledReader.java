@@ -16,7 +16,7 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of TileMap
      */
     public static JsonObject readTileMap(String fileName) {
-        String loadPath = "saves/groups/" + fileName + ".txt";
+        String loadPath = TiledReader.class.getResource("tiled/tileMaps") + fileName + ".json";
         System.out.println("Attempting to load group from " + loadPath);
         try {
             File saveFile = new File(loadPath);
@@ -31,9 +31,9 @@ public class TiledReader {
     }
 
     /**
-     * Loads a group from a file that has the standard file name, should only be used by developers
+     * Loads a TileMap from a json file that has the standard file name, should only be used by developers
      *
-     * @return Either a List of schedules or null
+     * @return a JsonObject that can be used in the constructor of TileMap
      */
     public static JsonObject readTileMap() {
         return TiledReader.readTileMap("test.json");
