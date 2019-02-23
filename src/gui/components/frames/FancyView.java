@@ -150,11 +150,18 @@ public class FancyView extends Sizeable {
         graphDrawBar.getChildren().addAll(VirtualizedView.drawTimePanel());
         topElements.getChildren().addAll(searchGroupBar, selectGroupBar, graphGroupBar, graphDrawBar);
         borderPane.setTop(topElements);
+        setTextfieldOnClick();
         setSearchButtonActionOnClick();
         setSubmitButtonActionOnClick();
         setClearViewButtonActionOnClick();
         setRemovePlanButton();
         setAllButton();
+    }
+
+    private void setTextfieldOnClick(){
+        textField.setOnMouseClicked(event -> {
+            textField.clear();
+        });
     }
 
     //=======================BEGIN OF CODE FOR ALL ACTION ON CLICK EVENTS================================

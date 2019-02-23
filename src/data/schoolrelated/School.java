@@ -64,10 +64,12 @@ public class School implements Serializable {
         return groups;
     }
 
-    public void groupsToString(){
+    public ArrayList<String> groupsToString(){
+        ArrayList<String> groupString = new ArrayList<>();
         for (Group g : groups) {
-            System.out.println(g.getName());
+            groupString.add(g.getName());
         }
+        return groupString;
     }
 
     public ArrayList<Schedule> getSchedules() {

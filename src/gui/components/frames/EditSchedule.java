@@ -37,55 +37,7 @@ import java.util.List;
  */
 
 public class EditSchedule extends Sizeable {
-//    private BorderPane borderPane = new BorderPane();
-//    private HBox fieldBox = new HBox();
-//    private VBox groupColom = new VBox();
-//    private VBox timeColomBegin = new VBox();
-//    private VBox timeColomEnd = new VBox();
-//    private VBox RoomColom = new VBox();
-//    private VBox subjectColom = new VBox();
-//    private VBox teacherColom = new VBox();
-//    private TextField groupField = new TextField();
-//    private TextField timeFieldBegin = new TextField();
-//    private TextField timeFieldEnd = new TextField();
-//    private TextField RoomField = new TextField();
-//    private TextField subjectField = new TextField();
-//    private TextField teacherField = new TextField();
-//    private Label groupMessage = new Label();
-//    private Label timeBeginMessage = new Label();
-//    private Label timeEndMessage = new Label();
-//    private Label RoomMessage = new Label();
-//    private Label subjectMessage = new Label();
-//    private Label teacherMessage = new Label();
-//    private Button addSchedule = new Button("Add plan");
 
-
-    /**
-     * The "EditSchedule" constructor puts all elements in the correct place on a borderPane. This borderPane can be sent to the Window class later, as seen with other classes located in the frames package.
-     *
-     * @param stage Is needed to scale the scene to a minimum width and height (so no elements would be cut off).
-     */
-
-//    public EditSchedule(Stage stage) {
-//        fieldBox.getChildren().addAll(groupColom, timeColomBegin, timeColomEnd, RoomColom, subjectColom, teacherColom, addSchedule);
-//        borderPane.setTop(fieldBox);
-//
-//        groupColom.getChildren().addAll(groupField, groupMessage);
-//        timeColomBegin.getChildren().addAll(timeFieldBegin, timeBeginMessage);
-//        timeColomEnd.getChildren().addAll(timeFieldEnd, timeEndMessage);
-//        RoomColom.getChildren().addAll(RoomField, RoomMessage);
-//        subjectColom.getChildren().addAll(subjectField, subjectMessage);
-//        teacherColom.getChildren().addAll(teacherField, teacherMessage);
-//        fieldBox.setSpacing(10);
-//        groupField.setPromptText("Group");
-//        timeFieldBegin.setPromptText("From time (ab:xy format)");
-//        timeFieldEnd.setPromptText("Until time (ab:xy format)");
-//        RoomField.setPromptText("Room");
-//        subjectField.setPromptText("Subject");
-//        teacherField.setPromptText("Teacher");
-//        super.setProportions(0, 2560, 0, 1080, 1100, 500, stage);
-//        setActions();
-//    }
     private School school;
     private BorderPane borderPane;
     private VBox vBox;
@@ -121,11 +73,18 @@ public class EditSchedule extends Sizeable {
     private Button buttonAddSubject;
     private Button buttonAddTeacher;
     private Button buttonAddRoom;
+    private Button buttonDeleteGroup;
+    private Button buttonDeleteTeacher;
+    private Button buttonDeleteRoom;
+    private Button buttonDeleteSubject;
+    private int buttonWidth;
+
+
 
 
     public EditSchedule(Stage stage) {
         this.borderPane = new BorderPane();
-        this.school = new School("School");
+        this.school = DataReader.readSchool();
         this.vBox = new VBox();
 
         this.hBox1 = new HBox();
@@ -163,55 +122,83 @@ public class EditSchedule extends Sizeable {
         this.buttonAddTeacher = new Button("Add Teacher");
         this.buttonAddRoom = new Button("Add Room");
 
+        this.buttonDeleteGroup = new Button("Delete Group");
+        this.buttonDeleteRoom = new Button("Delete Room");
+        this.buttonDeleteSubject = new Button("Delete Subject");
+        this.buttonDeleteTeacher = new Button("Delete Teacher");
+
         EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
         this.timeComboBox.setItems(this.timeOptions);
         this.timeComboBox.setMinWidth(150);
 
-        this.groupOptions.addAll("A1", "A2", "A3", "B1");
+        System.out.println(this.school.groupsToString());
+
+        this.groupOptions.addAll();
         for (Group g : this.school.getGroups()) {
             this.groupOptions.add(g.getName());
         }
         this.groupComboBox.setItems(this.groupOptions);
         this.groupComboBox.setMinWidth(150);
 
-        this.teacherOptions.addAll("Johan", "Etienne", "Jan", "Hans");
+        //this.teacherOptions.addAll("Johan", "Etienne", "Jan", "Hans");
         for (Person t : this.school.getTeachers()) {
             this.teacherOptions.add(t.getName());
         }
         this.teacherComboBox.setItems(this.teacherOptions);
         this.teacherComboBox.setMinWidth(150);
 
-        this.roomOptions.addAll("LA110", "Kantine", "LD127", "HA512");
+        //this.roomOptions.addAll("LA110", "Kantine", "LD127", "HA512");
         for (Room r : this.school.getRooms()) {
-            this.groupOptions.add(r.getName());
+            this.roomOptions.add(r.getName());
         }
         this.roomComboBox.setItems(this.roomOptions);
         this.roomComboBox.setMinWidth(150);
 
-        this.subjectOptions.addAll("Maths", "Physics");
+        //this.subjectOptions.addAll("Maths", "Physics");
         for (Subject s : this.school.getSubjects()) {
-            this.groupOptions.add(s.getName());
+            this.subjectOptions.add(s.getName());
         }
         this.subjectComboBox.setItems(this.subjectOptions);
         this.subjectComboBox.setMinWidth(150);
 
+
+
+        this.hBox1.setSpacing(5);
+        this.hBox2.setSpacing(5);
+        this.hBox3.setSpacing(5);
+        this.hBox4.setSpacing(5);
+        this.hBox5.setSpacing(5);
+        this.hBox6.setSpacing(5);
+
         this.vBox.setSpacing(5);
 
-        this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup);
-        this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject);
-        this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher);
-        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom, this.buttonAddRoom);
+        this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup,this.buttonDeleteGroup);
+        this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject,this.buttonDeleteSubject);
+        this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher,this.buttonDeleteTeacher);
+        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom, this.buttonAddRoom,this.buttonDeleteRoom);
         this.hBox5.getChildren().addAll(this.labelTime, this.timeComboBox);
         this.hBox6.getChildren().add(this.buttonAddSchedule);
 
-        labelGroup.setMinWidth(75);
-        labelTime.setMinWidth(75);
-        labelTeacher.setMinWidth(75);
-        labelSubject.setMinWidth(75);
-        labelRoom.setMinWidth(75);
+        this.buttonWidth = 150;
+
+        this.labelGroup.setMinWidth(buttonWidth/2);
+        this.labelTime.setMinWidth(buttonWidth/2);
+        this.labelTeacher.setMinWidth(buttonWidth/2);
+        this.labelSubject.setMinWidth(buttonWidth/2);
+        this.labelRoom.setMinWidth(buttonWidth/2);
+
+        this.buttonAddGroup.setMinWidth(buttonWidth);
+        this.buttonAddRoom.setMinWidth(buttonWidth);
+        this.buttonAddTeacher.setMinWidth(buttonWidth);
+        this.buttonAddSubject.setMinWidth(buttonWidth);
+
+        this.buttonDeleteTeacher.setMinWidth(buttonWidth);
+        this.buttonDeleteSubject.setMinWidth(buttonWidth);
+        this.buttonDeleteRoom.setMinWidth(buttonWidth);
+        this.buttonDeleteGroup.setMinWidth(buttonWidth);
 
         this.buttonAddSchedule.setOnAction(event -> {
-            if (!groupComboBox.getSelectionModel().isEmpty()) {
+            if (!groupComboBox.getSelectionModel().isEmpty() && !roomComboBox.getSelectionModel().isEmpty() && !timeComboBox.getSelectionModel().isEmpty() && !teacherComboBox.getSelectionModel().isEmpty() && !subjectComboBox.getSelectionModel().isEmpty()) {
                 Group group = new Group("temp");
                 for (Group g : this.school.getGroups()) {
                     if (g.getName().equals(groupComboBox.getValue().toString())) {
@@ -247,8 +234,11 @@ public class EditSchedule extends Sizeable {
 
                 System.out.println("" + this.getHour(this.timeComboBox.getValue().toString()) + group + room + teacher + subject);
 
-                this.school.addSchedule(schedule);
-                DataWriter.writeSchool(school);
+                //if (isDuplicateSchedule(this.school,schedule)) {
+                    this.school.addSchedule(schedule);
+                    DataWriter.writeSchool(school);
+                    school = DataReader.readSchool();
+                //}
             }
         });
 
@@ -257,6 +247,7 @@ public class EditSchedule extends Sizeable {
                 this.school.getGroups().add(new Group(this.tfGroup.getText()));
                 this.groupOptions.add(this.tfGroup.getText());
                 this.tfGroup.clear();
+                DataWriter.writeSchool(school);
             }
         });
 
@@ -265,6 +256,7 @@ public class EditSchedule extends Sizeable {
                 this.school.getTeachers().add(new Teacher(this.tfTeacher.getText()));
                 this.teacherOptions.add(this.tfTeacher.getText());
                 this.tfTeacher.clear();
+                DataWriter.writeSchool(school);
             }
         });
 
@@ -273,6 +265,7 @@ public class EditSchedule extends Sizeable {
                 this.school.getSubjects().add(new Subject(this.tfSubject.getText()));
                 this.subjectOptions.add(this.tfSubject.getText());
                 this.tfSubject.clear();
+                DataWriter.writeSchool(school);
             }
         });
 
@@ -281,8 +274,46 @@ public class EditSchedule extends Sizeable {
                 this.school.getRooms().add(new Classroom(this.tfRoom.getText()));
                 this.roomOptions.add(this.tfRoom.getText());
                 this.tfRoom.clear();
+                DataWriter.writeSchool(school);
             }
         });
+
+        this.buttonDeleteTeacher.setOnAction(event -> {
+            if (!this.teacherComboBox.getSelectionModel().isEmpty()) {
+                System.out.println(teacherComboBox.getSelectionModel().getSelectedIndex());
+                this.school.getTeachers().remove(this.teacherComboBox.getSelectionModel().getSelectedIndex());
+                this.teacherOptions.remove(this.teacherComboBox.getSelectionModel().getSelectedIndex());
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonDeleteGroup.setOnAction(event -> {
+            if (!this.groupComboBox.getSelectionModel().isEmpty()) {
+                System.out.println(groupComboBox.getSelectionModel().getSelectedIndex());
+                this.school.getGroups().remove(this.groupComboBox.getSelectionModel().getSelectedIndex());
+                this.groupOptions.remove(this.groupComboBox.getSelectionModel().getSelectedIndex());
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonDeleteRoom.setOnAction(event -> {
+            if (!this.roomComboBox.getSelectionModel().isEmpty()) {
+                System.out.println(roomComboBox.getSelectionModel().getSelectedIndex());
+                this.school.getRooms().remove(this.roomComboBox.getSelectionModel().getSelectedIndex());
+                this.roomOptions.remove(this.roomComboBox.getSelectionModel().getSelectedIndex());
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonDeleteSubject.setOnAction(event -> {
+            if (!this.subjectComboBox.getSelectionModel().isEmpty()) {
+                System.out.println(subjectComboBox.getSelectionModel().getSelectedIndex());
+                this.school.getSubjects().remove(this.subjectComboBox.getSelectionModel().getSelectedIndex());
+                this.subjectOptions.remove(this.subjectComboBox.getSelectionModel().getSelectedIndex());
+                DataWriter.writeSchool(school);
+            }
+        });
+
 
 
         this.vBox.getChildren().addAll(
@@ -313,6 +344,21 @@ public class EditSchedule extends Sizeable {
             }
         }
         return null;
+    }
+
+    public boolean isDuplicateSchedule(School schoolInput, Schedule scheduleInput) {
+        School school = schoolInput;
+        Schedule schedule = scheduleInput;
+        boolean duplicate = false;
+
+        for (Schedule s : school.getSchedules()) {
+            if (schedule.getGroup().getName().equals(s.getGroup().getName())
+            ) {
+                duplicate = true;
+            }
+        }
+
+        return duplicate;
     }
 
 

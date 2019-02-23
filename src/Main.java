@@ -1,6 +1,7 @@
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
 import data.schedulerelated.TempSchedule;
+import data.schoolrelated.Group;
 import data.schoolrelated.School;
 import gui.SchoolManager;
 import gui.assistclasses.Plan;
@@ -16,17 +17,10 @@ import static javafx.application.Application.launch;
 
 public class Main {
     public static void main (String args[]) {
-        School school = new School("test");
+        School school = new School("School");
+        //DataWriter.writeSchool(school);
 
-        school.addClassroom("room",50);
-        System.out.println(school.getRooms().get(0).getName());
-
-        DataWriter.writeSchool(school);
-        School schoolRead = DataReader.readSchool();
-        System.out.println(schoolRead.getRooms().get(0).getName().toUpperCase().toString());
-
-
-//        boolean noData = true;
+        //        boolean noData = true;
 //        try {
 //            //noData = (DataReader.readScheduleList().size()<1);
 //        } catch (Exception e) {}
@@ -51,6 +45,6 @@ public class Main {
 //                e.printStackTrace();
 //            }
 //        }
-//        launch(SchoolManager.class);
+        launch(SchoolManager.class);
     }
 }

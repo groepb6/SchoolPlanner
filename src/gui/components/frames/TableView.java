@@ -111,7 +111,6 @@ public class TableView extends Sizeable {
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }
-
         } catch (Exception e) {
         }
         return list;
