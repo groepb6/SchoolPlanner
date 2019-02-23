@@ -77,6 +77,7 @@ public class EditSchedule extends Sizeable {
     private Button buttonDeleteTeacher;
     private Button buttonDeleteRoom;
     private Button buttonDeleteSubject;
+    private Button buttonClearAll;
     private int buttonWidth;
 
 
@@ -85,6 +86,7 @@ public class EditSchedule extends Sizeable {
     public EditSchedule(Stage stage) {
         this.borderPane = new BorderPane();
         this.school = DataReader.readSchool();
+        //this.school = new School("");
         this.vBox = new VBox();
 
         this.hBox1 = new HBox();
@@ -116,11 +118,13 @@ public class EditSchedule extends Sizeable {
         this.subjectComboBox = new ComboBox();
         this.subjectOptions = FXCollections.observableArrayList();
 
-        this.buttonAddSchedule = new Button("Add");
+        this.buttonAddSchedule = new Button("Add schedule");
         this.buttonAddGroup = new Button("Add Group");
         this.buttonAddSubject = new Button("Add Subject");
         this.buttonAddTeacher = new Button("Add Teacher");
         this.buttonAddRoom = new Button("Add Room");
+        this.buttonClearAll = new Button("Clear all");
+
 
         this.buttonDeleteGroup = new Button("Delete Group");
         this.buttonDeleteRoom = new Button("Delete Room");
@@ -130,8 +134,6 @@ public class EditSchedule extends Sizeable {
         EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
         this.timeComboBox.setItems(this.timeOptions);
         this.timeComboBox.setMinWidth(150);
-
-        System.out.println(this.school.groupsToString());
 
         this.groupOptions.addAll();
         for (Group g : this.school.getGroups()) {
@@ -177,7 +179,7 @@ public class EditSchedule extends Sizeable {
         this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher,this.buttonDeleteTeacher);
         this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom, this.buttonAddRoom,this.buttonDeleteRoom);
         this.hBox5.getChildren().addAll(this.labelTime, this.timeComboBox);
-        this.hBox6.getChildren().add(this.buttonAddSchedule);
+        this.hBox6.getChildren().addAll(this.buttonAddSchedule,this.buttonClearAll);
 
         this.buttonWidth = 150;
 
@@ -199,30 +201,39 @@ public class EditSchedule extends Sizeable {
 
         this.buttonAddSchedule.setOnAction(event -> {
             if (!groupComboBox.getSelectionModel().isEmpty() && !roomComboBox.getSelectionModel().isEmpty() && !timeComboBox.getSelectionModel().isEmpty() && !teacherComboBox.getSelectionModel().isEmpty() && !subjectComboBox.getSelectionModel().isEmpty()) {
+                boolean isAvailableThisTime = true;
+
                 Group group = new Group("temp");
                 for (Group g : this.school.getGroups()) {
                     if (g.getName().equals(groupComboBox.getValue().toString())) {
                         group = g;
                     }
                 }
+
                 Teacher teacher = new Teacher("temp");
                 for (Person t : this.school.getTeachers()) {
                     if (t.getName().equals(teacherComboBox.getValue().toString())) {
                         teacher = (Teacher) t;
                     }
                 }
+
+
                 Subject subject = new Subject("temp");
                 for (Subject s : this.school.getSubjects()) {
                     if (s.getName().equals(subjectComboBox.getValue().toString())) {
                         subject = s;
                     }
                 }
+
                 Room room = new Classroom("temp");
                 for (Room r : this.school.getRooms()) {
                     if (r.getName().equals(roomComboBox.getValue().toString())) {
                         room = r;
                     }
                 }
+                isAvailableThisTime = isAvailableThisTime(teacher,room,this.getHour(this.timeComboBox.getValue().toString()));
+                room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
 
                 Schedule schedule = new Schedule(
                         this.getHour(this.timeComboBox.getValue().toString()),
@@ -234,12 +245,19 @@ public class EditSchedule extends Sizeable {
 
                 System.out.println("" + this.getHour(this.timeComboBox.getValue().toString()) + group + room + teacher + subject);
 
-                //if (isDuplicateSchedule(this.school,schedule)) {
+
+
+                if (!isDuplicateSchedule(this.school,schedule)) {
                     this.school.addSchedule(schedule);
                     DataWriter.writeSchool(school);
                     school = DataReader.readSchool();
-                //}
+                }
             }
+        });
+
+        this.buttonClearAll.setOnAction(event -> {
+            this.school = new School("School");
+            DataWriter.writeSchool(school);
         });
 
         this.buttonAddGroup.setOnAction(event -> {
@@ -353,6 +371,10 @@ public class EditSchedule extends Sizeable {
 
         for (Schedule s : school.getSchedules()) {
             if (schedule.getGroup().getName().equals(s.getGroup().getName())
+                    && schedule.getGroup().getName().equals(s.getGroup().getName())
+                    && schedule.getTeacher().getName().equals(s.getTeacher().getName())
+                    && schedule.getSubject().getName().equals(s.getSubject().getName())
+                    && schedule.getTime().toString().equals(s.getTime().toString())
             ) {
                 duplicate = true;
             }
@@ -360,6 +382,19 @@ public class EditSchedule extends Sizeable {
 
         return duplicate;
     }
+
+    public boolean isAvailableThisTime(Teacher teacher, Room room, Hour hour) {
+        if (teacher.getHours().contains(hour) || room.getHours().contains(hour)) {
+            System.out.println("Error");
+            return false;
+        } else {
+            System.out.println("gaat goed");
+            return true;
+        }
+
+    }
+
+
 
 
 /**

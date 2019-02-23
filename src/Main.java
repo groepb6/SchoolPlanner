@@ -1,8 +1,14 @@
+import data.persons.Teacher;
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
+import data.rooms.Classroom;
+import data.rooms.Room;
+import data.schedulerelated.Hour;
+import data.schedulerelated.Schedule;
 import data.schedulerelated.TempSchedule;
 import data.schoolrelated.Group;
 import data.schoolrelated.School;
+import data.schoolrelated.Subject;
 import gui.SchoolManager;
 import gui.assistclasses.Plan;
 
@@ -17,8 +23,22 @@ import static javafx.application.Application.launch;
 
 public class Main {
     public static void main (String args[]) {
-        School school = new School("School");
+
+//        School school = new School("test");
+//
+//        school.addSchedule(new Schedule(Hour.EIGHTH, new Group("groep"), new Classroom("lokaal"), new Teacher("jaap"), new Subject("wiskunde")));
+//        Schedule schedule = new Schedule(Hour.EIGHTH, new Group("groep"), new Classroom("lokaal"), new Teacher("jaap"), new Subject("wiskunde"));
+//
+//        for (Schedule s : school.getSchedules()) {
+//            if (schedule.getTime().toString().equals(s.getTime().toString())) {
+//                System.out.println(s.getTime().toString());
+//                System.out.println("ja");
+//            }
+//        }
+
+        //School school = new School("School");
         //DataWriter.writeSchool(school);
+        launch(SchoolManager.class);
 
         //        boolean noData = true;
 //        try {
@@ -45,6 +65,6 @@ public class Main {
 //                e.printStackTrace();
 //            }
 //        }
-        launch(SchoolManager.class);
+
     }
 }
