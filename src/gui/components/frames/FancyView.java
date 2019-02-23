@@ -6,6 +6,7 @@ import data.readwrite.DataWriter;
 import data.rooms.Room;
 import data.schedulerelated.Hour;
 import data.schedulerelated.Schedule;
+import data.schoolrelated.Group;
 import data.schoolrelated.School;
 import gui.assistclasses.Image;
 import gui.assistclasses.Plan;
@@ -127,10 +128,14 @@ public class FancyView extends Sizeable {
                             Hour hour = scheduleData.get(i).getTime();
                             Teacher teacher = scheduleData.get(i).getTeacher();
                             Room room = scheduleData.get(i).getRoom();
+                            Group group = scheduleData.get(i).getGroup();
                             if (teacher.getHours().contains(hour)) {
                                 teacher.getHours().remove(hour);
                             }
                             if (room.getHours().contains(hour)) {
+                                room.getHours().remove(hour);
+                            }
+                            if (group.getHours().contains(hour)) {
                                 room.getHours().remove(hour);
                             }
                             scheduleData.remove(i);

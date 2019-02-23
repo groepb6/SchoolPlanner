@@ -217,7 +217,6 @@ public class EditSchedule extends Sizeable {
                     }
                 }
 
-
                 Subject subject = new Subject("temp");
                 for (Subject s : this.school.getSubjects()) {
                     if (s.getName().equals(subjectComboBox.getValue().toString())) {
@@ -231,9 +230,10 @@ public class EditSchedule extends Sizeable {
                         room = r;
                     }
                 }
-                isAvailableThisTime = isAvailableThisTime(teacher,room,this.getHour(this.timeComboBox.getValue().toString()));
+                isAvailableThisTime = isAvailableThisTime(teacher,room,this.getHour(this.timeComboBox.getValue().toString()),group);
                 room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
                 teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                group.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
 
                 Schedule schedule = new Schedule(
                         this.getHour(this.timeComboBox.getValue().toString()),
@@ -383,8 +383,8 @@ public class EditSchedule extends Sizeable {
         return duplicate;
     }
 
-    public boolean isAvailableThisTime(Teacher teacher, Room room, Hour hour) {
-        if (teacher.getHours().contains(hour) || room.getHours().contains(hour)) {
+    public boolean isAvailableThisTime(Teacher teacher, Room room, Hour hour, Group group) {
+        if (teacher.getHours().contains(hour) || room.getHours().contains(hour) || group.getHours().contains(hour)) {
             return false;
         } else {
             return true;
