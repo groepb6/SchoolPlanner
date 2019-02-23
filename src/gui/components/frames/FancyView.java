@@ -1,7 +1,10 @@
 package gui.components.frames;
 
+import data.persons.Teacher;
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
+import data.rooms.Room;
+import data.schedulerelated.Hour;
 import data.schedulerelated.Schedule;
 import data.schoolrelated.School;
 import gui.assistclasses.Image;
@@ -121,6 +124,15 @@ public class FancyView extends Sizeable {
                     for (int i = 0; i < scheduleData.size(); i++) {
                         plan = (Plan) searchResults.getSelectionModel().getSelectedItem();
                         if (plan.isEqualTo(scheduleData.get(i).getPlan())) {
+                            Hour hour = scheduleData.get(i).getTime();
+                            Teacher teacher = scheduleData.get(i).getTeacher();
+                            Room room = scheduleData.get(i).getRoom();
+                            if (teacher.getHours().contains(hour)) {
+                                teacher.getHours().remove(hour);
+                            }
+                            if (room.getHours().contains(hour)) {
+                                room.getHours().remove(hour);
+                            }
                             scheduleData.remove(i);
                             i--;
                             foundDuplicate = true;

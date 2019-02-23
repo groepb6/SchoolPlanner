@@ -247,7 +247,7 @@ public class EditSchedule extends Sizeable {
 
 
 
-                if (!isDuplicateSchedule(this.school,schedule)) {
+                if (!isDuplicateSchedule(this.school,schedule) && isAvailableThisTime) {
                     this.school.addSchedule(schedule);
                     DataWriter.writeSchool(school);
                     school = DataReader.readSchool();
@@ -385,10 +385,8 @@ public class EditSchedule extends Sizeable {
 
     public boolean isAvailableThisTime(Teacher teacher, Room room, Hour hour) {
         if (teacher.getHours().contains(hour) || room.getHours().contains(hour)) {
-            System.out.println("Error");
             return false;
         } else {
-            System.out.println("gaat goed");
             return true;
         }
 
