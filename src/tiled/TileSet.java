@@ -7,9 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Class to represent a tilemap. Contains a list of the types of tiles it has.
- */
 public class TileSet {
     private BufferedImage image;
     private int imageHeight;
@@ -23,16 +20,20 @@ public class TileSet {
     private String type;
     private List<Tile> tiles;
 
+    /**
+     * Represents a tileset. Contains a list of the types of tiles it has.
+     *
+     * @param jsonTileSet This JsonObject can be obtained from TiledReader.readTileSet()
+     */
     public TileSet(JsonObject jsonTileSet) {
-        try {
-            //File imageFile = new File(this.getClass().getResource("tiled/tilesets/") + jsonTileMap.getString("image") + ".bmp");
-            File imageFile = new File("D:\\School\\Avans jaar 1\\Periode 3\\Proftaak\\SchoolPlanner\\resources\\tiled\\tilesets\\Test.bmp");
-            System.out.println("Attempting to load from: " + imageFile);
-            this.image = ImageIO.read(imageFile);
-        } catch (IOException exception) {
-            System.out.println("Image loading failed!");
-        }
         if (jsonTileSet.getString("type").equals("tileset")) {
+            try {
+                File imageFile = new File(this.getClass().getResource("tiled/tilesets/") + jsonTileSet.getString("image") + ".bmp"); //todo: fix
+                System.out.println("Attempting to load from: " + imageFile);
+                this.image = ImageIO.read(imageFile);
+            } catch (IOException exception) {
+                System.out.println("Image loading failed!");
+            }
             this.imageHeight = jsonTileSet.getInt("imageheight");
             this.imageWidth = jsonTileSet.getInt("imagewidth");
             this.margin = jsonTileSet.getInt("margin");
@@ -55,8 +56,8 @@ public class TileSet {
         int rows = imageHeight / tileHeight;
         int columns = imageWidth / tileWidth;
         for (int i = 0; i < this.tileCount; i++) {
-            this.tiles.add(new Tile(this.image.getSubimage(this.tileWidth * (i%columns),
-                    this.tileHeight * (i/rows),
+            this.tiles.add(new Tile(this.image.getSubimage(this.tileWidth * (i % columns),
+                    this.tileHeight * (i / rows),
                     this.tileWidth,
                     this.tileHeight)));
         }

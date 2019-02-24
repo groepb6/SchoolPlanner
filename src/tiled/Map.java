@@ -5,9 +5,6 @@ import javax.json.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Only compatible with Orthogonal maps
- */
 public class Map {
     private int height;
     private int width;
@@ -24,6 +21,12 @@ public class Map {
     private List<Layer> layers;
     private String type;
 
+    /**
+     * This class represents a map that can be drawn. It is only compatible with orthogonal maps.
+     * todo: Map creates all needed Layer and TileSet objects by itself
+     *
+     * @param jsonMap This JsonObject can be obtained from TiledReader.readMap()
+     */
     public Map(JsonObject jsonMap) {
         if (jsonMap.getString("type").equals("map")) {
             this.height = jsonMap.getInt("height");
@@ -49,6 +52,11 @@ public class Map {
 
     }
 
+    /**
+     * Adds the properties from the json file
+     *
+     * @param jsonMap This JsonObject can be obtained in the constructor
+     */
     private void addProperties(JsonObject jsonMap) {
         this.properties = new ArrayList<>();
         JsonArray jsonArray = jsonMap.getJsonArray("properties");
@@ -58,11 +66,11 @@ public class Map {
     }
 
     private void addTileSets() {
-        //todo have this method add TileSet objects
+        //todo: have this method add TileSet objects
     }
 
     private void addLayers() {
-        //todo have this method add Layer objects
+        //todo: have this method add Layer objects
     }
 
 }
