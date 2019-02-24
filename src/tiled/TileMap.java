@@ -20,6 +20,7 @@ public class TileMap {
     private int tileCount;
     private int tileHeight;
     private int tileWidth;
+    private String type;
     private List<Tile> tiles;
 
     public TileMap(JsonObject jsonTileMap) {
@@ -31,15 +32,20 @@ public class TileMap {
         } catch (IOException exception) {
             System.out.println("Image loading failed!");
         }
-        this.imageHeight = jsonTileMap.getInt("imageheight");
-        this.imageWidth = jsonTileMap.getInt("imagewidth");
-        this.margin = jsonTileMap.getInt("margin");
-        this.name = jsonTileMap.getString("name");
-        this.spacing = jsonTileMap.getInt("spacing");
-        this.tileCount = jsonTileMap.getInt("tilecount");
-        this.tileHeight = jsonTileMap.getInt("tileheight");
-        this.tileWidth = jsonTileMap.getInt("tilewidth");
-        this.addTiles();
+        if (jsonTileMap.getString("type").equals("tileset")) {
+            this.imageHeight = jsonTileMap.getInt("imageheight");
+            this.imageWidth = jsonTileMap.getInt("imagewidth");
+            this.margin = jsonTileMap.getInt("margin");
+            this.name = jsonTileMap.getString("name");
+            this.spacing = jsonTileMap.getInt("spacing");
+            this.tileCount = jsonTileMap.getInt("tilecount");
+            this.tileHeight = jsonTileMap.getInt("tileheight");
+            this.tileWidth = jsonTileMap.getInt("tilewidth");
+            this.type = jsonTileMap.getString("type");
+            this.addTiles();
+        } else {
+            System.out.println("You tried loading a non-tileset file into a tileset object!");
+        }
     }
 
     /**
