@@ -6,6 +6,7 @@ import sun.nio.cs.ArrayEncoder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Group implements Serializable {
     private String name;
@@ -30,11 +31,7 @@ public class Group implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ArrayList<Student> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 

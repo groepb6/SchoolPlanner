@@ -6,7 +6,7 @@ import data.schoolrelated.Group;
 import data.schoolrelated.Subject;
 import gui.assistclasses.Plan;
 
-import data.Saveable;
+import data.readwrite.Saveable;
 
 import java.io.Serializable;
 

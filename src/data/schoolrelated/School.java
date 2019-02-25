@@ -8,9 +8,9 @@ import data.schedulerelated.Schedule;
 
 import java.util.ArrayList;
 import java.io.*;
+import java.util.List;
 
 public class School implements Serializable {
-
     private String name;
     private ArrayList<Room> rooms;
     private ArrayList<Person> teachers;
