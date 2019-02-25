@@ -1,4 +1,4 @@
-package tiled;
+package tiled.dver;
 
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -37,18 +37,20 @@ public class DrawMap {
     private Canvas canvas;
     private Scene scene;
     private int[][] map;
+    private Camera camera;
 
     DrawMap(FXGraphics2D g2d, Canvas canvas, Scene scene) {
         this.g2d = g2d;
         this.scene = scene;
-        saveSprites("schoolmap");
+        saveSprites("schoolmap.json");
         this.canvas = canvas;
         drawMap();
         setActions();
+        this.camera = new Camera(canvas);
     }
 
     private void saveSprites(String map) {
-        JsonReader jsonReader = Json.createReader(getClass().getResourceAsStream("maps/" + map + ".json"));
+        JsonReader jsonReader = Json.createReader(getClass().getResourceAsStream("maps/" + map));
         mapFile = jsonReader.readObject();
 
         width = mapFile.getInt("width");
@@ -71,6 +73,7 @@ public class DrawMap {
     }
 
     private void drawMap() {
+        this.g2d.setTransform(this.camera.getTransform());
         int index = 0;
         AffineTransform affineTransform;
         for (int i = 0; i < mapFile.getJsonArray("layers").size() - 1; i++) {

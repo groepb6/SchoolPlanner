@@ -1,15 +1,13 @@
-package tiled;
+package tiled.dver;
 
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
 
 public class Init extends Application {
     private Canvas canvas = new Canvas(3200,3200);
