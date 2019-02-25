@@ -1,9 +1,16 @@
 package gui.components.frames;
 
+import data.persons.Person;
+import data.persons.Teacher;
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
+import data.rooms.Classroom;
+import data.rooms.Room;
 import data.schedulerelated.Hour;
 import data.schedulerelated.Schedule;
+import data.schoolrelated.Group;
+import data.schoolrelated.School;
+import data.schoolrelated.Subject;
 import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;
 import javafx.collections.FXCollections;
@@ -30,56 +37,8 @@ import java.util.List;
  */
 
 public class EditSchedule extends Sizeable {
-//    private BorderPane borderPane = new BorderPane();
-//    private HBox fieldBox = new HBox();
-//    private VBox groupColom = new VBox();
-//    private VBox timeColomBegin = new VBox();
-//    private VBox timeColomEnd = new VBox();
-//    private VBox locationColom = new VBox();
-//    private VBox subjectColom = new VBox();
-//    private VBox teacherColom = new VBox();
-//    private TextField groupField = new TextField();
-//    private TextField timeFieldBegin = new TextField();
-//    private TextField timeFieldEnd = new TextField();
-//    private TextField locationField = new TextField();
-//    private TextField subjectField = new TextField();
-//    private TextField teacherField = new TextField();
-//    private Label groupMessage = new Label();
-//    private Label timeBeginMessage = new Label();
-//    private Label timeEndMessage = new Label();
-//    private Label locationMessage = new Label();
-//    private Label subjectMessage = new Label();
-//    private Label teacherMessage = new Label();
-//    private Button addPlan = new Button("Add plan");
 
-
-    /**
-     * The "EditSchedule" constructor puts all elements in the correct place on a borderPane. This borderPane can be sent to the Window class later, as seen with other classes located in the frames package.
-     *
-     * @param stage Is needed to scale the scene to a minimum width and height (so no elements would be cut off).
-     */
-
-//    public EditSchedule(Stage stage) {
-//        fieldBox.getChildren().addAll(groupColom, timeColomBegin, timeColomEnd, locationColom, subjectColom, teacherColom, addPlan);
-//        borderPane.setTop(fieldBox);
-//
-//        groupColom.getChildren().addAll(groupField, groupMessage);
-//        timeColomBegin.getChildren().addAll(timeFieldBegin, timeBeginMessage);
-//        timeColomEnd.getChildren().addAll(timeFieldEnd, timeEndMessage);
-//        locationColom.getChildren().addAll(locationField, locationMessage);
-//        subjectColom.getChildren().addAll(subjectField, subjectMessage);
-//        teacherColom.getChildren().addAll(teacherField, teacherMessage);
-//        fieldBox.setSpacing(10);
-//        groupField.setPromptText("Group");
-//        timeFieldBegin.setPromptText("From time (ab:xy format)");
-//        timeFieldEnd.setPromptText("Until time (ab:xy format)");
-//        locationField.setPromptText("Location");
-//        subjectField.setPromptText("Subject");
-//        teacherField.setPromptText("Teacher");
-//        super.setProportions(0, 2560, 0, 1080, 1100, 500, stage);
-//        setActions();
-//    }
-
+    private School school;
     private BorderPane borderPane;
     private VBox vBox;
     private HBox hBox1;
@@ -91,22 +50,42 @@ public class EditSchedule extends Sizeable {
     private Label labelGroup;
     private Label labelTime;
     private Label labelTeacher;
-    private Label labelLocation;
+    private Label labelRoom;
     private Label labelSubject;
-    private Label labelSubjectItem;
+    private TextField tfGroup;
+    private TextField tfTeacher;
+    private TextField tfRoom;
+    private TextField tfSubject;
+
+
     private ObservableList<String> timeOptions;
     private ComboBox timeComboBox;
     private ObservableList<String> groupOptions;
     private ComboBox groupComboBox;
     private ObservableList<String> teacherOptions;
     private ComboBox teacherComboBox;
-    private ObservableList<String> locationOptions;
-    private ComboBox locationComboBox;
-    private Button buttonAddPlan;
+    private ObservableList<String> roomOptions;
+    private ComboBox roomComboBox;
+    private ObservableList<String> subjectOptions;
+    private ComboBox subjectComboBox;
+    private Button buttonAddSchedule;
+    private Button buttonAddGroup;
+    private Button buttonAddSubject;
+    private Button buttonAddTeacher;
+    private Button buttonAddRoom;
+    private Button buttonDeleteGroup;
+    private Button buttonDeleteTeacher;
+    private Button buttonDeleteRoom;
+    private Button buttonDeleteSubject;
+    private Button buttonClearAll;
+    private int buttonWidth;
+
+
+
 
     public EditSchedule(Stage stage) {
         this.borderPane = new BorderPane();
-
+        this.school = DataReader.readSchool();
         this.vBox = new VBox();
 
         this.hBox1 = new HBox();
@@ -119,9 +98,13 @@ public class EditSchedule extends Sizeable {
         this.labelGroup = new Label("Group:");
         this.labelTime = new Label("Time:");
         this.labelTeacher = new Label("Teacher:");
-        this.labelLocation = new Label("Location:");
+        this.labelRoom = new Label("Room:");
         this.labelSubject = new Label("Subject:");
-        this.labelSubjectItem = new Label("subject item");
+
+        this.tfGroup = new TextField();
+        this.tfTeacher = new TextField();
+        this.tfSubject = new TextField();
+        this.tfRoom = new TextField();
 
         this.timeComboBox = new ComboBox();
         this.timeOptions = FXCollections.observableArrayList();
@@ -129,46 +112,219 @@ public class EditSchedule extends Sizeable {
         this.groupOptions = FXCollections.observableArrayList();
         this.teacherComboBox = new ComboBox();
         this.teacherOptions = FXCollections.observableArrayList();
-        this.locationComboBox = new ComboBox();
-        this.locationOptions = FXCollections.observableArrayList();
+        this.roomComboBox = new ComboBox();
+        this.roomOptions = FXCollections.observableArrayList();
+        this.subjectComboBox = new ComboBox();
+        this.subjectOptions = FXCollections.observableArrayList();
 
-        this.buttonAddPlan = new Button("Add");
+        this.buttonAddSchedule = new Button("Add schedule");
+        this.buttonAddGroup = new Button("Add Group");
+        this.buttonAddSubject = new Button("Add Subject");
+        this.buttonAddTeacher = new Button("Add Teacher");
+        this.buttonAddRoom = new Button("Add Room");
+        this.buttonClearAll = new Button("Clear all");
+
+
+        this.buttonDeleteGroup = new Button("Delete Group");
+        this.buttonDeleteRoom = new Button("Delete Room");
+        this.buttonDeleteSubject = new Button("Delete Subject");
+        this.buttonDeleteTeacher = new Button("Delete Teacher");
 
         EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
         this.timeComboBox.setItems(this.timeOptions);
         this.timeComboBox.setMinWidth(150);
 
-        this.groupOptions.addAll("A1", "A2", "A3", "B1");
+        this.groupOptions.addAll();
+        for (Group g : this.school.getGroups()) {
+            this.groupOptions.add(g.getName());
+        }
         this.groupComboBox.setItems(this.groupOptions);
         this.groupComboBox.setMinWidth(150);
 
-        this.teacherOptions.addAll("Johan", "Etienne", "Jan", "Hans");
+        for (Person t : this.school.getTeachers()) {
+            this.teacherOptions.add(t.getName());
+        }
         this.teacherComboBox.setItems(this.teacherOptions);
         this.teacherComboBox.setMinWidth(150);
 
-        this.locationOptions.addAll("LA110", "Kantine", "LD127", "HA512");
-        this.locationComboBox.setItems(this.locationOptions);
-        this.locationComboBox.setMinWidth(150);
+        for (Room r : this.school.getRooms()) {
+            this.roomOptions.add(r.getName());
+        }
+        this.roomComboBox.setItems(this.roomOptions);
+        this.roomComboBox.setMinWidth(150);
+
+
+        for (Subject s : this.school.getSubjects()) {
+            this.subjectOptions.add(s.getName());
+        }
+        this.subjectComboBox.setItems(this.subjectOptions);
+        this.subjectComboBox.setMinWidth(150);
+
+        this.hBox1.setSpacing(5);
+        this.hBox2.setSpacing(5);
+        this.hBox3.setSpacing(5);
+        this.hBox4.setSpacing(5);
+        this.hBox5.setSpacing(5);
+        this.hBox6.setSpacing(5);
 
         this.vBox.setSpacing(5);
 
-        this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox);
-        this.hBox2.getChildren().addAll(this.labelTime, this.timeComboBox);
-        this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox);
-        this.hBox4.getChildren().addAll(this.labelLocation, this.locationComboBox);
-        this.hBox5.getChildren().addAll(this.labelSubject, this.labelSubjectItem);
-        this.hBox6.getChildren().add(this.buttonAddPlan);
+        this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup,this.buttonDeleteGroup);
+        this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject,this.buttonDeleteSubject);
+        this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher,this.buttonDeleteTeacher);
+        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom, this.buttonAddRoom,this.buttonDeleteRoom);
+        this.hBox5.getChildren().addAll(this.labelTime, this.timeComboBox);
+        this.hBox6.getChildren().addAll(this.buttonAddSchedule,this.buttonClearAll);
 
-        labelGroup.setMinWidth(75);
-        labelTime.setMinWidth(75);
-        labelTeacher.setMinWidth(75);
-        labelSubject.setMinWidth(75);
-        labelLocation.setMinWidth(75);
+        this.buttonWidth = 150;
 
-        this.buttonAddPlan.setOnAction(event -> {
-            this.addPlan();
+        this.labelGroup.setMinWidth(buttonWidth/2);
+        this.labelTime.setMinWidth(buttonWidth/2);
+        this.labelTeacher.setMinWidth(buttonWidth/2);
+        this.labelSubject.setMinWidth(buttonWidth/2);
+        this.labelRoom.setMinWidth(buttonWidth/2);
+
+        this.buttonAddGroup.setMinWidth(buttonWidth);
+        this.buttonAddRoom.setMinWidth(buttonWidth);
+        this.buttonAddTeacher.setMinWidth(buttonWidth);
+        this.buttonAddSubject.setMinWidth(buttonWidth);
+
+        this.buttonDeleteTeacher.setMinWidth(buttonWidth);
+        this.buttonDeleteSubject.setMinWidth(buttonWidth);
+        this.buttonDeleteRoom.setMinWidth(buttonWidth);
+        this.buttonDeleteGroup.setMinWidth(buttonWidth);
+
+        this.buttonAddSchedule.setOnAction(event -> {
+            if (!groupComboBox.getSelectionModel().isEmpty() && !roomComboBox.getSelectionModel().isEmpty() && !timeComboBox.getSelectionModel().isEmpty() && !teacherComboBox.getSelectionModel().isEmpty() && !subjectComboBox.getSelectionModel().isEmpty()) {
+                boolean isAvailableThisTime = true;
+
+                Group group = new Group("temp");
+                for (Group g : this.school.getGroups()) {
+                    if (g.getName().equals(groupComboBox.getValue().toString())) {
+                        group = g;
+                    }
+                }
+
+                Teacher teacher = new Teacher("temp");
+                for (Person t : this.school.getTeachers()) {
+                    if (t.getName().equals(teacherComboBox.getValue().toString())) {
+                        teacher = (Teacher) t;
+                    }
+                }
+
+                Subject subject = new Subject("temp");
+                for (Subject s : this.school.getSubjects()) {
+                    if (s.getName().equals(subjectComboBox.getValue().toString())) {
+                        subject = s;
+                    }
+                }
+
+                Room room = new Classroom("temp");
+                for (Room r : this.school.getRooms()) {
+                    if (r.getName().equals(roomComboBox.getValue().toString())) {
+                        room = r;
+                    }
+                }
+                isAvailableThisTime = isAvailableThisTime(teacher,room,this.getHour(this.timeComboBox.getValue().toString()),group);
+
+                Schedule schedule = new Schedule(
+                        this.getHour(this.timeComboBox.getValue().toString()),
+                        group,
+                        room,
+                        teacher,
+                        subject
+                );
+
+                System.out.println("" + this.getHour(this.timeComboBox.getValue().toString()) + group + room + teacher + subject);
+
+                if (!isDuplicateSchedule(this.school,schedule) && isAvailableThisTime) {
+                    room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                    teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                    group.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+
+                    this.school.addSchedule(schedule);
+                    DataWriter.writeSchool(school);
+                    school = DataReader.readSchool();
+                }
+            }
         });
 
+        this.buttonClearAll.setOnAction(event -> {
+            this.school = new School("School");
+            DataWriter.writeSchool(school);
+        });
+
+        this.buttonAddGroup.setOnAction(event -> {
+            if (!this.groupOptions.contains(this.tfGroup.getText())) {
+                this.school.getGroups().add(new Group(this.tfGroup.getText()));
+                this.groupOptions.add(this.tfGroup.getText());
+                this.tfGroup.clear();
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonAddTeacher.setOnAction(event -> {
+            if (!this.teacherOptions.contains(this.tfTeacher.getText())) {
+                this.school.getTeachers().add(new Teacher(this.tfTeacher.getText()));
+                this.teacherOptions.add(this.tfTeacher.getText());
+                this.tfTeacher.clear();
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonAddSubject.setOnAction(event -> {
+            if (!this.subjectOptions.contains(this.tfSubject.getText())) {
+                this.school.getSubjects().add(new Subject(this.tfSubject.getText()));
+                this.subjectOptions.add(this.tfSubject.getText());
+                this.tfSubject.clear();
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonAddRoom.setOnAction(event -> {
+            if (!this.roomOptions.contains(this.tfRoom.getText())) {
+                this.school.getRooms().add(new Classroom(this.tfRoom.getText()));
+                this.roomOptions.add(this.tfRoom.getText());
+                this.tfRoom.clear();
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonDeleteTeacher.setOnAction(event -> {
+            if (!this.teacherComboBox.getSelectionModel().isEmpty()) {
+                System.out.println(teacherComboBox.getSelectionModel().getSelectedIndex());
+                this.school.getTeachers().remove(this.teacherComboBox.getSelectionModel().getSelectedIndex());
+                this.teacherOptions.remove(this.teacherComboBox.getSelectionModel().getSelectedIndex());
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonDeleteGroup.setOnAction(event -> {
+            if (!this.groupComboBox.getSelectionModel().isEmpty()) {
+                System.out.println(groupComboBox.getSelectionModel().getSelectedIndex());
+                this.school.getGroups().remove(this.groupComboBox.getSelectionModel().getSelectedIndex());
+                this.groupOptions.remove(this.groupComboBox.getSelectionModel().getSelectedIndex());
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonDeleteRoom.setOnAction(event -> {
+            if (!this.roomComboBox.getSelectionModel().isEmpty()) {
+                System.out.println(roomComboBox.getSelectionModel().getSelectedIndex());
+                this.school.getRooms().remove(this.roomComboBox.getSelectionModel().getSelectedIndex());
+                this.roomOptions.remove(this.roomComboBox.getSelectionModel().getSelectedIndex());
+                DataWriter.writeSchool(school);
+            }
+        });
+
+        this.buttonDeleteSubject.setOnAction(event -> {
+            if (!this.subjectComboBox.getSelectionModel().isEmpty()) {
+                System.out.println(subjectComboBox.getSelectionModel().getSelectedIndex());
+                this.school.getSubjects().remove(this.subjectComboBox.getSelectionModel().getSelectedIndex());
+                this.subjectOptions.remove(this.subjectComboBox.getSelectionModel().getSelectedIndex());
+                DataWriter.writeSchool(school);
+            }
+        });
 
         this.vBox.getChildren().addAll(
                 this.hBox1,
@@ -189,164 +345,40 @@ public class EditSchedule extends Sizeable {
         return this.borderPane;
     }
 
-
-
-/**
- * If the addPlan method is called a check will need to be performed on all fields, since you wouldn't want invalid data to be written to the Plan save file.
- * <p>
- * If all previous checks are performed there is one check remaining, we do not want any double data in our plane file. This is why the boolean canAdd is set to false if any double plan is found.
- * <p>
- * If all previous checks are performed there is one check remaining, we do not want any double data in our plane file. This is why the boolean canAdd is set to false if any double plan is found.
- */
-
-//    private void setActions() {
-//        addPlan.setOnMouseClicked(event -> {
-//            boolean everythingCorrect = true;
-//            if (!checkGroup()) everythingCorrect = false;
-//            if (!checkBeginTime()) everythingCorrect = false;
-//            if (!checkEndTime()) everythingCorrect = false;
-//            if (!checkLocation()) everythingCorrect = false;
-//            if (!checkSubject()) everythingCorrect = false;
-//            if (!checkTeacher()) everythingCorrect = false;
-//            if (everythingCorrect)
-//                addPlan();
-//        });
-//
-
-
-//        groupField.setOnMouseClicked(event -> groupField.setText(""));
-//        groupField.setOnMouseDragged(event -> groupField.setText(""));
-//        timeFieldBegin.setOnMouseClicked(event -> timeBeginMessage.setText(""));
-//        timeFieldBegin.setOnMouseDragged(event -> timeBeginMessage.setText(""));
-//        timeFieldEnd.setOnMouseClicked(event -> timeEndMessage.setText(""));
-//        timeFieldEnd.setOnMouseDragged(event -> timeEndMessage.setText(""));
-//        locationField.setOnMouseClicked(event -> locationMessage.setText(""));
-//        locationField.setOnMouseDragged(event -> locationMessage.setText(""));
-//        subjectMessage.setOnMouseClicked(event -> subjectMessage.setText(""));
-//        subjectMessage.setOnMouseDragged(event -> subjectMessage.setText(""));
-//        teacherMessage.setOnMouseClicked(event -> teacherMessage.setText(""));
-//        teacherMessage.setOnMouseDragged(event -> teacherMessage.setText(""));
-//    }
-
-/**
- * If all previous checks are performed there is one check remaining, we do not want any double data in our plane file. This is why the boolean canAdd is set to false if any double plan is found.
- */
-
-    private void addPlan() {
-        ArrayList<Schedule> scheduleArrayList;
-        try {
-            Schedule schedule = new Schedule(new Plan(
-                    this.timeComboBox.getValue().toString(),
-                    this.groupComboBox.getValue().toString(),
-                    this.locationComboBox.getValue().toString(),
-                    this.teacherComboBox.getValue().toString(),
-                    this.labelSubjectItem.getText()
-            ));
-            scheduleArrayList = (ArrayList<Schedule>) DataReader.readScheduleList();
-            boolean canAdd = true;
-            for (int i = 0; i < scheduleArrayList.size(); i++) {
-                if (scheduleArrayList.get(i).getPlan().isEqualTo(schedule.getPlan()))
-                    canAdd = false;
+    public Hour getHour(String time) {
+        ArrayList<Hour> hours = new ArrayList<>();
+        EnumSet.allOf(Hour.class).forEach(Hour -> hours.add(Hour));
+        for (Hour h : hours) {
+            if (h.getTime().equals(time)) {
+                return h;
             }
-            if (canAdd) {
-                scheduleArrayList.add(schedule);
-                DataWriter.writeScheduleList(scheduleArrayList);
+        }
+        return null;
+    }
+
+    public boolean isDuplicateSchedule(School schoolInput, Schedule scheduleInput) {
+        School school = schoolInput;
+        Schedule schedule = scheduleInput;
+        boolean duplicate = false;
+
+        for (Schedule s : school.getSchedules()) {
+            if (schedule.getGroup().getName().equals(s.getGroup().getName())
+                    && schedule.getGroup().getName().equals(s.getGroup().getName())
+                    && schedule.getTeacher().getName().equals(s.getTeacher().getName())
+                    && schedule.getSubject().getName().equals(s.getSubject().getName())
+                    && schedule.getTime().toString().equals(s.getTime().toString())
+            ) {
+                duplicate = true;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        return duplicate;
+    }
+
+    public boolean isAvailableThisTime(Teacher teacher, Room room, Hour hour, Group group) {
+        if (teacher.getHours().contains(hour) || room.getHours().contains(hour) || group.getHours().contains(hour)) {
+            return false;
+        } else {
+            return true;
         }
     }
-
-    /**
-     * Check if the input is correct in the checkGroup field.
-     * @return Boolean which defines whether the input was correct or not.
-     */
-
-//    private boolean checkGroup() {
-//        if (this.groupComboBox.getValue().toString().length() >= 1)
-//            return true;
-//        groupMessage.setText("Group is empty");
-//        return false;
-//
-//    }
-
-    /**
-     * Check if the input is correct in the CheckBeginTime field.
-     * @return Boolean which defines whether the input was correct or not.
-     */
-
-//    private boolean checkBeginTime() {
-//        if (checkTime(timeFieldBegin.getText()))
-//            return true;
-//        timeBeginMessage.setText("Enter time between 08:00 and 20:00");
-//        return false;
-//    }
-
-    /**
-     * Check if the input is correct in the CheckEndTime field.
-     * @return Boolean which defines whether the input was correct or not.
-     */
-
-//    private boolean checkEndTime() {
-//        if (checkTime(timeFieldEnd.getText()))
-//            return true;
-//        timeEndMessage.setText("Enter time between 08:00 and 20:00");
-//        return false;
-//    }
-
-    /**
-     * Check if the input format of a time is in the format of ab:xy, if not false is returned.
-     * @param timeString The String which should be checked.
-     * @return Return a true or false value depending on the check on the timeString.
-     */
-
-    private boolean checkTime(String timeString) {
-        if (timeString.length() == 5)
-            if (timeString.contains(":"))
-                if (timeString.indexOf(":") == 2)
-                    return (Integer.parseInt((timeString.substring(0, timeString.indexOf(":")))) >= 8 && Integer.parseInt((timeString.substring(0, timeString.indexOf(":")))) <= 20 && Integer.parseInt(timeString.substring(timeString.indexOf(":") + 1)) < 60);
-        return false;
-    }
-
-    /**
-     * Check if the location input is valid
-     * @return If the location input is valid (=not null) return true, else return false.
-     */
-
-//    private boolean checkLocation() {
-//        if (locationField.getText().length() > 0)
-//            return true;
-//        locationMessage.setText("Location is empty");
-//        return false;
-//    }
-
-    /**
-     * Check if the subject input is valid
-     * @return If the subject input is valid (=not null) return true, else return false.
-     */
-
-//    private boolean checkSubject() {
-//        if (subjectField.getText().length() > 0)
-//            return true;
-//        subjectMessage.setText("Subject is empty");
-//        return false;
-//    }
-
-    /**
-     * Check if the teacher input is valid
-     * @return If the teacher input is valid (=not null) return true, else return false.
-     */
-//
-//    private boolean checkTeacher() {
-//        if (teacherField.getText().length() > 0)
-//            return true;
-//        teacherMessage.setText("Teacher is empty");
-//        return false;
-//    }
-
-    /**
-     * Retrieve the borderPane with all components on it.
-     * @return Receive the borderPane with all components on it.
-     */
-
 }

@@ -1,5 +1,6 @@
 package gui.components.window;
 
+import data.schoolrelated.School;
 import gui.assistclasses.Image;
 import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;

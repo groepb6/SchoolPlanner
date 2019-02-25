@@ -18,18 +18,18 @@ public class TempSchedule {
         }
     }
 
-    public void saveAllSchedules(Plan... plans) {
-        for (Plan plan : plans) {
-            this.schedules.add(new Schedule(plan));
-        }
-    }
+//    public void saveAllSchedules(Plan... plans) {
+//        for (Plan plan : plans) {
+//            this.schedules.add(new Schedule(plan));
+//        }
+//    }
 
     public void saveNewSchedule(Schedule schedule) {
         schedules.add(schedule);
     }
-    public void saveNewSchedule(Plan plan) {
-        schedules.add(new Schedule(plan));
-    }
+//    public void saveNewSchedule(Plan plan) {
+//        schedules.add(new Schedule(plan));
+//    }
 
     public ArrayList<Schedule> getData() {
         return schedules;

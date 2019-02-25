@@ -1,8 +1,13 @@
 package gui.components.frames;
 
+import data.persons.Teacher;
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
+import data.rooms.Room;
+import data.schedulerelated.Hour;
 import data.schedulerelated.Schedule;
+import data.schoolrelated.Group;
+import data.schoolrelated.School;
 import gui.assistclasses.Image;
 import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;
@@ -112,12 +117,27 @@ public class FancyView extends Sizeable {
         removePlanButton.setOnMouseClicked(event -> {
             boolean foundDuplicate = false;
             try {
-                ArrayList<Schedule> scheduleData = (ArrayList<Schedule>) DataReader.readScheduleList();
+                School school = DataReader.readSchool();
+
+                ArrayList<Schedule> scheduleData = school.getSchedules();
                 if (searchResults.getSelectionModel().getSelectedItem() != null) {
                     Plan plan;
                     for (int i = 0; i < scheduleData.size(); i++) {
                         plan = (Plan) searchResults.getSelectionModel().getSelectedItem();
                         if (plan.isEqualTo(scheduleData.get(i).getPlan())) {
+                            Hour hour = scheduleData.get(i).getTime();
+                            Teacher teacher = scheduleData.get(i).getTeacher();
+                            Room room = scheduleData.get(i).getRoom();
+                            Group group = scheduleData.get(i).getGroup();
+                            if (teacher.getHours().contains(hour)) {
+                                teacher.getHours().remove(hour);
+                            }
+                            if (room.getHours().contains(hour)) {
+                                room.getHours().remove(hour);
+                            }
+                            if (group.getHours().contains(hour)) {
+                                room.getHours().remove(hour);
+                            }
                             scheduleData.remove(i);
                             i--;
                             foundDuplicate = true;
@@ -126,7 +146,8 @@ public class FancyView extends Sizeable {
                 }
                 searchResults.getSelectionModel().selectFirst();
                 if (foundDuplicate) {
-                    DataWriter.writeScheduleList(scheduleData);
+                    school.setSchedules(scheduleData);
+                    DataWriter.writeSchool(school);
                     search(textField.getText());
                 }
             } catch (Exception e) {
@@ -146,11 +167,18 @@ public class FancyView extends Sizeable {
         graphDrawBar.getChildren().addAll(VirtualizedView.drawTimePanel());
         topElements.getChildren().addAll(searchGroupBar, selectGroupBar, graphGroupBar, graphDrawBar);
         borderPane.setTop(topElements);
+        setTextfieldOnClick();
         setSearchButtonActionOnClick();
         setSubmitButtonActionOnClick();
         setClearViewButtonActionOnClick();
         setRemovePlanButton();
         setAllButton();
+    }
+
+    private void setTextfieldOnClick(){
+        textField.setOnMouseClicked(event -> {
+            textField.clear();
+        });
     }
 
     //=======================BEGIN OF CODE FOR ALL ACTION ON CLICK EVENTS================================
@@ -220,7 +248,7 @@ public class FancyView extends Sizeable {
     private ArrayList<Plan> retrieveScheduleData() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = (ArrayList<Schedule>) DataReader.readScheduleList();
+            ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }

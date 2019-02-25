@@ -1,14 +1,21 @@
 package data.rooms;
 
-abstract public class Room {
+import data.schedulerelated.Hour;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+
+abstract public class Room implements Serializable {
 
     private String name;
+    private ArrayList<Hour> hours;
     private int capacity;
     private boolean isAvailable;
 
-    public Room(String name, int capacity) {
+    public Room(String name) {
         this.name = name;
-        this.capacity = capacity;
+        this.hours = new ArrayList<>();
+        //his.capacity = capacity;
         this.isAvailable = true;
     }
 
@@ -34,5 +41,13 @@ abstract public class Room {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    public ArrayList<Hour> getHours() {
+        return hours;
+    }
+
+    public void setHours(ArrayList<Hour> hours) {
+        this.hours = hours;
     }
 }

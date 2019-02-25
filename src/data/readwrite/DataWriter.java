@@ -1,6 +1,8 @@
 package data.readwrite;
 
 import data.schedulerelated.Schedule;
+import data.schoolrelated.School;
+
 import java.io.*;
 import java.util.List;
 
@@ -92,14 +94,34 @@ public class DataWriter {
      * @param schedules The List of schedules that need to be saved
      * @param fileName The file name of the save file
      */
-    public static void writeScheduleList(List<Schedule> schedules, String fileName) {
-        String savePath = "saves/schedules/" + fileName + ".txt";
+//    public static void writeScheduleList(List<Schedule> schedules, String fileName) {
+//        String savePath = "saves/schedules/" + fileName + ".txt";
+//        System.out.println("Attempting to save object to " + savePath);
+//        try {
+//            File saveFile = new File(savePath);
+//            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
+//            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+//            objectOutputStream.writeObject(schedules);
+//            System.out.println("Object saved successfully.");
+//        } catch (FileNotFoundException exception) {
+//            System.out.println("Save destination not found!");
+//            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
+//            System.out.println("Please try again.");
+//        } catch (IOException exception) {
+//            System.out.println("An IOException has occurred!");
+//            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
+//            System.out.println("Please try again.");
+//        }
+//    }
+
+    public static void writeSchool(School school) {
+        String savePath = "saves/school/school.txt";
         System.out.println("Attempting to save object to " + savePath);
         try {
             File saveFile = new File(savePath);
             FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(schedules);
+            objectOutputStream.writeObject(school);
             System.out.println("Object saved successfully.");
         } catch (FileNotFoundException exception) {
             System.out.println("Save destination not found!");
@@ -117,8 +139,8 @@ public class DataWriter {
      *
      * @param schedules The List of schedules that need to be saved
      */
-    public static void writeScheduleList(List<Schedule> schedules) {
-        DataWriter.writeScheduleList(schedules, "scheduleTest1");
-    }
+//    public static void writeScheduleList(List<Schedule> schedules) {
+//        DataWriter.writeScheduleList(schedules, "scheduleTest1");
+//    }
 
 }

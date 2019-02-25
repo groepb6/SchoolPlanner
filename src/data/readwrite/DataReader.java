@@ -1,6 +1,7 @@
 package data.readwrite;
 
 import data.schedulerelated.Schedule;
+import data.schoolrelated.School;
 
 import java.io.*;
 import java.util.List;
@@ -61,14 +62,37 @@ public class DataReader {
      * @param fileName The file name of the save file
      * @return Either a List of schedules or null
      */
-    public static List<Schedule> readScheduleList(String fileName) {
-        String loadPath = "saves/schedules/" + fileName + ".txt";
+//    public static List<Schedule> readScheduleList(String fileName) {
+//        String loadPath = "saves/schedules/" + fileName + ".txt";
+//        System.out.println("Attempting to load schedule from " + loadPath);
+//        try {
+//            File saveFile = new File(loadPath);
+//            FileInputStream fileInputStream = new FileInputStream(saveFile);
+//            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+//            return (List<Schedule>) objectInputStream.readObject();
+//        } catch (FileNotFoundException exception) {
+//            System.out.println("Save file not found!");
+//            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+//        } catch (IOException exception) {
+//            System.out.println("An IOException has occurred!");
+//            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+//        } catch (ClassNotFoundException exception) {
+//            System.out.println("No object found in file!");
+//            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+//        }
+//        System.out.println("Loading has failed!");
+//        System.out.println("The program will probably stop working now.");
+//        return null;
+//    }
+
+    public static School readSchool() {
+        String loadPath = "saves/school/school.txt";
         System.out.println("Attempting to load schedule from " + loadPath);
         try {
             File saveFile = new File(loadPath);
             FileInputStream fileInputStream = new FileInputStream(saveFile);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            return (List<Schedule>) objectInputStream.readObject();
+            return (School)objectInputStream.readObject();
         } catch (FileNotFoundException exception) {
             System.out.println("Save file not found!");
             System.out.println("YOUR FILE COULD NOT BE LOADED!");
@@ -89,8 +113,8 @@ public class DataReader {
      *
      * @return Either a List of schedules or null
      */
-    public static List<Schedule> readScheduleList() {
-        return DataReader.readScheduleList("scheduleTest1");
-    }
+//    public static List<Schedule> readScheduleList() {
+//        return DataReader.readScheduleList("scheduleTest1");
+//    }
 
 }
