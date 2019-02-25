@@ -41,14 +41,14 @@ public class DrawMap {
     DrawMap(FXGraphics2D g2d, Canvas canvas, Scene scene) {
         this.g2d = g2d;
         this.scene = scene;
-        saveSprites("schoolmap.json");
+        saveSprites("schoolmap");
         this.canvas = canvas;
         drawMap();
         setActions();
     }
 
     private void saveSprites(String map) {
-        JsonReader jsonReader = Json.createReader(getClass().getResourceAsStream("json/" + map));
+        JsonReader jsonReader = Json.createReader(getClass().getResourceAsStream("maps/" + map + ".json"));
         mapFile = jsonReader.readObject();
 
         width = mapFile.getInt("width");
