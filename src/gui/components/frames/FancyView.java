@@ -79,9 +79,9 @@ public class FancyView extends Sizeable {
         clearViewButton.setMinWidth(90);
         searchGroupButton.setMaxWidth(100);
         searchGroupBar.setMinWidth(500);
-        removePlanButton.setMinWidth(260);
+        removePlanButton.setMinWidth(155);
+        addAll.setMinWidth(100);
         this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
-
     }
 
     /**
