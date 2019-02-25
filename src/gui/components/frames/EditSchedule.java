@@ -86,7 +86,6 @@ public class EditSchedule extends Sizeable {
     public EditSchedule(Stage stage) {
         this.borderPane = new BorderPane();
         this.school = DataReader.readSchool();
-        //this.school = new School("");
         this.vBox = new VBox();
 
         this.hBox1 = new HBox();
@@ -142,28 +141,24 @@ public class EditSchedule extends Sizeable {
         this.groupComboBox.setItems(this.groupOptions);
         this.groupComboBox.setMinWidth(150);
 
-        //this.teacherOptions.addAll("Johan", "Etienne", "Jan", "Hans");
         for (Person t : this.school.getTeachers()) {
             this.teacherOptions.add(t.getName());
         }
         this.teacherComboBox.setItems(this.teacherOptions);
         this.teacherComboBox.setMinWidth(150);
 
-        //this.roomOptions.addAll("LA110", "Kantine", "LD127", "HA512");
         for (Room r : this.school.getRooms()) {
             this.roomOptions.add(r.getName());
         }
         this.roomComboBox.setItems(this.roomOptions);
         this.roomComboBox.setMinWidth(150);
 
-        //this.subjectOptions.addAll("Maths", "Physics");
+
         for (Subject s : this.school.getSubjects()) {
             this.subjectOptions.add(s.getName());
         }
         this.subjectComboBox.setItems(this.subjectOptions);
         this.subjectComboBox.setMinWidth(150);
-
-
 
         this.hBox1.setSpacing(5);
         this.hBox2.setSpacing(5);
@@ -231,9 +226,6 @@ public class EditSchedule extends Sizeable {
                     }
                 }
                 isAvailableThisTime = isAvailableThisTime(teacher,room,this.getHour(this.timeComboBox.getValue().toString()),group);
-                room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
-                teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
-                group.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
 
                 Schedule schedule = new Schedule(
                         this.getHour(this.timeComboBox.getValue().toString()),
@@ -245,9 +237,11 @@ public class EditSchedule extends Sizeable {
 
                 System.out.println("" + this.getHour(this.timeComboBox.getValue().toString()) + group + room + teacher + subject);
 
-
-
                 if (!isDuplicateSchedule(this.school,schedule) && isAvailableThisTime) {
+                    room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                    teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                    group.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+
                     this.school.addSchedule(schedule);
                     DataWriter.writeSchool(school);
                     school = DataReader.readSchool();
@@ -332,8 +326,6 @@ public class EditSchedule extends Sizeable {
             }
         });
 
-
-
         this.vBox.getChildren().addAll(
                 this.hBox1,
                 this.hBox2,
@@ -379,7 +371,6 @@ public class EditSchedule extends Sizeable {
                 duplicate = true;
             }
         }
-
         return duplicate;
     }
 
@@ -389,169 +380,5 @@ public class EditSchedule extends Sizeable {
         } else {
             return true;
         }
-
     }
-
-
-
-
-/**
- * If the addSchedule method is called a check will need to be performed on all fields, since you wouldn't want invalid data to be written to the Plan save file.
- * <p>
- * If all previous checks are performed there is one check remaining, we do not want any double data in our plane file. This is why the boolean canAdd is set to false if any double plan is found.
- * <p>
- * If all previous checks are performed there is one check remaining, we do not want any double data in our plane file. This is why the boolean canAdd is set to false if any double plan is found.
- */
-
-//    private void setActions() {
-//        addSchedule.setOnMouseClicked(event -> {
-//            boolean everythingCorrect = true;
-//            if (!checkGroup()) everythingCorrect = false;
-//            if (!checkBeginTime()) everythingCorrect = false;
-//            if (!checkEndTime()) everythingCorrect = false;
-//            if (!checkRoom()) everythingCorrect = false;
-//            if (!checkSubject()) everythingCorrect = false;
-//            if (!checkTeacher()) everythingCorrect = false;
-//            if (everythingCorrect)
-//                addSchedule();
-//        });
-//
-
-
-//        groupField.setOnMouseClicked(event -> groupField.setText(""));
-//        groupField.setOnMouseDragged(event -> groupField.setText(""));
-//        timeFieldBegin.setOnMouseClicked(event -> timeBeginMessage.setText(""));
-//        timeFieldBegin.setOnMouseDragged(event -> timeBeginMessage.setText(""));
-//        timeFieldEnd.setOnMouseClicked(event -> timeEndMessage.setText(""));
-//        timeFieldEnd.setOnMouseDragged(event -> timeEndMessage.setText(""));
-//        RoomField.setOnMouseClicked(event -> RoomMessage.setText(""));
-//        RoomField.setOnMouseDragged(event -> RoomMessage.setText(""));
-//        subjectMessage.setOnMouseClicked(event -> subjectMessage.setText(""));
-//        subjectMessage.setOnMouseDragged(event -> subjectMessage.setText(""));
-//        teacherMessage.setOnMouseClicked(event -> teacherMessage.setText(""));
-//        teacherMessage.setOnMouseDragged(event -> teacherMessage.setText(""));
-//    }
-
-/**
- * If all previous checks are performed there is one check remaining, we do not want any double data in our plane file. This is why the boolean canAdd is set to false if any double plan is found.
- */
-
-//    private void addSchedule() {
-//        ArrayList<Schedule> scheduleArrayList;
-//        try {
-//            Schedule schedule = new Schedule(new Plan(
-//                    this.timeComboBox.getValue().toString(),
-//                    this.groupComboBox.getValue().toString(),
-//                    this.roomComboBox.getValue().toString(),
-//                    this.teacherComboBox.getValue().toString(),
-//                    this.subjectComboBox.getValue().toString()
-//            ));
-//            scheduleArrayList = (ArrayList<Schedule>) DataReader.readScheduleList();
-//            boolean canAdd = true;
-//            for (int i = 0; i < scheduleArrayList.size(); i++) {
-//                if (scheduleArrayList.get(i).getPlan().isEqualTo(schedule.getPlan()))
-//                    canAdd = false;
-//            }
-//            if (canAdd) {
-//                scheduleArrayList.add(schedule);
-//                DataWriter.writeScheduleList(scheduleArrayList);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    /**
-     * Check if the input is correct in the checkGroup field.
-     * @return Boolean which defines whether the input was correct or not.
-     */
-
-//    private boolean checkGroup() {
-//        if (this.groupComboBox.getValue().toString().length() >= 1)
-//            return true;
-//        groupMessage.setText("Group is empty");
-//        return false;
-//
-//    }
-
-    /**
-     * Check if the input is correct in the CheckBeginTime field.
-     * @return Boolean which defines whether the input was correct or not.
-     */
-
-//    private boolean checkBeginTime() {
-//        if (checkTime(timeFieldBegin.getText()))
-//            return true;
-//        timeBeginMessage.setText("Enter time between 08:00 and 20:00");
-//        return false;
-//    }
-
-    /**
-     * Check if the input is correct in the CheckEndTime field.
-     * @return Boolean which defines whether the input was correct or not.
-     */
-
-//    private boolean checkEndTime() {
-//        if (checkTime(timeFieldEnd.getText()))
-//            return true;
-//        timeEndMessage.setText("Enter time between 08:00 and 20:00");
-//        return false;
-//    }
-
-    /**
-     * Check if the input format of a time is in the format of ab:xy, if not false is returned.
-     *
-     * @param timeString The String which should be checked.
-     * @return Return a true or false value depending on the check on the timeString.
-     */
-
-    private boolean checkTime(String timeString) {
-        if (timeString.length() == 5)
-            if (timeString.contains(":"))
-                if (timeString.indexOf(":") == 2)
-                    return (Integer.parseInt((timeString.substring(0, timeString.indexOf(":")))) >= 8 && Integer.parseInt((timeString.substring(0, timeString.indexOf(":")))) <= 20 && Integer.parseInt(timeString.substring(timeString.indexOf(":") + 1)) < 60);
-        return false;
-    }
-
-    /**
-     * Check if the Room input is valid
-     * @return If the Room input is valid (=not null) return true, else return false.
-     */
-
-//    private boolean checkRoom() {
-//        if (RoomField.getText().length() > 0)
-//            return true;
-//        RoomMessage.setText("Room is empty");
-//        return false;
-//    }
-
-    /**
-     * Check if the subject input is valid
-     * @return If the subject input is valid (=not null) return true, else return false.
-     */
-
-//    private boolean checkSubject() {
-//        if (subjectField.getText().length() > 0)
-//            return true;
-//        subjectMessage.setText("Subject is empty");
-//        return false;
-//    }
-
-    /**
-     * Check if the teacher input is valid
-     * @return If the teacher input is valid (=not null) return true, else return false.
-     */
-//
-//    private boolean checkTeacher() {
-//        if (teacherField.getText().length() > 0)
-//            return true;
-//        teacherMessage.setText("Teacher is empty");
-//        return false;
-//    }
-
-    /**
-     * Retrieve the borderPane with all components on it.
-     * @return Receive the borderPane with all components on it.
-     */
-
 }
