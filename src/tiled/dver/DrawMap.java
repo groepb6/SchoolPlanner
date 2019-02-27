@@ -21,13 +21,10 @@ public class DrawMap {
     private int tileHeight;
     private int width;
     private int height;
-    private double oldXdrag = 0;
-    private double oldYdrag = 0;
-    private double mapPosX = 0;
-    private double mapPosY = 0;
     private JsonArray layers;
-    private double scaleMultiplier=1.;
     private JsonObject mapFile;
+
+    private double scaleMultiplier=1.;
     private Canvas canvas;
     private Scene scene;
     private int[][] map;
@@ -114,25 +111,25 @@ public class DrawMap {
     }
 
     private void setActions() {
-        scene.setOnMouseDragged(event -> {
-            if (event.getButton() == MouseButton.MIDDLE) {
-                if (oldXdrag == 0)
-                    oldXdrag = event.getX();
-                if (oldYdrag == 0)
-                    oldYdrag = event.getY();
-                canvas.setTranslateX(event.getX() - oldXdrag + mapPosX);
-                canvas.setTranslateY(event.getY() - oldYdrag + mapPosY);
-                check();
-                drawMap();
-            }
-        });
-        scene.setOnMouseReleased(event -> {
-            mapPosX += event.getX() - oldXdrag;
-            mapPosY += event.getY() - oldYdrag;
-            oldXdrag = 0;
-            oldYdrag = 0;
-            event.consume();
-        });
+//        scene.setOnMouseDragged(event -> {
+//            if (event.getButton() == MouseButton.MIDDLE) {
+//                if (oldXdrag == 0)
+//                    oldXdrag = event.getX();
+//                if (oldYdrag == 0)
+//                    oldYdrag = event.getY();
+//                canvas.setTranslateX(event.getX() - oldXdrag + mapPosX);
+//                canvas.setTranslateY(event.getY() - oldYdrag + mapPosY);
+//                check();
+//                drawMap();
+//            }
+//        });
+//        scene.setOnMouseReleased(event -> {
+//            mapPosX += event.getX() - oldXdrag;
+//            mapPosY += event.getY() - oldYdrag;
+//            oldXdrag = 0;
+//            oldYdrag = 0;
+//            event.consume();
+//        });
 
 
         scene.setOnKeyTyped(event -> {

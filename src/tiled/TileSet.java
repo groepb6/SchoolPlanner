@@ -25,28 +25,21 @@ public class TileSet {
      *
      * @param jsonTileSet This JsonObject can be obtained from TiledReader.readTileSet()
      */
-    public TileSet(JsonObject jsonTileSet) {
-        if (jsonTileSet.getString("type").equals("tileset")) {
-            try {
-                File imageFile = new File(this.getClass().getResource("tiled/tilesets/") + jsonTileSet.getString("image") + ".bmp"); //todo: fix
-                System.out.println("Attempting to load from: " + imageFile);
-                this.image = ImageIO.read(imageFile);
-            } catch (IOException exception) {
-                System.out.println("Image loading failed!");
-            }
-            this.imageHeight = jsonTileSet.getInt("imageheight");
-            this.imageWidth = jsonTileSet.getInt("imagewidth");
-            this.margin = jsonTileSet.getInt("margin");
-            this.name = jsonTileSet.getString("name");
-            this.spacing = jsonTileSet.getInt("spacing");
-            this.tileCount = jsonTileSet.getInt("tilecount");
-            this.tileHeight = jsonTileSet.getInt("tileheight");
-            this.tileWidth = jsonTileSet.getInt("tilewidth");
-            this.type = jsonTileSet.getString("type");
-            this.addTiles();
-        } else {
-            System.out.println("You tried loading a non-tileset file into a tileset object!");
+    public TileSet(JsonObject jsonTileSet, int tileWidth, int tileHeight) {
+        try {
+            String path = this.getClass().getResource("/tiled/tilesets") + jsonTileSet.getString("link");
+            File imageFile = new File(path);
+            System.out.println("Attempting to load from: " + imageFile);
+            this.image = ImageIO.read(imageFile);
+        } catch (IOException exception) {
+            System.out.println("Image loading failed!");
         }
+        this.margin = jsonTileSet.getInt("margin", 0);
+        this.spacing = jsonTileSet.getInt("spacing", 0);
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+        this.addTiles();
+
     }
 
     /**

@@ -1,5 +1,7 @@
 package tiled;
 
+import org.jfree.fx.FXGraphics2D;
+
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ public class Map {
     private int nextLayerId;
     private int nextObjectId;
     private String orientation;
-    private List<String> properties; //do we need this?
     private List<TileSet> tileSets;
     private List<Layer> layers;
     private String type;
@@ -39,37 +40,23 @@ public class Map {
             this.nextLayerId = jsonMap.getInt("nextlayerid");
             this.nextObjectId = jsonMap.getInt("nextobjectid");
             this.orientation = jsonMap.getString("orientation");
-            this.addProperties(jsonMap);
-            this.addTileSets();
-            this.addLayers();
+            this.addTileSets(jsonMap.getJsonArray("tilesets"));
+            this.addLayers(jsonMap.getJsonArray("layers"));
             this.type = jsonMap.getString("type");
         } else {
             System.out.println("You tried loading a non-map file into a map object!");
         }
     }
 
-    public void draw() {
+    public void draw(FXGraphics2D graphics) {
 
     }
 
-    /**
-     * Adds the properties from the json file
-     *
-     * @param jsonMap This JsonObject can be obtained in the constructor
-     */
-    private void addProperties(JsonObject jsonMap) {
-        this.properties = new ArrayList<>();
-        JsonArray jsonArray = jsonMap.getJsonArray("properties");
-        for (int i = 0; i < jsonArray.size(); i++) {
-            this.properties.add(jsonArray.getString(i));
-        }
-    }
-
-    private void addTileSets() {
+    private void addTileSets(JsonArray tileSets) {
         //todo: have this method add TileSet objects
     }
 
-    private void addLayers() {
+    private void addLayers(JsonArray layers) {
         //todo: have this method add Layer objects
     }
 
