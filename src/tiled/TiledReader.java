@@ -17,11 +17,7 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of TileSet
      */
     public static JsonObject readTileSet(String fileName) {
-        //ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        //String loadPath = MethodHandles.lookup().lookupClass().getResource("tiled/tilesets/") + fileName + ".json";
-        //String loadPath = classLoader.getResource("tiled/tilesets/") + fileName + ".json";
-        //String loadPath = TiledReader.class.getResource("tiled/tilesets/") + fileName + ".json"; //todo: fix
-        String loadPath = "D:\\School\\Avans jaar 1\\Periode 3\\Proftaak\\SchoolPlanner\\resources\\tiled\\tilesets\\Testj.json";
+        String loadPath = TiledReader.class.getResource("/tiles/tilesets/") + fileName + ".json"; //todo: test
         System.out.println("Attempting to json file from " + loadPath);
         try {
             File saveFile = new File(loadPath);
@@ -41,7 +37,7 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of TileSet
      */
     public static JsonObject readTileSet() {
-        return TiledReader.readTileSet("test.json");
+        return TiledReader.readTileSet("test");
     }
 
     /**
@@ -51,7 +47,7 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of Map
      */
     public static JsonObject readMap(String fileName) {
-        String loadPath = TiledReader.class.getResource("tiled/maps/") + fileName + ".json"; //todo: fix
+        String loadPath = TiledReader.class.getResource("/tiled/maps/") + fileName + ".json"; //todo: fix
         System.out.println("Attempting to json file from " + loadPath);
         try {
             File saveFile = new File(loadPath);
@@ -71,7 +67,7 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of Map
      */
     public static JsonObject readMap() {
-        return TiledReader.readTileSet("test.json");
+        return TiledReader.readMap("test");
     }
 
     /**
@@ -81,7 +77,7 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of Layer
      */
     public static JsonObject readLayer(String fileName) {
-        String loadPath = TiledReader.class.getResource("tiled/error/") + fileName + ".json"; //todo: fix, decide load path
+        String loadPath = TiledReader.class.getResource("tiled/error/") + fileName + ".json"; //todo: decide load path
         System.out.println("Attempting to json file from " + loadPath);
         try {
             File saveFile = new File(loadPath);
@@ -101,7 +97,7 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of Layer
      */
     public static JsonObject readlayer() {
-        return TiledReader.readTileSet("test.json");
+        return TiledReader.readLayer("test");
     }
 
 }

@@ -1,19 +1,15 @@
 package tiled.dver;
 
-import javafx.event.EventHandler;
+import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
-import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 
 import javax.imageio.ImageIO;
 import javax.json.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -27,8 +23,6 @@ public class DrawMap {
     private int height;
     private double oldXdrag = 0;
     private double oldYdrag = 0;
-    private double dragReleasedX = 0;
-    private double dragReleasedY = 0;
     private double mapPosX = 0;
     private double mapPosY = 0;
     private JsonArray layers;
@@ -39,20 +33,33 @@ public class DrawMap {
     private int[][] map;
     private Camera camera;
 
+    private double totalTime;
+
     DrawMap(FXGraphics2D g2d, Canvas canvas, Scene scene) {
         this.g2d = g2d;
         this.scene = scene;
-        saveSprites("schoolmap.json");
         this.canvas = canvas;
-        drawMap();
-        setActions();
+        saveSprites("schoolmap.json");
         this.camera = new Camera(canvas);
+        drawMap();
+
+        totalTime = 0;
+        new AnimationTimer() {
+            long last = -1;
+            @Override
+            public void handle(long now) {
+                if(last == -1)
+                    last = now;
+                update((now - last) / 1000000000.0);
+                last = now;
+                drawMap();
+            }
+        }.start();
     }
 
     private void saveSprites(String map) {
-        JsonReader jsonReader = Json.createReader(getClass().getResourceAsStream("maps/" + map));
+        JsonReader jsonReader = Json.createReader(getClass().getResourceAsStream("/tiles/maps/" + map + ".json"));
         mapFile = jsonReader.readObject();
-
         width = mapFile.getInt("width");
         height = mapFile.getInt("height");
         tileWidth = mapFile.getInt("tilewidth");
@@ -62,37 +69,48 @@ public class DrawMap {
 
         for (int i = 0; i < data.size(); i++) {
             try {
-                sprites.add(ImageIO.read(getClass().getResourceAsStream("tilesets/" + data.getJsonObject(i).getString("link"))));
-            } catch (Exception error) {
+                sprites.add(ImageIO.read(getClass().getResourceAsStream("/tiles/tilesets/" + data.getJsonObject(i).getString("link"))));
+            } catch (Exception exception) {
+                System.out.println("Could not find images");
             }
         }
-        for (int i = 0; i < sprites.size(); i++)
-            for (int y = 0; y < sprites.get(i).getHeight(); y += tileHeight)
-                for (int x = 0; x < sprites.get(i).getWidth(); x += tileWidth)
-                    subImages.add(sprites.get(i).getSubimage(x, y, tileWidth, tileHeight));
+        sprites.forEach(sprite -> {
+            for (int y = 0; y < sprite.getHeight(); y += tileHeight) {
+                for (int x = 0; x < sprite.getWidth(); x += tileWidth) {
+                    subImages.add(sprite.getSubimage(x, y, tileWidth, tileHeight));
+                }
+            }
+        });
     }
 
     private void drawMap() {
+        g2d.setBackground(Color.BLACK);
+        g2d.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         this.g2d.setTransform(this.camera.getTransform());
         int index = 0;
         AffineTransform affineTransform;
         for (int i = 0; i < mapFile.getJsonArray("layers").size() - 1; i++) {
             index = 0;
             layers = mapFile.getJsonArray("layers").getJsonObject(i).getJsonArray("data");
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     affineTransform = new AffineTransform();
                     affineTransform.translate(x * tileWidth, y * tileHeight);
-                    if (layers.getInt(index) != 0)
+                    if (layers.getInt(index) != 0) {
                         g2d.drawImage(subImages.get(layers.getInt(index) - 1), affineTransform, null);
+                    }
                     index++;
                 }
+            }
         }
     }
 
-    private void clearMap() {
-        g2d.setBackground(Color.BLACK);
-        g2d.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
+    private void update(double time) {
+        this.totalTime += time;
+        if (this.totalTime >= 0.1) {
+            this.drawMap();
+            this.totalTime = 0;
+        }
     }
 
     private void setActions() {
@@ -105,7 +123,6 @@ public class DrawMap {
                 canvas.setTranslateX(event.getX() - oldXdrag + mapPosX);
                 canvas.setTranslateY(event.getY() - oldYdrag + mapPosY);
                 check();
-                clearMap();
                 drawMap();
             }
         });
