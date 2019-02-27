@@ -1,5 +1,7 @@
 package tiled;
 
+import org.jfree.fx.FXGraphics2D;
+
 import javax.imageio.ImageIO;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -27,7 +29,7 @@ public class Layer {
     private double offsetY; //default = 0
 
     /**
-     * todo: full documentation, object layer support
+     * todo: full documentation, object layer support, map support
      *
      * @param jsonLayer This JsonObject can be obtained from TiledReader.readLayer()
      */
@@ -64,8 +66,8 @@ public class Layer {
         }
     }
 
-    public void draw() {
-
+    public void draw(FXGraphics2D graphics) {
+        //todo: make draw method
     }
 
 //    /**

@@ -4,6 +4,7 @@ import org.jfree.fx.FXGraphics2D;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonValue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,11 +50,16 @@ public class Map {
     }
 
     public void draw(FXGraphics2D graphics) {
-
+        for (Layer layer : this.layers) {
+            layer.draw(graphics);
+        }
     }
 
     private void addTileSets(JsonArray tileSets) {
-        //todo: have this method add TileSet objects
+        //todo: have this method add TileSet objects, testing
+        for (int i = 0; i < tileSets.size(); i++) {
+            this.tileSets.add(new TileSet(tileSets.getJsonObject(i), this.tileWidth, this.tileHeight));
+        }
     }
 
     private void addLayers(JsonArray layers) {
