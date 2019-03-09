@@ -17,6 +17,7 @@ public class TiledReader {
      */
     public static JsonObject readMap(String fileName) {
         String loadPath = TiledReader.class.getResource("/tiles/maps/") + fileName + ".json"; //todo: fix
+        //loadPath = TiledReader.class.getResourceAsStream("/tiles/maps/" + fileName + ".json").toString();
         System.out.println("Attempting to json file from " + loadPath);
         try {
             File saveFile = new File(loadPath);
