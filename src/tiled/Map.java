@@ -5,6 +5,7 @@ import org.jfree.fx.FXGraphics2D;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class Map {
             this.tileHeight = jsonMap.getInt("tileheight");
             this.tileWidth = jsonMap.getInt("tilewidth");
             this.renderOrder = jsonMap.getString("renderorder");
-            this.backgroundColor = jsonMap.getString("backgroundcolor");
+            //this.backgroundColor = jsonMap.getString("backgroundcolor");
             this.nextLayerId = jsonMap.getInt("nextlayerid");
             this.nextObjectId = jsonMap.getInt("nextobjectid");
             this.orientation = jsonMap.getString("orientation");
@@ -57,6 +58,7 @@ public class Map {
 
     private void addTileSets(JsonArray tileSets) {
         //todo: have this method add TileSet objects, testing
+        this.tileSets = new ArrayList<>();
         for (int i = 0; i < tileSets.size(); i++) {
             this.tileSets.add(new TileSet(tileSets.getJsonObject(i), this.tileWidth, this.tileHeight));
         }
@@ -64,6 +66,25 @@ public class Map {
 
     private void addLayers(JsonArray layers) {
         //todo: have this method add Layer objects
+        this.layers = new ArrayList<>();
     }
 
+    @Override
+    public String toString() {
+        return "Map{" +
+                "height=" + height +
+                ", width=" + width +
+                ", infinite=" + infinite +
+                ", tileHeight=" + tileHeight +
+                ", tileWidth=" + tileWidth +
+                ", renderOrder='" + renderOrder + '\'' +
+                ", backgroundColor='" + backgroundColor + '\'' +
+                ", nextLayerId=" + nextLayerId +
+                ", nextObjectId=" + nextObjectId +
+                ", orientation='" + orientation + '\'' +
+                ", tileSets=" + tileSets +
+                ", layers=" + layers +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

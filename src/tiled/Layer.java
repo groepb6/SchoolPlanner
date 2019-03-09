@@ -87,4 +87,24 @@ public class Layer {
         //todo: create addData method
     }
 
+    @Override
+    public String toString() {
+        return "Layer{" +
+                "data=" + data +
+                ", image=" + image +
+                ", name='" + name + '\'' +
+                ", height=" + height +
+                ", width=" + width +
+                ", drawOrder='" + drawOrder + '\'' +
+                ", encoding='" + encoding + '\'' +
+                ", id=" + id +
+                ", opacity=" + opacity +
+                ", type='" + type + '\'' +
+                ", visible=" + visible +
+                ", x=" + x +
+                ", y=" + y +
+                ", offsetX=" + offsetX +
+                ", offsetY=" + offsetY +
+                '}';
+    }
 }

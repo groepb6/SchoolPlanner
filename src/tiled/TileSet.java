@@ -27,12 +27,13 @@ public class TileSet {
      */
     public TileSet(JsonObject jsonTileSet, int tileWidth, int tileHeight) {
         try {
-            String path = this.getClass().getResource("/tiled/tilesets") + jsonTileSet.getString("link");
+            String path = this.getClass().getResource("/tiles/tilesets/") + jsonTileSet.getString("link");
             File imageFile = new File(path);
             System.out.println("Attempting to load from: " + imageFile);
             this.image = ImageIO.read(imageFile);
         } catch (IOException exception) {
             System.out.println("Image loading failed!");
+            exception.printStackTrace();
         }
         this.imageWidth = this.image.getWidth();
         this.imageHeight = this.image.getHeight();
@@ -62,4 +63,19 @@ public class TileSet {
         return tiles;
     }
 
+    @Override
+    public String toString() {
+        return "TileSet{" +
+                "image=" + image +
+                ", imageHeight=" + imageHeight +
+                ", imageWidth=" + imageWidth +
+                ", margin=" + margin +
+                ", spacing=" + spacing +
+                ", tileCount=" + tileCount +
+                ", tileHeight=" + tileHeight +
+                ", tileWidth=" + tileWidth +
+                ", type='" + type + '\'' +
+                ", tiles=" + tiles +
+                '}';
+    }
 }
