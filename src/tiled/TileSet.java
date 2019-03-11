@@ -2,6 +2,7 @@ package tiled;
 
 import javax.imageio.ImageIO;
 import javax.json.JsonObject;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,10 +28,9 @@ public class TileSet {
      */
     public TileSet(JsonObject jsonTileSet, int tileWidth, int tileHeight) {
         try {
-            String path = this.getClass().getResource("/tiles/tilesets/") + jsonTileSet.getString("link");
-            File imageFile = new File(path);
-            System.out.println("Attempting to load from: " + imageFile);
-            this.image = ImageIO.read(imageFile);
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/tiles/tilesets/"+jsonTileSet.getString("link")));
+            System.out.println("Attempting to load image");
+            this.image = image;
         } catch (IOException exception) {
             System.out.println("Image loading failed!");
             exception.printStackTrace();
@@ -52,7 +52,8 @@ public class TileSet {
         int rows = imageHeight / tileHeight; //todo: test
         int columns = imageWidth / tileWidth; //todo: test
         for (int i = 0; i < rows * columns; i++) {
-            this.tiles.add(new Tile(this.image.getSubimage(this.tileWidth * (i % columns),
+            this.tiles.add(new Tile(this.image.getSubimage(
+                    this.tileWidth * (i % columns),
                     this.tileHeight * (i / rows),
                     this.tileWidth,
                     this.tileHeight)));

@@ -6,6 +6,7 @@ import javax.json.JsonReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class TiledReader {
 
@@ -16,22 +17,10 @@ public class TiledReader {
      * @return a JsonObject that can be used in the constructor of Map
      */
     public static JsonObject readMap(String fileName) {
-        String loadPath = TiledReader.class.getResource("/tiles/maps/") + fileName + ".json"; //todo: fix
-        //loadPath = TiledReader.class.getResourceAsStream("/tiles/maps/" + fileName + ".json").toString();
-        System.out.println("Attempting to json file from " + loadPath);
-        try {
-            File saveFile = new File(loadPath);
-            System.out.println(saveFile.canRead()); //test code
-            System.out.println(saveFile.getAbsolutePath()); //test code
-            FileInputStream fileInputStream = new FileInputStream(saveFile);
-            JsonReader jsonReader = Json.createReader(fileInputStream);
-            return (JsonObject) jsonReader.readObject();
-        } catch (FileNotFoundException exception) {
-            System.out.println("Save file not found!");
-            exception.printStackTrace();
-        }
-        System.out.println("Loading has failed!");
-        return null;
+        InputStream loadPath = TiledReader.class.getResourceAsStream("/tiles/maps/" + fileName); //todo: fix
+        System.out.println("Attempting to load json file from " + loadPath);
+        JsonReader jsonReader = Json.createReader(loadPath);
+        return (JsonObject) jsonReader.readObject();
     }
 
 }
