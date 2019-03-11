@@ -1,5 +1,6 @@
 package data.schoolrelated;
 
+import data.persons.Person;
 import data.persons.Student;
 import data.schedulerelated.Hour;
 import sun.nio.cs.ArrayEncoder;
@@ -24,7 +25,7 @@ public class Group implements Serializable {
     }
 
     public void addStudents(String name, int id) {
-        this.students.add(new Student(name));
+        this.students.add(new Student(name, Person.Gender.UNSPECIFIED));
     }
 
     public String getName() {

@@ -1,5 +1,6 @@
 package gui.assistclasses;
 
+import gui.components.frames.FancyView;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.ArrayList;
@@ -49,6 +50,10 @@ public class Plan {
         return this.time.get();
     }
 
+    public void setTime(String time) {
+        this.time = new SimpleStringProperty(time);
+    }
+
     /**
      * @return group string.
      */
@@ -94,6 +99,12 @@ public class Plan {
     /**
      * @return Better readable string for the user (which is a sentence that tells the data).
      */
+
+    public boolean isEqualToExceptTime(Plan plan) {
+        boolean endTimeIsBeginTime;
+        endTimeIsBeginTime =((FancyView.testDataToBeginTime(plan.getTime())==FancyView.testDataToEndTime(this.getTime())) || (FancyView.testDataToEndTime(plan.getTime())==FancyView.testDataToBeginTime(this.getTime())));
+        return (plan.getGroup().equals(getGroup()) && plan.getSubject().equals(getSubject()) && plan.getLocation().equals(getLocation()) && plan.getTeacher().equals(getTeacher()) && endTimeIsBeginTime);
+    }
 
     @Override
     public String toString() {

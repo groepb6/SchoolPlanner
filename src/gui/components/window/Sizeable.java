@@ -39,4 +39,8 @@ public abstract class Sizeable {
         if (prefHeight != -1)
             stage.setHeight(prefHeight);
     }
+
+    protected void setFullScreen(Stage stage) {
+        stage.setFullScreen(true);
+    }
 }

@@ -2,9 +2,12 @@ package gui.components.window;
 
 import data.schoolrelated.School;
 import gui.assistclasses.Image;
+import gui.components.frames.StartSim;
 import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -15,6 +18,7 @@ public class Window {
     private Scene originalScene;
     private Stage stage;
     private Scene scene;
+    private StartSim startSim;
 
     /**
      * @author Dustin Hendriks
@@ -33,6 +37,9 @@ public class Window {
         windowPane.setTop(topBar);
         this.stage = stage;
         setActionOnClick();
+        scene = new Scene(windowPane);
+
+        stage.setScene(scene);
 
         switch (identifier) {
             case "tableview":
@@ -42,15 +49,18 @@ public class Window {
                 windowPane.setCenter(new gui.components.frames.FancyView(stage).getFancyView());
                 break;
             case "startsim":
-                //windowPane.setCenter(new gui.components.frames.StartSim().getSim());
+                ScrollPane scrollPane = new ScrollPane();
+                scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+                startSim = new StartSim(stage, scene, scrollPane);
+                scrollPane.setContent(startSim.getGroup());
+                windowPane.setCenter(scrollPane);
+                //windowPane.setCenter(startSim.getGroup());
                 break;
             case "editschedule":
                 windowPane.setCenter(new gui.components.frames.EditSchedule(stage).getEditSchedule());
-
                 break;
         }
-        scene = new Scene(windowPane);
-        stage.setScene(scene);
     }
 
     /**
@@ -73,6 +83,10 @@ public class Window {
 
     private void setActionOnClick() {
         backButton.getImageView().setOnMouseClicked(event -> {
+            if (startSim!=null) {
+                startSim.clean();
+                startSim=null;
+            }
             stage.setScene(originalScene);
             stage.setMinWidth(460);
             stage.setMaxWidth(200);
