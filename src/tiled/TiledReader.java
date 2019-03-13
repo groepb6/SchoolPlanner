@@ -3,9 +3,6 @@ package tiled;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class TiledReader {
@@ -20,7 +17,7 @@ public class TiledReader {
         InputStream loadPath = TiledReader.class.getResourceAsStream("/tiles/maps/" + fileName); //todo: fix
         System.out.println("Attempting to load json file from " + loadPath);
         JsonReader jsonReader = Json.createReader(loadPath);
-        return (JsonObject) jsonReader.readObject();
+        return jsonReader.readObject();
     }
 
 }

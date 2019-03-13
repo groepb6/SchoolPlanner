@@ -2,9 +2,7 @@ package tiled;
 
 import javax.imageio.ImageIO;
 import javax.json.JsonObject;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +13,8 @@ public class TileSet {
     private int imageWidth;
     private int margin;
     private int spacing;
-    private int tileCount;
     private int tileHeight;
     private int tileWidth;
-    private String type;
     private List<Tile> tiles;
 
     /**
@@ -49,15 +45,21 @@ public class TileSet {
      * Adds all of the tiles to the tiles list
      */
     private void addTiles() {
-        int rows = imageHeight / tileHeight; //todo: test
-        int columns = imageWidth / tileWidth; //todo: test
-        for (int i = 0; i < rows * columns; i++) {
-            this.tiles.add(new Tile(this.image.getSubimage(
-                    this.tileWidth * (i % columns),
-                    this.tileHeight * (i / rows),
-                    this.tileWidth,
-                    this.tileHeight)));
+        for (int y = 0; y < this.imageHeight; y += this.tileHeight) {
+            for (int x = 0; x < this.imageWidth; x += this.imageWidth) {
+                this.tiles.add(new Tile(this.image.getSubimage(x, y, this.tileWidth, this.tileHeight)));
+            }
         }
+
+//        int rows = imageHeight / tileHeight; //todo: test
+//        int columns = imageWidth / tileWidth; //todo: test
+//        for (int i = 0; i < rows * columns; i++) {
+//            this.tiles.add(new Tile(this.image.getSubimage(
+//                    this.tileWidth * (i % columns),
+//                    this.tileHeight * (i / rows),
+//                    this.tileWidth,
+//                    this.tileHeight)));
+//        }
     }
 
     public List<Tile> getTiles() {
@@ -72,10 +74,8 @@ public class TileSet {
                 ", imageWidth=" + imageWidth +
                 ", margin=" + margin +
                 ", spacing=" + spacing +
-                ", tileCount=" + tileCount +
                 ", tileHeight=" + tileHeight +
                 ", tileWidth=" + tileWidth +
-                ", type='" + type + '\'' +
                 ", tiles=" + tiles +
                 '}';
     }

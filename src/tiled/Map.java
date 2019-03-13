@@ -16,7 +16,6 @@ public class Map {
     private int tileHeight;
     private int tileWidth;
     private String renderOrder;
-    private String backgroundColor;
     private int nextLayerId;
     private int nextObjectId;
     private String orientation;
@@ -38,7 +37,6 @@ public class Map {
             this.tileHeight = jsonMap.getInt("tileheight");
             this.tileWidth = jsonMap.getInt("tilewidth");
             this.renderOrder = jsonMap.getString("renderorder");
-            //this.backgroundColor = jsonMap.getString("backgroundcolor");
             this.nextLayerId = jsonMap.getInt("nextlayerid");
             this.nextObjectId = jsonMap.getInt("nextobjectid");
             this.orientation = jsonMap.getString("orientation");
@@ -78,7 +76,6 @@ public class Map {
                 ", tileHeight=" + tileHeight +
                 ", tileWidth=" + tileWidth +
                 ", renderOrder='" + renderOrder + '\'' +
-                ", backgroundColor='" + backgroundColor + '\'' +
                 ", nextLayerId=" + nextLayerId +
                 ", nextObjectId=" + nextObjectId +
                 ", orientation='" + orientation + '\'' +

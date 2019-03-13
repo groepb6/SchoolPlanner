@@ -8,8 +8,6 @@ import javax.json.JsonObject;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Layer {
     private JsonArray data;
