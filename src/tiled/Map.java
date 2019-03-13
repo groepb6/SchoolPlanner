@@ -19,13 +19,12 @@ public class Map {
     private int nextLayerId;
     private int nextObjectId;
     private String orientation;
-    private List<TileSet> tileSets;
-    private List<Layer> layers;
+    private TileSet[] tileSets;
+    private Layer[] layers;
     private String type;
 
     /**
      * This class represents a map that can be drawn. It is only compatible with orthogonal maps.
-     * todo: Map creates all needed Layer and TileSet objects by itself
      *
      * @param jsonMap This JsonObject can be obtained from TiledReader.readMap()
      */
@@ -56,15 +55,18 @@ public class Map {
 
     private void addTileSets(JsonArray tileSets) {
         //todo: have this method add TileSet objects, testing
-        this.tileSets = new ArrayList<>();
+        this.tileSets = new TileSet[tileSets.size()];
         for (int i = 0; i < tileSets.size(); i++) {
-            this.tileSets.add(new TileSet(tileSets.getJsonObject(i), this.tileWidth, this.tileHeight));
+            this.tileSets[i] = new TileSet(tileSets.getJsonObject(i), this.tileWidth, this.tileHeight);
         }
     }
 
     private void addLayers(JsonArray layers) {
         //todo: have this method add Layer objects
-        this.layers = new ArrayList<>();
+        this.layers = new Layer[layers.size()];
+        for (int i = 0; i < layers.size(); i++) {
+            this.layers[i] = new Layer(layers.getJsonObject(i), this.tileSets);
+        }
     }
 
     @Override

@@ -10,8 +10,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class Layer {
-    private JsonArray data;
-    private BufferedImage image;
+    private Tile[] tiles;
+    private TileSet[] tileSets;
     private String name;
     private int height; // can be same as map
     private int width; //can be same as map
@@ -27,23 +27,17 @@ public class Layer {
     private double offsetY; //default = 0
 
     /**
-     * todo: full documentation, object layer support, map support
-     *
-     * @param jsonLayer This JsonObject can be obtained from TiledReader.readLayer()
+     * Represents a layer that consists of Tile objects.
+     * @param jsonLayer Given by the Map object upon creation.
+     * @param tileSets Given by the Map object upon creation.
      */
-    public Layer(JsonObject jsonLayer) {
+    public Layer(JsonObject jsonLayer, TileSet[] tileSets) {
         if (jsonLayer.getString("type").equals("tilelayer")) {
-            try {
-                File imageFile = new File(this.getClass().getResource("tiled/error/") + jsonLayer.getString("image") + ".bmp"); //todo: fix, decide load path
-                System.out.println("Attempting to load from: " + imageFile);
-                this.image = ImageIO.read(imageFile);
-            } catch (IOException exception) {
-                System.out.println("Image loading failed!");
-            }
+            this.tileSets = tileSets;
             this.name = jsonLayer.getString("name");
             this.height = jsonLayer.getInt("height");
             this.width = jsonLayer.getInt("width");
-            this.addData();
+            this.addTiles(jsonLayer.getJsonArray("data"));
             this.drawOrder = jsonLayer.getString("draworder", "topdown");
             this.encoding = jsonLayer.getString("encoding", "csv");
             this.id = jsonLayer.getInt("id");
@@ -60,26 +54,51 @@ public class Layer {
                 this.offsetY = 0;
             }
         } else {
-            System.out.println("You tried loading a non-layer file into a layer object!");
+            System.out.println("You tried loading a non-tilelayer file into a tilelayer object!");
         }
     }
 
     public void draw(FXGraphics2D graphics) {
-        //todo: make draw method
+        for (Tile tile : this.tiles) {
+            tile.draw(graphics);
+        }
     }
 
-//    /**
-//     * Adds the properties from the json file
-//     *
-//     * @param jsonLayer This JsonObject can be obtained in the constructor
-//     */
-//    private void addProperties(JsonObject jsonLayer) {
-//        this.properties = new ArrayList<>();
-//        JsonArray jsonArray = jsonLayer.getJsonArray("properties");
-//        for (int i = 0; i < jsonArray.size(); i++) {
-//            this.properties.add(jsonArray.getString(i));
-//        }
-//    }
+    /**
+     * First it calculates what size the tiles array needs to be. Then it fills the array with new Tile objects.
+     *
+     */
+    private void addTiles(JsonArray data) {
+        int tileCount = 0;
+        for (int i = 0; i < data.size(); i++) {
+            if (data.getInt(i) != 0) {
+                tileCount ++;
+            }
+        }
+        this.tiles = new Tile[tileCount];
+
+        int tileIndex = 0;
+        int dataIndex = 0;
+        for (int y = 0; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                if (data.getInt(dataIndex) != 0) {
+
+                    for (int i = 0; i < this.tileSets.length - 1; i++) {
+                        if (data.getInt(dataIndex) < this.tileSets[i+1].getFirstGlobalId()) {
+                            this.tiles[tileIndex] = new Tile(
+                                    this.tileSets[i].getSubImages()[data.getInt(dataIndex + 1) - this.tileSets[i].getFirstGlobalId()],
+                                    x, y, this.tileSets[i].getTileWidth(), this.tileSets[i].getTileHeight());
+                        } //todo: fix out of bounds error
+                    }
+                    tileIndex++;
+                    //todo: adds tiles from last layer
+                }
+                dataIndex++;
+            }
+        }
+
+
+    }
 
     private void addData() {
         //todo: create addData method
@@ -88,8 +107,6 @@ public class Layer {
     @Override
     public String toString() {
         return "Layer{" +
-                "data=" + data +
-                ", image=" + image +
                 ", name='" + name + '\'' +
                 ", height=" + height +
                 ", width=" + width +

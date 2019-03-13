@@ -9,6 +9,7 @@ import java.util.List;
 
 public class TileSet {
     private BufferedImage image;
+    private int firstGlobalId;
     private int imageHeight;
     private int imageWidth;
     private int margin;
@@ -16,6 +17,7 @@ public class TileSet {
     private int tileHeight;
     private int tileWidth;
     private List<Tile> tiles;
+    private BufferedImage[] subImages;
 
     /**
      * Represents a tileset. Contains a list of the types of tiles it has.
@@ -31,6 +33,7 @@ public class TileSet {
             System.out.println("Image loading failed!");
             exception.printStackTrace();
         }
+        this.firstGlobalId = jsonTileSet.getInt("firstgid");
         this.imageWidth = this.image.getWidth();
         this.imageHeight = this.image.getHeight();
         this.margin = jsonTileSet.getInt("margin", 0);
@@ -38,32 +41,48 @@ public class TileSet {
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
         this.tiles = new ArrayList<>();
-        this.addTiles();
+        this.addSubImages();
     }
 
     /**
      * Adds all of the tiles to the tiles list
      */
-    private void addTiles() {
+    private void addSubImages() {
+        int imageCount = 0;
         for (int y = 0; y < this.imageHeight; y += this.tileHeight) {
             for (int x = 0; x < this.imageWidth; x += this.imageWidth) {
-                this.tiles.add(new Tile(this.image.getSubimage(x, y, this.tileWidth, this.tileHeight)));
+                imageCount++;
             }
         }
+        this.subImages = new BufferedImage[imageCount];
 
-//        int rows = imageHeight / tileHeight; //todo: test
-//        int columns = imageWidth / tileWidth; //todo: test
-//        for (int i = 0; i < rows * columns; i++) {
-//            this.tiles.add(new Tile(this.image.getSubimage(
-//                    this.tileWidth * (i % columns),
-//                    this.tileHeight * (i / rows),
-//                    this.tileWidth,
-//                    this.tileHeight)));
-//        }
+        int imageIndex = 0;
+        for (int y = 0; y < this.imageHeight; y += this.tileHeight) {
+            for (int x = 0; x < this.imageWidth; x += this.imageWidth) {
+                this.subImages[imageIndex] = this.image.getSubimage(x, y, this.imageWidth, this.tileHeight);
+                imageIndex++;
+            }
+        }
     }
 
     public List<Tile> getTiles() {
         return tiles;
+    }
+
+    public int getFirstGlobalId() {
+        return firstGlobalId;
+    }
+
+    public BufferedImage[] getSubImages() {
+        return subImages;
+    }
+
+    public int getTileHeight() {
+        return tileHeight;
+    }
+
+    public int getTileWidth() {
+        return tileWidth;
     }
 
     @Override
