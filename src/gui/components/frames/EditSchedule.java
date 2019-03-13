@@ -20,9 +20,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.xml.crypto.Data;
+import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -52,6 +57,7 @@ public class EditSchedule extends Sizeable {
     private Label labelTeacher;
     private Label labelRoom;
     private Label labelSubject;
+    private Label labelInfo;
     private TextField tfGroup;
     private TextField tfTeacher;
     private TextField tfRoom;
@@ -78,10 +84,8 @@ public class EditSchedule extends Sizeable {
     private Button buttonDeleteRoom;
     private Button buttonDeleteSubject;
     private Button buttonClearAll;
+    private Button buttonLoadPreset;
     private int buttonWidth;
-
-
-
 
     public EditSchedule(Stage stage) {
         this.borderPane = new BorderPane();
@@ -100,6 +104,7 @@ public class EditSchedule extends Sizeable {
         this.labelTeacher = new Label("Teacher:");
         this.labelRoom = new Label("Room:");
         this.labelSubject = new Label("Subject:");
+        this.labelInfo = new Label("");
 
         this.tfGroup = new TextField();
         this.tfTeacher = new TextField();
@@ -122,13 +127,14 @@ public class EditSchedule extends Sizeable {
         this.buttonAddSubject = new Button("Add Subject");
         this.buttonAddTeacher = new Button("Add Teacher");
         this.buttonAddRoom = new Button("Add Room");
-        this.buttonClearAll = new Button("Clear all");
-
 
         this.buttonDeleteGroup = new Button("Delete Group");
         this.buttonDeleteRoom = new Button("Delete Room");
         this.buttonDeleteSubject = new Button("Delete Subject");
         this.buttonDeleteTeacher = new Button("Delete Teacher");
+
+        this.buttonClearAll = new Button("Clear all data");
+        this.buttonLoadPreset = new Button("Load preset");
 
         EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
         this.timeComboBox.setItems(this.timeOptions);
@@ -169,20 +175,21 @@ public class EditSchedule extends Sizeable {
 
         this.vBox.setSpacing(5);
 
-        this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup,this.buttonDeleteGroup);
-        this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject,this.buttonDeleteSubject);
-        this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher,this.buttonDeleteTeacher);
-        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom, this.buttonAddRoom,this.buttonDeleteRoom);
+        this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup, this.buttonDeleteGroup);
+        this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject, this.buttonDeleteSubject);
+        this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher, this.buttonDeleteTeacher);
+        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom);
+        //this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom, this.buttonAddRoom, this.buttonDeleteRoom);
         this.hBox5.getChildren().addAll(this.labelTime, this.timeComboBox);
-        this.hBox6.getChildren().addAll(this.buttonAddSchedule,this.buttonClearAll);
+        this.hBox6.getChildren().addAll(this.buttonAddSchedule, this.buttonClearAll, this.buttonLoadPreset);
 
         this.buttonWidth = 150;
 
-        this.labelGroup.setMinWidth(buttonWidth/2);
-        this.labelTime.setMinWidth(buttonWidth/2);
-        this.labelTeacher.setMinWidth(buttonWidth/2);
-        this.labelSubject.setMinWidth(buttonWidth/2);
-        this.labelRoom.setMinWidth(buttonWidth/2);
+        this.labelGroup.setMinWidth(buttonWidth / 2);
+        this.labelTime.setMinWidth(buttonWidth / 2);
+        this.labelTeacher.setMinWidth(buttonWidth / 2);
+        this.labelSubject.setMinWidth(buttonWidth / 2);
+        this.labelRoom.setMinWidth(buttonWidth / 2);
 
         this.buttonAddGroup.setMinWidth(buttonWidth);
         this.buttonAddRoom.setMinWidth(buttonWidth);
@@ -225,7 +232,7 @@ public class EditSchedule extends Sizeable {
                         room = r;
                     }
                 }
-                isAvailableThisTime = isAvailableThisTime(teacher,room,this.getHour(this.timeComboBox.getValue().toString()),group);
+                isAvailableThisTime = isAvailableThisTime(teacher, room, this.getHour(this.timeComboBox.getValue().toString()), group);
 
                 Schedule schedule = new Schedule(
                         this.getHour(this.timeComboBox.getValue().toString()),
@@ -235,9 +242,7 @@ public class EditSchedule extends Sizeable {
                         subject
                 );
 
-                System.out.println("" + this.getHour(this.timeComboBox.getValue().toString()) + group + room + teacher + subject);
-
-                if (!isDuplicateSchedule(this.school,schedule) && isAvailableThisTime) {
+                if (!isDuplicateSchedule(this.school, schedule) && isAvailableThisTime) {
                     room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
                     teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
                     group.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
@@ -245,6 +250,10 @@ public class EditSchedule extends Sizeable {
                     this.school.addSchedule(schedule);
                     DataWriter.writeSchool(school);
                     school = DataReader.readSchool();
+
+                    displayInfoMessage(false, "Schedule added succesfully.");
+                } else {
+                    displayInfoMessage(true, "Failed to add new schedule.");
                 }
             }
         });
@@ -252,77 +261,111 @@ public class EditSchedule extends Sizeable {
         this.buttonClearAll.setOnAction(event -> {
             this.school = new School("School");
             DataWriter.writeSchool(school);
+            this.school = DataReader.readSchool();
+            displayInfoMessage(true, "All data is cleared.");
+        });
+
+        this.buttonLoadPreset.setOnAction(event -> {
+            File presetFile = new File("saves/school/preset.txt");
+            if (presetFile.exists()) {
+                this.school = DataReader.readPreset();
+                DataWriter.writeSchool(this.school);
+                displayInfoMessage(false, "Preset loaded.");
+            } else {
+                displayInfoMessage(true, "Preset not found.");
+            }
+
         });
 
         this.buttonAddGroup.setOnAction(event -> {
-            if (!this.groupOptions.contains(this.tfGroup.getText())) {
+            if (!this.groupOptions.contains(this.tfGroup.getText()) && !this.tfGroup.getText().isEmpty()) {
                 this.school.getGroups().add(new Group(this.tfGroup.getText()));
                 this.groupOptions.add(this.tfGroup.getText());
                 this.tfGroup.clear();
                 DataWriter.writeSchool(school);
+                displayInfoMessage(false, "Group added succesfully.");
+            } else {
+                displayInfoMessage(true, "Couldn't add Group.");
             }
         });
 
         this.buttonAddTeacher.setOnAction(event -> {
-            if (!this.teacherOptions.contains(this.tfTeacher.getText())) {
+            if (!this.teacherOptions.contains(this.tfTeacher.getText()) && !this.tfTeacher.getText().isEmpty()) {
                 this.school.getTeachers().add(new Teacher(this.tfTeacher.getText()));
                 this.teacherOptions.add(this.tfTeacher.getText());
                 this.tfTeacher.clear();
                 DataWriter.writeSchool(school);
+                displayInfoMessage(false, "Teacher added succesfully.");
+            } else {
+                displayInfoMessage(true, "Couldn't add Teacher.");
             }
         });
 
         this.buttonAddSubject.setOnAction(event -> {
-            if (!this.subjectOptions.contains(this.tfSubject.getText())) {
+            if (!this.subjectOptions.contains(this.tfSubject.getText()) && !this.tfSubject.getText().isEmpty()) {
                 this.school.getSubjects().add(new Subject(this.tfSubject.getText()));
                 this.subjectOptions.add(this.tfSubject.getText());
                 this.tfSubject.clear();
                 DataWriter.writeSchool(school);
+                displayInfoMessage(false, "Subject added succesfully.");
+            } else {
+                displayInfoMessage(true, "Couldn't add Subject.");
             }
         });
 
         this.buttonAddRoom.setOnAction(event -> {
-            if (!this.roomOptions.contains(this.tfRoom.getText())) {
+            if (!this.roomOptions.contains(this.tfRoom.getText()) && !this.tfRoom.getText().isEmpty()) {
                 this.school.getRooms().add(new Classroom(this.tfRoom.getText()));
                 this.roomOptions.add(this.tfRoom.getText());
                 this.tfRoom.clear();
                 DataWriter.writeSchool(school);
+                displayInfoMessage(false, "Room added succesfully.");
+            } else {
+                displayInfoMessage(true, "Couldn't add Room.");
             }
         });
 
         this.buttonDeleteTeacher.setOnAction(event -> {
             if (!this.teacherComboBox.getSelectionModel().isEmpty()) {
-                System.out.println(teacherComboBox.getSelectionModel().getSelectedIndex());
                 this.school.getTeachers().remove(this.teacherComboBox.getSelectionModel().getSelectedIndex());
                 this.teacherOptions.remove(this.teacherComboBox.getSelectionModel().getSelectedIndex());
                 DataWriter.writeSchool(school);
+                displayInfoMessage(false, "Teacher deleted succesfully.");
+            } else {
+                displayInfoMessage(true, "Couldn't delete Teacher.");
             }
         });
 
         this.buttonDeleteGroup.setOnAction(event -> {
             if (!this.groupComboBox.getSelectionModel().isEmpty()) {
-                System.out.println(groupComboBox.getSelectionModel().getSelectedIndex());
                 this.school.getGroups().remove(this.groupComboBox.getSelectionModel().getSelectedIndex());
                 this.groupOptions.remove(this.groupComboBox.getSelectionModel().getSelectedIndex());
                 DataWriter.writeSchool(school);
+                displayInfoMessage(false, "Group deleted succesfully.");
+            } else {
+                displayInfoMessage(true, "Couldn't delete group.");
             }
         });
 
         this.buttonDeleteRoom.setOnAction(event -> {
             if (!this.roomComboBox.getSelectionModel().isEmpty()) {
-                System.out.println(roomComboBox.getSelectionModel().getSelectedIndex());
                 this.school.getRooms().remove(this.roomComboBox.getSelectionModel().getSelectedIndex());
                 this.roomOptions.remove(this.roomComboBox.getSelectionModel().getSelectedIndex());
                 DataWriter.writeSchool(school);
+                displayInfoMessage(false, "Room deleted succesfully.");
+            } else {
+                displayInfoMessage(true, "Couldn't delete Room.");
             }
         });
 
         this.buttonDeleteSubject.setOnAction(event -> {
             if (!this.subjectComboBox.getSelectionModel().isEmpty()) {
-                System.out.println(subjectComboBox.getSelectionModel().getSelectedIndex());
                 this.school.getSubjects().remove(this.subjectComboBox.getSelectionModel().getSelectedIndex());
                 this.subjectOptions.remove(this.subjectComboBox.getSelectionModel().getSelectedIndex());
                 DataWriter.writeSchool(school);
+                displayInfoMessage(false, "Subject deleted succesfully.");
+            } else {
+                displayInfoMessage(true, "Couldn't delete Subject.");
             }
         });
 
@@ -332,7 +375,8 @@ public class EditSchedule extends Sizeable {
                 this.hBox3,
                 this.hBox4,
                 this.hBox5,
-                this.hBox6
+                this.hBox6,
+                this.labelInfo
         );
 
         this.borderPane.setTop(this.vBox);
@@ -380,5 +424,14 @@ public class EditSchedule extends Sizeable {
         } else {
             return true;
         }
+    }
+
+    private void displayInfoMessage(Boolean color, String text) {
+        if (color) {
+            this.labelInfo.setTextFill(Color.web("#FF0000")); //Red
+        } else {
+            this.labelInfo.setTextFill(Color.web("#228B22")); //Green
+        }
+        this.labelInfo.setText(text);
     }
 }
