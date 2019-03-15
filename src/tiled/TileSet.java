@@ -4,10 +4,10 @@ import javax.imageio.ImageIO;
 import javax.json.JsonObject;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+/**
+ * TileSet keeps tile-sized images created from the tileset image. It also has other imformation needed to properly create Tile objects.
+ */
 public class TileSet {
     private BufferedImage image;
     private int firstGlobalId;
@@ -20,13 +20,15 @@ public class TileSet {
     private BufferedImage[] subImages;
 
     /**
-     * Represents a tileset. Contains a list of the types of tiles it has.
+     * Creates a tileset and executes addSubImages() to save all of the tile images.
      *
-     * @param jsonTileSet This JsonObject can be obtained from TiledReader.readTileSet()
+     * @param jsonTileSet Given by Map when it creates a TileSet.
+     * @param tileWidth   The width of a tile in pixels. Given by the Map when it creates a TileSet.
+     * @param tileHeight  The height of a tile in pixels. Given by the Map when it creates a TileSet.
      */
     public TileSet(JsonObject jsonTileSet, int tileWidth, int tileHeight) {
         try {
-            BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/tiles/tilesets/"+jsonTileSet.getString("link")));
+            BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/tiles/tilesets/" + jsonTileSet.getString("link")));
             System.out.println("Attempting to load image");
             this.image = image;
         } catch (IOException exception) {
@@ -44,7 +46,8 @@ public class TileSet {
     }
 
     /**
-     * Calculates the amount of tiles that would fit in the spritesheet. Then creates an array with that size
+     * Calculates the amount of tiles that would fit in the tileset image, to create an array with that size.
+     * Then fills that array with the tile images found in the tileset image.
      */
     private void addSubImages() {
         int imageCount = 0;

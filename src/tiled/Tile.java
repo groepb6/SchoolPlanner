@@ -5,6 +5,9 @@ import org.jfree.fx.FXGraphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+/**
+ * Represents a tile that can be drawn to create a map.
+ */
 public class Tile {
     private BufferedImage image;
     private int mapX;
@@ -13,9 +16,13 @@ public class Tile {
     private int tileHeight;
 
     /**
-     * Represents a single type of tile.
+     * Creates a Tile object.
      *
-     * @param image A subimage recieved from the TileSet
+     * @param image      A BufferedImage obtained from the TileSet.
+     * @param mapX       The X position the tile has on the map, regardless of tile size.
+     * @param mapY       The Y position the tile has on the map, regardless of tile size.
+     * @param tileWidth  The amount of pixels the tile reaches in width in the TileSet.
+     * @param tileHeight The amount of pixels the tile reaches in height in the TileSet.
      */
     public Tile(BufferedImage image, int mapX, int mapY, int tileWidth, int tileHeight) {
         this.image = image;
@@ -25,9 +32,14 @@ public class Tile {
         this.tileHeight = tileHeight;
     }
 
-    public void draw(FXGraphics2D graphics) {
+    /**
+     * Draws a single Tile.
+     *
+     * @param graphics A parameter given by Layer when it creates a Tile object.
+     */
+    public void draw(FXGraphics2D graphics) { //Todo: test
         AffineTransform transform = new AffineTransform();
-        transform.setToTranslation(this.mapX*this.tileWidth,this.mapY*this.tileHeight);
+        transform.setToTranslation(this.mapX * this.tileWidth, this.mapY * this.tileHeight);
         graphics.drawImage(image, transform, null);
     }
 

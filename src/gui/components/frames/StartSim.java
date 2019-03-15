@@ -8,4 +8,5 @@ package gui.components.frames;
  */
 
 public class StartSim {
+    //TODO: Draw the map
 }

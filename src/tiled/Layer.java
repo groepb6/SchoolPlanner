@@ -2,13 +2,12 @@ package tiled;
 
 import org.jfree.fx.FXGraphics2D;
 
-import javax.imageio.ImageIO;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
+/**
+ * Layer creates and keeps the Tile objects it is supposed to have, so that each layer can be drawn separately.
+ */
 public class Layer {
     private Tile[] tiles;
     private TileSet[] tileSets;
@@ -27,9 +26,12 @@ public class Layer {
     private double offsetY; //default = 0
 
     /**
-     * Represents a layer that consists of Tile objects.
-     * @param jsonLayer Given by the Map object upon creation.
-     * @param tileSets Given by the Map object upon creation.
+     * Creates a Layer object.
+     * Executes the addTiles method in order to create the Tile objects.
+     * This constructor does not allow for the creation of object layers, even though they are included in the JsonArray of layers.
+     *
+     * @param jsonLayer Given by the Map when it creates a Layer object.
+     * @param tileSets  Given by the Map when it creates a Layer object.
      */
     public Layer(JsonObject jsonLayer, TileSet[] tileSets) {
         if (jsonLayer.getString("type").equals("tilelayer")) {
@@ -58,6 +60,11 @@ public class Layer {
         }
     }
 
+    /**
+     * Executes the draw method of each Tile contained in this object.
+     *
+     * @param graphics A parameter given by Map when it creates a Layer object.
+     */
     public void draw(FXGraphics2D graphics) {
         for (Tile tile : this.tiles) {
             tile.draw(graphics);
@@ -65,14 +72,18 @@ public class Layer {
     }
 
     /**
-     * First it calculates what size the tiles array needs to be. Then it fills the array with new Tile objects.
+     * Calculates the amount of non-empty tiles that the data of this layer contains, to create an array with that size.
+     * Goes through the height and width of this Layer in order to add all of the tiles the Layer is supposed to have.
+     * Checks for each TileSet if the tile data is higher than the current firstGlobalId and lower than the next.
+     * Then adds a new Tile using the image from the appropriate TileSet.
      *
+     * @param data
      */
     private void addTiles(JsonArray data) {
         int tileCount = 0;
         for (int i = 0; i < data.size(); i++) {
             if (data.getInt(i) != 0) {
-                tileCount ++;
+                tileCount++;
             }
         }
         this.tiles = new Tile[tileCount];
@@ -84,7 +95,7 @@ public class Layer {
                 if (data.getInt(dataIndex) != 0) {
 
                     for (int i = 0; i < this.tileSets.length - 1; i++) {
-                        if (data.getInt(dataIndex) > this.tileSets[i].getFirstGlobalId() && data.getInt(dataIndex) < this.tileSets[i+1].getFirstGlobalId()) { //checking if between current and next
+                        if (data.getInt(dataIndex) > this.tileSets[i].getFirstGlobalId() && data.getInt(dataIndex) < this.tileSets[i + 1].getFirstGlobalId()) { //checking if between current and next
                             this.tiles[tileIndex] = new Tile(
                                     this.tileSets[i].getSubImages()[data.getInt(dataIndex) - this.tileSets[i].getFirstGlobalId()],
                                     x, y, this.tileSets[i].getTileWidth(), this.tileSets[i].getTileHeight());
