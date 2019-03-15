@@ -5,6 +5,7 @@ import javax.json.JsonObject;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TileSet {
@@ -16,7 +17,6 @@ public class TileSet {
     private int spacing;
     private int tileHeight;
     private int tileWidth;
-    private List<Tile> tiles;
     private BufferedImage[] subImages;
 
     /**
@@ -40,17 +40,16 @@ public class TileSet {
         this.spacing = jsonTileSet.getInt("spacing", 0);
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
-        this.tiles = new ArrayList<>();
         this.addSubImages();
     }
 
     /**
-     * Adds all of the tiles to the tiles list
+     * Calculates the amount of tiles that would fit in the spritesheet. Then creates an array with that size
      */
     private void addSubImages() {
         int imageCount = 0;
         for (int y = 0; y < this.imageHeight; y += this.tileHeight) {
-            for (int x = 0; x < this.imageWidth; x += this.imageWidth) {
+            for (int x = 0; x < this.imageWidth; x += this.tileWidth) {
                 imageCount++;
             }
         }
@@ -63,10 +62,6 @@ public class TileSet {
                 imageIndex++;
             }
         }
-    }
-
-    public List<Tile> getTiles() {
-        return tiles;
     }
 
     public int getFirstGlobalId() {
@@ -89,13 +84,14 @@ public class TileSet {
     public String toString() {
         return "TileSet{" +
                 "image=" + image +
+                ", firstGlobalId=" + firstGlobalId +
                 ", imageHeight=" + imageHeight +
                 ", imageWidth=" + imageWidth +
                 ", margin=" + margin +
                 ", spacing=" + spacing +
                 ", tileHeight=" + tileHeight +
                 ", tileWidth=" + tileWidth +
-                ", tiles=" + tiles +
+                ", subImages=" + subImages.length +
                 '}';
     }
 }
