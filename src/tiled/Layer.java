@@ -84,11 +84,12 @@ public class Layer {
                 if (data.getInt(dataIndex) != 0) {
 
                     for (int i = 0; i < this.tileSets.length - 1; i++) {
-                        if (data.getInt(dataIndex) < this.tileSets[i+1].getFirstGlobalId()) {
+                        if (data.getInt(dataIndex) > this.tileSets[i].getFirstGlobalId() && data.getInt(dataIndex) < this.tileSets[i+1].getFirstGlobalId()) { //checking if between current and next
                             this.tiles[tileIndex] = new Tile(
-                                    this.tileSets[i].getSubImages()[data.getInt(dataIndex + 1) - this.tileSets[i].getFirstGlobalId()],
+                                    this.tileSets[i].getSubImages()[data.getInt(dataIndex) - this.tileSets[i].getFirstGlobalId()],
                                     x, y, this.tileSets[i].getTileWidth(), this.tileSets[i].getTileHeight());
-                        } //todo: fix out of bounds error
+
+                        }
                     }
                     tileIndex++;
                     //todo: adds tiles from last layer
@@ -97,11 +98,7 @@ public class Layer {
             }
         }
 
-
-    }
-
-    private void addData() {
-        //todo: create addData method
+        System.out.println(this.tiles.length);
     }
 
     @Override

@@ -31,4 +31,14 @@ public class Tile {
         graphics.drawImage(image, transform, null);
     }
 
+    @Override
+    public String toString() {
+        return "Tile{" +
+                "image=" + image +
+                ", mapX=" + mapX +
+                ", mapY=" + mapY +
+                ", tileWidth=" + tileWidth +
+                ", tileHeight=" + tileHeight +
+                '}';
+    }
 }

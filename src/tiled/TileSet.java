@@ -57,8 +57,8 @@ public class TileSet {
 
         int imageIndex = 0;
         for (int y = 0; y < this.imageHeight; y += this.tileHeight) {
-            for (int x = 0; x < this.imageWidth; x += this.imageWidth) {
-                this.subImages[imageIndex] = this.image.getSubimage(x, y, this.imageWidth, this.tileHeight);
+            for (int x = 0; x < this.imageWidth; x += this.tileWidth) {
+                this.subImages[imageIndex] = this.image.getSubimage(x, y, this.tileWidth, this.tileHeight);
                 imageIndex++;
             }
         }
