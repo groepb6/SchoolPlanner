@@ -103,13 +103,13 @@ public class Layer {
                         }
                     }
                     tileIndex++;
-                    //todo: adds tiles from last layer
+                    //todo: adds tiles from last tileset
                 }
                 dataIndex++;
             }
         }
 
-        System.out.println(this.tiles.length);
+
     }
 
     @Override

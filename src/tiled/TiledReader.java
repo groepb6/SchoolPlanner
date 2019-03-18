@@ -13,7 +13,7 @@ public class TiledReader {
     /**
      * Obtains the JsonObject from a .json file located in the project resources under /tiles/maps/...
      * The .json file should be a map file from Tiled.exe.
-     * This JsonObject is used to create a Map object in the constructor of Mpa.
+     * This JsonObject is used to create a Map object in the constructor of Map.
      *
      * @param fileName The file name of the json file
      * @return a JsonObject that can be used in the constructor of Map
