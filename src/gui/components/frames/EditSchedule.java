@@ -14,10 +14,7 @@ import data.schoolrelated.Subject;
 import gui.components.window.Sizeable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -184,7 +181,7 @@ public class EditSchedule extends Sizeable {
         this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
     }
 
-    private void setComboBox(){
+    private void setComboBox() {
         EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
         this.timeComboBox.setItems(this.timeOptions);
         this.timeComboBox.setMinWidth(150);
@@ -219,76 +216,83 @@ public class EditSchedule extends Sizeable {
 
     private void setActions() {
         this.buttonAddSchedule.setOnAction(event -> {
-            if (!groupComboBox.getSelectionModel().isEmpty() &&
-                    !roomComboBox.getSelectionModel().isEmpty() &&
-                    !timeComboBox.getSelectionModel().isEmpty() &&
-                    !teacherComboBox.getSelectionModel().isEmpty() &&
-                    !subjectComboBox.getSelectionModel().isEmpty()) {                                                   // This checks if none of the comboboxes are empty
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to add this schedule?", ButtonType.YES, ButtonType.CANCEL);
+            alert.setHeaderText("");
+            alert.setTitle("Confirm");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
 
-                /**
-                 * All the comboboxes get filled from the school object
-                 */
+                if (!groupComboBox.getSelectionModel().isEmpty() &&
+                        !roomComboBox.getSelectionModel().isEmpty() &&
+                        !timeComboBox.getSelectionModel().isEmpty() &&
+                        !teacherComboBox.getSelectionModel().isEmpty() &&
+                        !subjectComboBox.getSelectionModel().isEmpty()) {                                                   // This checks if none of the comboboxes are empty
 
-                Group group = new Group("temp");
-                for (Group g : this.school.getGroups()) {
-                    if (g.getName().equals(groupComboBox.getValue().toString())) {
-                        group = g;
+                    /**
+                     * All the comboboxes get filled from the school object
+                     */
+
+                    Group group = new Group("temp");
+                    for (Group g : this.school.getGroups()) {
+                        if (g.getName().equals(groupComboBox.getValue().toString())) {
+                            group = g;
+                        }
                     }
-                }
 
-                Teacher teacher = new Teacher("temp");
-                for (Person t : this.school.getTeachers()) {
-                    if (t.getName().equals(teacherComboBox.getValue().toString())) {
-                        teacher = (Teacher) t;
+                    Teacher teacher = new Teacher("temp");
+                    for (Person t : this.school.getTeachers()) {
+                        if (t.getName().equals(teacherComboBox.getValue().toString())) {
+                            teacher = (Teacher) t;
+                        }
                     }
-                }
 
-                Subject subject = new Subject("temp");
-                for (Subject s : this.school.getSubjects()) {
-                    if (s.getName().equals(subjectComboBox.getValue().toString())) {
-                        subject = s;
+                    Subject subject = new Subject("temp");
+                    for (Subject s : this.school.getSubjects()) {
+                        if (s.getName().equals(subjectComboBox.getValue().toString())) {
+                            subject = s;
+                        }
                     }
-                }
 
-                Room room = new Classroom("temp");
-                for (Room r : this.school.getRooms()) {
-                    if (r.getName().equals(roomComboBox.getValue().toString())) {
-                        room = r;
+                    Room room = new Classroom("temp");
+                    for (Room r : this.school.getRooms()) {
+                        if (r.getName().equals(roomComboBox.getValue().toString())) {
+                            room = r;
+                        }
                     }
-                }
 
-                /**
-                 * Boolean isAvailableThisTime tells the program whether the schedule that is about to be created conflicts with any existing hours planned by the Room, Teacher and Group.
-                 */
+                    /**
+                     * Boolean isAvailableThisTime tells the program whether the schedule that is about to be created conflicts with any existing hours planned by the Room, Teacher and Group.
+                     */
 
-                boolean isAvailableThisTime = true;
-                isAvailableThisTime = isAvailableThisTime(teacher, room, this.getHour(this.timeComboBox.getValue().toString()), group);
+                    boolean isAvailableThisTime = true;
+                    isAvailableThisTime = isAvailableThisTime(teacher, room, this.getHour(this.timeComboBox.getValue().toString()), group);
 
-                Schedule schedule = new Schedule(
-                        this.getHour(this.timeComboBox.getValue().toString()),
-                        group,
-                        room,
-                        teacher,
-                        subject
-                );
+                    Schedule schedule = new Schedule(
+                            this.getHour(this.timeComboBox.getValue().toString()),
+                            group,
+                            room,
+                            teacher,
+                            subject
+                    );
 
-                /**
-                 * This if-statement implements the schedule into the schoolobject, and writes it to the file.
-                 * It only does this when isAvailable is True and isDuplicateSchedule is false
-                 */
+                    /**
+                     * This if-statement implements the schedule into the schoolobject, and writes it to the file.
+                     * It only does this when isAvailable is True and isDuplicateSchedule is false
+                     */
 
-                if (!isDuplicateSchedule(this.school, schedule) && isAvailableThisTime) {
-                    room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
-                    teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
-                    group.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                    if (!isDuplicateSchedule(this.school, schedule) && isAvailableThisTime) {
+                        room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                        teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                        group.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
 
-                    this.school.addSchedule(schedule);
-                    DataWriter.writeSchool(school);
-                    school = DataReader.readSchool();
+                        this.school.addSchedule(schedule);
+                        DataWriter.writeSchool(school);
+                        school = DataReader.readSchool();
 
-                    displayInfoMessage(false, "Schedule added succesfully.");
-                } else {
-                    displayInfoMessage(true, "Failed to add new schedule.");
+                        displayInfoMessage(false, "Schedule added succesfully.");
+                    } else {
+                        displayInfoMessage(true, "Failed to add new schedule.");
+                    }
                 }
             }
         });
@@ -297,33 +301,50 @@ public class EditSchedule extends Sizeable {
          * This buttonAction clears the complete data class.
          */
         this.buttonClearAll.setOnAction(event -> {
-            this.school.getGroups().clear();
-            this.school.getSubjects().clear();
-            this.school.getTeachers().clear();
-            this.school.getSchedules().clear();
-            DataWriter.writeSchool(school);
-            this.school = DataReader.readSchool();
-            displayInfoMessage(true, "All data is cleared.");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to erase all data?", ButtonType.YES, ButtonType.CANCEL);
+            alert.setHeaderText("");
+            alert.setTitle("Confirm");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                this.school.getGroups().clear();
+                this.school.getSubjects().clear();
+                this.school.getTeachers().clear();
+                this.school.getSchedules().clear();
+                DataWriter.writeSchool(school);
+                this.school = DataReader.readSchool();
+                displayInfoMessage(true, "All data is cleared.");
+            }
         });
 
         /**
          * This button checks if a presetfile exists and if it does, it loads it in.
          */
         this.buttonLoadPreset.setOnAction(event -> {
-            File presetFile = new File("saves/school/preset.txt");
-            if (presetFile.exists()) {
-                this.school = DataReader.readPreset();
-                DataWriter.writeSchool(this.school);
-                displayInfoMessage(false, "Preset loaded.");
-            } else {
-                displayInfoMessage(true, "Preset not found.");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to load the preset?", ButtonType.YES, ButtonType.CANCEL);
+            alert.setHeaderText("");
+            alert.setTitle("Confirm");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                File presetFile = new File("saves/school/preset.txt");
+                if (presetFile.exists()) {
+                    this.school = DataReader.readPreset();
+                    DataWriter.writeSchool(this.school);
+                    displayInfoMessage(false, "Preset loaded.");
+                } else {
+                    displayInfoMessage(true, "Preset not found.");
+                }
             }
-
         });
 
         this.buttonSavePreset.setOnAction(event -> {
-            DataWriter.writePreset(this.school);
-            displayInfoMessage(false, "Preset loaded.");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to save the preset?", ButtonType.YES, ButtonType.CANCEL);
+            alert.setHeaderText("");
+            alert.setTitle("Confirm");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.YES) {
+                DataWriter.writePreset(this.school);
+                displayInfoMessage(false, "Preset saved.");
+            }
         });
 
         /**
