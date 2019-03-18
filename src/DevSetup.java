@@ -27,14 +27,8 @@ public class DevSetup {
      */
     public static void setupSaveDirectories() {
         try {
-            if (Files.notExists(Paths.get("saves/groups"))) {
-                Files.createDirectories(Paths.get("saves/groups"));
-            }
-            if (Files.notExists(Paths.get("saves/schedules"))) {
-                Files.createDirectories(Paths.get("saves/schedules"));
-            }
-            if (Files.notExists(Paths.get("saves/teachers"))) {
-                Files.createDirectories(Paths.get("saves/teachers"));
+            if (Files.notExists(Paths.get("saves/school"))) {
+                Files.createDirectories(Paths.get("saves/school"));
             }
         } catch (Exception exception) {
             System.out.println("Error, could not create save directories!");

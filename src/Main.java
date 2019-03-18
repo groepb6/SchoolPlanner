@@ -10,11 +10,12 @@ import static javafx.application.Application.launch;
 
 public class Main {
     public static void main (String args[]) {
-        File file = new File("saves/school/school.txt");
-        File presetFile = new File("saves/school/preset.txt");
+        DevSetup.setupEverything();
+        File fileSchool = new File("saves/school/school.txt");
+        File filePreset = new File("saves/school/preset.txt");
 
-        if (!file.exists()) {
-            if (presetFile.exists()) {
+        if (!fileSchool.exists()) {
+            if (filePreset.exists()) {
                 School school = DataReader.readPreset();
                 DataWriter.writeSchool(school);
             } else {
