@@ -47,7 +47,7 @@ public class SimUpdate {
         for (int i =0; i < 9; i++)
             simSkins.add(new SimSkin(SimSkin.Role.student, i)); // 0 was i
         for (int i = 0; i < 105; i++) {
-            sims.add(new Sim(new Point2D.Double(Math.random() * canvas.getWidth(), Math.random() * canvas.getHeight()), Person.Gender.MALE, g2d, simSkins.get((int) (Math.random() * simSkins.size()-1)), canvas));
+            sims.add(new Sim(new Point2D.Double(Math.random() * canvas.getWidth(), Math.random() * canvas.getHeight()), g2d, simSkins.get((int) (Math.random() * simSkins.size()-1)), canvas));
         }
     }
 

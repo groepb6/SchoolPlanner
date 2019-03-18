@@ -85,15 +85,14 @@ public class EditSchedule extends Sizeable {
     public EditSchedule(Stage stage) {
         super.setProportions(800, 2560, 0, 1080, 800, 500, stage);
         initStandardButtonBackground();
-        fixLayout();
-        EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
+        layoutSetup();
         setItems();
-        setSizes();
         setActions();
+        EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
         this.stage = stage;
     }
 
-    private void fixLayout() {
+    private void layoutSetup() {
         this.borderPane = new BorderPane();
         this.school = DataReader.readSchool();
 
@@ -150,19 +149,19 @@ public class EditSchedule extends Sizeable {
 
         this.vBox.setSpacing(5);
 
-        this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup,this.buttonDeleteGroup);
-        this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject,this.buttonDeleteSubject);
-        this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher,this.buttonDeleteTeacher);
+        this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup, this.buttonDeleteGroup);
+        this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject, this.buttonDeleteSubject);
+        this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher, this.buttonDeleteTeacher);
         this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox);
         this.hBox5.getChildren().addAll(this.labelTime, this.timeComboBox);
-        this.hBox6.getChildren().addAll(this.buttonAddSchedule,this.buttonClearAll);
+        this.hBox6.getChildren().addAll(this.buttonAddSchedule, this.buttonClearAll);
 
         this.buttonWidth = 150;
-        this.labelGroup.setMinWidth(buttonWidth/2.);
-        this.labelTime.setMinWidth(buttonWidth/2.);
-        this.labelTeacher.setMinWidth(buttonWidth/2.);
-        this.labelSubject.setMinWidth(buttonWidth/2.);
-        this.labelRoom.setMinWidth(buttonWidth/2.);
+        this.labelGroup.setMinWidth(buttonWidth / 2.);
+        this.labelTime.setMinWidth(buttonWidth / 2.);
+        this.labelTeacher.setMinWidth(buttonWidth / 2.);
+        this.labelSubject.setMinWidth(buttonWidth / 2.);
+        this.labelRoom.setMinWidth(buttonWidth / 2.);
         this.buttonAddGroup.setMinWidth(buttonWidth);
         this.buttonAddRoom.setMinWidth(buttonWidth);
         this.buttonAddTeacher.setMinWidth(buttonWidth);
@@ -171,6 +170,13 @@ public class EditSchedule extends Sizeable {
         this.buttonDeleteSubject.setMinWidth(buttonWidth);
         this.buttonDeleteRoom.setMinWidth(buttonWidth);
         this.buttonDeleteGroup.setMinWidth(buttonWidth);
+        this.subjectComboBox.setMinWidth(buttonWidth);
+        this.roomComboBox.setMinWidth(buttonWidth);
+        this.groupComboBox.setMinWidth(buttonWidth);
+        this.timeComboBox.setMinWidth(buttonWidth);
+        this.teacherComboBox.setMinWidth(buttonWidth);
+        this.teacherComboBox.setMaxWidth(buttonWidth);
+
 
         this.vBox.getChildren().addAll(
                 this.hBox1,
@@ -185,25 +191,22 @@ public class EditSchedule extends Sizeable {
         this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
     }
 
-    public BorderPane getEditSchedule() {
-        return this.borderPane;
-    }
-
     private void initStandardButtonBackground() {
         Button button = new Button("");
-        this.standardButton=button;
+        this.standardButton = button;
     }
 
     private void setItems() {
-        this.groupOptions=FXCollections.observableArrayList();
-        this.roomOptions=FXCollections.observableArrayList();
-        this.teacherOptions=FXCollections.observableArrayList();
-        this.subjectOptions=FXCollections.observableArrayList();
+        this.groupOptions = FXCollections.observableArrayList();
+        this.roomOptions = FXCollections.observableArrayList();
+        this.teacherOptions = FXCollections.observableArrayList();
+        this.subjectOptions = FXCollections.observableArrayList();
 
         this.timeComboBox.setItems(this.timeOptions);
         this.groupComboBox.setItems(this.groupOptions);
         this.teacherComboBox.setItems(this.teacherOptions);
         this.roomComboBox.setItems(this.roomOptions);
+        this.subjectComboBox.setItems(this.subjectOptions);
         this.subjectComboBox.setItems(this.subjectOptions);
 
         for (Group g : this.school.getGroups())
@@ -223,19 +226,6 @@ public class EditSchedule extends Sizeable {
         styleButton(buttonDeleteSubject);
         styleButton(buttonDeleteTeacher);
         styleButton(buttonDeleteGroup);
-    }
-
-    private void setSizes() {
-        this.timeComboBox.setMinWidth(150);
-        this.groupComboBox.setMinWidth(150);
-        this.teacherComboBox.setMinWidth(150);
-        this.roomComboBox.setMinWidth(150);
-        this.subjectComboBox.setMinWidth(150);
-        this.timeComboBox.setMaxWidth(150);
-        this.groupComboBox.setMaxWidth(150);
-        this.teacherComboBox.setMaxWidth(150);
-        this.roomComboBox.setMaxWidth(150);
-        this.subjectComboBox.setMaxWidth(150);
     }
 
     private void update() {
@@ -266,7 +256,7 @@ public class EditSchedule extends Sizeable {
                         }
                     }
 
-                    Teacher teacher = new Teacher("temp", Person.Gender.UNSPECIFIED);
+                    Teacher teacher = new Teacher("temp");
                     for (Person t : this.school.getTeachers()) {
                         if (t.getName().equals(teacherComboBox.getValue().toString())) {
                             teacher = (Teacher) t;
@@ -304,10 +294,11 @@ public class EditSchedule extends Sizeable {
                         DataWriter.writeSchool(school);
                         school = DataReader.readSchool();
                         addScheduleSucceed();
-                    }
-                    else addScheduleFailed("Your schedule was not added due to duplicate data, please check your input data");
+                    } else
+                        addScheduleFailed("Your schedule was not added due to duplicate data, please check your input data");
                 } else addScheduleFailed("Your schedule does not contain any data");
-            } else addScheduleFailed("You can not add a plan with an empty field, please make sure you have entered a value for every specification");
+            } else
+                addScheduleFailed("You can not add a plan with an empty field, please make sure you have entered a value for every specification");
         });
 
         this.buttonClearAll.setOnAction(event -> {
@@ -321,12 +312,12 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 school = DataReader.readSchool();
                 update();
-                showSuccesfullyCleared();
+                dataClearedSuccesfully();
             }
         });
 
         this.buttonAddGroup.setOnAction(event -> {
-            if (!this.groupOptions.contains(this.tfGroup.getText()) && this.tfGroup.getText()!=null && this.tfGroup.getText().length()>0) {
+            if (!this.groupOptions.contains(this.tfGroup.getText()) && this.tfGroup.getText() != null && this.tfGroup.getText().length() > 0) {
                 this.school.getGroups().add(new Group(this.tfGroup.getText()));
                 this.groupOptions.add(this.tfGroup.getText());
                 this.tfGroup.clear();
@@ -335,17 +326,9 @@ public class EditSchedule extends Sizeable {
             } else errorButton(buttonAddGroup);
         });
 
-        this.buttonAddGroup.setOnMouseExited(event -> {
-            styleButton(this.buttonAddGroup);
-        });
-
-        this.buttonAddGroup.setOnMouseEntered(event -> {
-            applyEffects(buttonAddGroup);
-        });
-
         this.buttonAddTeacher.setOnAction(event -> {
-            if (!this.teacherOptions.contains(this.tfTeacher.getText())&& this.tfGroup.getText()!=null && this.tfTeacher.getText().length()>0) {
-                this.school.getTeachers().add(new Teacher(this.tfTeacher.getText(), Person.Gender.UNSPECIFIED));
+            if (!this.teacherOptions.contains(this.tfTeacher.getText()) && this.tfGroup.getText() != null && this.tfTeacher.getText().length() > 0) {
+                this.school.getTeachers().add(new Teacher(this.tfTeacher.getText()));
                 this.teacherOptions.add(this.tfTeacher.getText());
                 this.tfTeacher.clear();
                 DataWriter.writeSchool(school);
@@ -353,16 +336,9 @@ public class EditSchedule extends Sizeable {
             } else errorButton(buttonAddTeacher);
         });
 
-        this.buttonAddTeacher.setOnMouseExited(event -> {
-           styleButton(buttonAddTeacher);
-        });
-
-        this.buttonAddTeacher.setOnMouseEntered(event -> {
-            applyEffects(buttonAddTeacher);
-        });
-
-        this.buttonAddSubject.setOnAction(event -> { ;
-            if (!this.subjectOptions.contains(this.tfSubject.getText())&& this.tfGroup.getText()!=null && this.tfSubject.getText().length()>0) {
+        this.buttonAddSubject.setOnAction(event -> {
+            ;
+            if (!this.subjectOptions.contains(this.tfSubject.getText()) && this.tfGroup.getText() != null && this.tfSubject.getText().length() > 0) {
                 this.school.getSubjects().add(new Subject(this.tfSubject.getText()));
                 this.subjectOptions.add(this.tfSubject.getText());
                 this.tfSubject.clear();
@@ -371,16 +347,9 @@ public class EditSchedule extends Sizeable {
             } else errorButton(buttonAddSubject);
         });
 
-        this.buttonAddSubject.setOnMouseExited(event -> {
-            styleButton(buttonAddSubject);
-        });
-
-        this.buttonAddSubject.setOnMouseEntered(event -> {
-            applyEffects(buttonAddSubject);
-        });
 
         this.buttonAddRoom.setOnAction(event -> {
-            if (!this.roomOptions.contains(this.tfRoom.getText())&& this.tfGroup.getText()!=null && this.tfRoom.getText().length()>0) {
+            if (!this.roomOptions.contains(this.tfRoom.getText()) && this.tfGroup.getText() != null && this.tfRoom.getText().length() > 0) {
                 this.school.getRooms().add(new Classroom(this.tfRoom.getText()));
                 this.roomOptions.add(this.tfRoom.getText());
                 this.tfRoom.clear();
@@ -389,13 +358,6 @@ public class EditSchedule extends Sizeable {
             } else errorButton(buttonAddRoom);
         });
 
-        this.buttonAddRoom.setOnMouseExited(event -> {
-            styleButton(buttonAddRoom);
-        });
-
-        this.buttonAddRoom.setOnMouseEntered(event -> {
-            applyEffects(buttonAddRoom);
-        });
 
         this.buttonDeleteTeacher.setOnAction(event -> {
             if (!this.teacherComboBox.getSelectionModel().isEmpty()) {
@@ -406,13 +368,6 @@ public class EditSchedule extends Sizeable {
             } else errorButton(buttonDeleteTeacher);
         });
 
-        this.buttonDeleteTeacher.setOnMouseExited(event -> {
-            styleButton(buttonDeleteTeacher);
-        });
-
-        this.buttonDeleteTeacher.setOnMouseEntered(event -> {
-            applyEffects(buttonDeleteTeacher);
-        });
 
         this.buttonDeleteGroup.setOnAction(event -> {
             if (!this.groupComboBox.getSelectionModel().isEmpty()) {
@@ -423,13 +378,6 @@ public class EditSchedule extends Sizeable {
             } else errorButton(buttonDeleteGroup);
         });
 
-        this.buttonDeleteGroup.setOnMouseExited(event -> {
-            styleButton(buttonDeleteGroup);
-        });
-
-        this.buttonDeleteGroup.setOnMouseEntered(event -> {
-            applyEffects(buttonDeleteGroup);
-        });
 
         this.buttonDeleteRoom.setOnAction(event -> {
             if (!this.roomComboBox.getSelectionModel().isEmpty()) {
@@ -440,13 +388,6 @@ public class EditSchedule extends Sizeable {
             } else errorButton(buttonDeleteRoom);
         });
 
-        this.buttonDeleteRoom.setOnMouseExited(event -> {
-            styleButton(buttonDeleteRoom);
-        });
-
-        this.buttonDeleteRoom.setOnMouseEntered(event -> {
-            applyEffects(buttonDeleteRoom);
-        });
 
         this.buttonDeleteSubject.setOnAction(event -> {
             if (!this.subjectComboBox.getSelectionModel().isEmpty()) {
@@ -455,6 +396,62 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 succeedButton(buttonDeleteSubject);
             } else errorButton(buttonDeleteSubject);
+        });
+
+        this.buttonAddGroup.setOnMouseExited(event -> {
+            styleButton(this.buttonAddGroup);
+        });
+
+        this.buttonAddGroup.setOnMouseEntered(event -> {
+            applyEffects(buttonAddGroup);
+        });
+
+        this.buttonAddTeacher.setOnMouseExited(event -> {
+            styleButton(buttonAddTeacher);
+        });
+
+        this.buttonAddTeacher.setOnMouseEntered(event -> {
+            applyEffects(buttonAddTeacher);
+        });
+
+        this.buttonAddSubject.setOnMouseExited(event -> {
+            styleButton(buttonAddSubject);
+        });
+
+        this.buttonAddSubject.setOnMouseEntered(event -> {
+            applyEffects(buttonAddSubject);
+        });
+
+        this.buttonAddRoom.setOnMouseExited(event -> {
+            styleButton(buttonAddRoom);
+        });
+
+        this.buttonAddRoom.setOnMouseEntered(event -> {
+            applyEffects(buttonAddRoom);
+        });
+
+        this.buttonDeleteTeacher.setOnMouseExited(event -> {
+            styleButton(buttonDeleteTeacher);
+        });
+
+        this.buttonDeleteTeacher.setOnMouseEntered(event -> {
+            applyEffects(buttonDeleteTeacher);
+        });
+
+        this.buttonDeleteGroup.setOnMouseExited(event -> {
+            styleButton(buttonDeleteGroup);
+        });
+
+        this.buttonDeleteGroup.setOnMouseEntered(event -> {
+            applyEffects(buttonDeleteGroup);
+        });
+
+        this.buttonDeleteRoom.setOnMouseExited(event -> {
+            styleButton(buttonDeleteRoom);
+        });
+
+        this.buttonDeleteRoom.setOnMouseEntered(event -> {
+            applyEffects(buttonDeleteRoom);
         });
 
         this.buttonDeleteSubject.setOnMouseExited(event -> {
@@ -482,7 +479,7 @@ public class EditSchedule extends Sizeable {
         alert.showAndWait();
     }
 
-    private void showSuccesfullyCleared() {
+    private void dataClearedSuccesfully() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your schedule has been cleared", ButtonType.CLOSE);
         setAlertPos(alert);
         alert.setHeaderText("");
@@ -491,13 +488,17 @@ public class EditSchedule extends Sizeable {
     }
 
     private void setAlertPos(Alert alert) {
-        alert.setX(stage.getX()+5);
-        alert.setY(stage.getY()+stage.getHeight()-137);
+        alert.setX(stage.getX() + 5);
+        alert.setY(stage.getY() + stage.getHeight() - 137);
     }
 
     private void styleButton(Button button) {
-        button.setEffect(null);
-        button.setBackground((new Background(new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY, Insets.EMPTY))));
+//       button.setEffect(null);
+//       button.setBackground(
+//               buttonAddSchedule.getBackground()
+//               //(new Background(new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY, Insets.EMPTY)))
+//       );
+
     }
 
     private void errorButton(Button button) {
@@ -535,5 +536,9 @@ public class EditSchedule extends Sizeable {
         } else {
             return true;
         }
+    }
+
+    public BorderPane getEditSchedule() {
+        return this.borderPane;
     }
 }

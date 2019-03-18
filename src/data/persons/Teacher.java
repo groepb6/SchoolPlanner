@@ -9,9 +9,8 @@ public class Teacher extends Person implements Serializable {
     private Subject subject;
     private ArrayList<Hour> hours;
 
-    public Teacher(String name, Gender gender) {
+    public Teacher(String name) {
         super(name);
-        super.setGender(gender);
         this.subject=subject;
         this.hours = new ArrayList<>();
     }

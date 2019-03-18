@@ -25,7 +25,7 @@ public class Group implements Serializable {
     }
 
     public void addStudents(String name, int id) {
-        this.students.add(new Student(name, Person.Gender.UNSPECIFIED));
+        this.students.add(new Student(name));
     }
 
     public String getName() {

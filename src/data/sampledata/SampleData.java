@@ -35,18 +35,18 @@ public class SampleData {
     }
 
     private void addTeachers() {
-        school.getTeachers().add(new Teacher("Johan Talboom", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Maurice Snoeren", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Etiënne Goossens", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Paul de Mast", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Peter Kailuhu", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Pieter Kop Jansen", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Genevieve Smid", Person.Gender.FEMALE));
-        school.getTeachers().add(new Teacher("Hans van der Linden", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Jessica van der Heijden", Person.Gender.FEMALE));
-        school.getTeachers().add(new Teacher("Jan Oostindie", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Bart Oerlemans", Person.Gender.MALE));
-        school.getTeachers().add(new Teacher("Paul Lindelauf", Person.Gender.MALE));
+        school.getTeachers().add(new Teacher("Johan Talboom"));
+        school.getTeachers().add(new Teacher("Maurice Snoeren"));
+        school.getTeachers().add(new Teacher("Etiënne Goossens"));
+        school.getTeachers().add(new Teacher("Paul de Mast"));
+        school.getTeachers().add(new Teacher("Peter Kailuhu"));
+        school.getTeachers().add(new Teacher("Pieter Kop Jansen"));
+        school.getTeachers().add(new Teacher("Genevieve Smid"));
+        school.getTeachers().add(new Teacher("Hans van der Linden"));
+        school.getTeachers().add(new Teacher("Jessica van der Heijden"));
+        school.getTeachers().add(new Teacher("Jan Oostindie"));
+        school.getTeachers().add(new Teacher("Bart Oerlemans"));
+        school.getTeachers().add(new Teacher("Paul Lindelauf"));
     }
 
     private void addLocations() {

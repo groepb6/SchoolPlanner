@@ -18,7 +18,6 @@ public class Sim {
     private int speed;
     Point2D currentPos;
     Point2D targetPos;
-    Person.Gender gender;
     private FXGraphics2D g2d;
     private BufferedImage bufferedImage;
     private Canvas canvas;
@@ -26,10 +25,9 @@ public class Sim {
     private double angleMin = 9999;
     private double angleMax = -9999;
 
-    public Sim(Point2D startPos, Person.Gender gender, FXGraphics2D g2d, SimSkin simSkin, Canvas canvas) {
+    public Sim(Point2D startPos, FXGraphics2D g2d, SimSkin simSkin, Canvas canvas) {
         this.currentPos = startPos;
         this.targetPos = startPos;
-        this.gender = gender;
         this.speed = (int) (Math.random() * 2) + 3;
         this.g2d = g2d;
         this.simSkin = simSkin;

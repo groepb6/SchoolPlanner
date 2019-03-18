@@ -48,7 +48,7 @@ public class School implements Serializable {
     }
 
     public void addTeacher(String name, int id, Subject subject) {
-        this.teachers.add(new Teacher(name, Person.Gender.UNSPECIFIED));
+        this.teachers.add(new Teacher(name));
     }
 
     public void addTeacher(Teacher teacher) {
