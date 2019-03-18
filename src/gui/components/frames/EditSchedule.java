@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -162,6 +163,10 @@ public class EditSchedule extends Sizeable {
         this.buttonDeleteRoom.setMinWidth(buttonWidth);
         this.buttonDeleteGroup.setMinWidth(buttonWidth);
 
+        this.tfSubject.setMinWidth(buttonWidth);
+        this.tfTeacher.setMinWidth(buttonWidth);
+        this.tfGroup.setMinWidth(buttonWidth);
+
         this.vBox.getChildren().addAll(
                 this.hBox1,
                 this.hBox2,
@@ -173,10 +178,10 @@ public class EditSchedule extends Sizeable {
         );
 
         this.borderPane.setTop(this.vBox);
-        this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
         /**
          *This creates a small margin around everything.
          */
+        this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
     }
 
     private void setComboBox(){
@@ -211,7 +216,8 @@ public class EditSchedule extends Sizeable {
         this.subjectComboBox.setMinWidth(150);
     }
 
-    private void setActions(){
+
+    private void setActions() {
         this.buttonAddSchedule.setOnAction(event -> {
             if (!groupComboBox.getSelectionModel().isEmpty() &&
                     !roomComboBox.getSelectionModel().isEmpty() &&
@@ -228,26 +234,26 @@ public class EditSchedule extends Sizeable {
                     if (g.getName().equals(groupComboBox.getValue().toString())) {
                         group = g;
                     }
+                }
 
-                    Teacher teacher = new Teacher("temp");
-                    for (Person t : this.school.getTeachers()) {
-                        if (t.getName().equals(teacherComboBox.getValue().toString())) {
-                            teacher = (Teacher) t;
-                        }
+                Teacher teacher = new Teacher("temp");
+                for (Person t : this.school.getTeachers()) {
+                    if (t.getName().equals(teacherComboBox.getValue().toString())) {
+                        teacher = (Teacher) t;
                     }
+                }
 
-                    Subject subject = new Subject("temp");
-                    for (Subject s : this.school.getSubjects()) {
-                        if (s.getName().equals(subjectComboBox.getValue().toString())) {
-                            subject = s;
-                        }
+                Subject subject = new Subject("temp");
+                for (Subject s : this.school.getSubjects()) {
+                    if (s.getName().equals(subjectComboBox.getValue().toString())) {
+                        subject = s;
                     }
+                }
 
-                    Room room = new Classroom("temp");
-                    for (Room r : this.school.getRooms()) {
-                        if (r.getName().equals(roomComboBox.getValue().toString())) {
-                            room = r;
-                        }
+                Room room = new Classroom("temp");
+                for (Room r : this.school.getRooms()) {
+                    if (r.getName().equals(roomComboBox.getValue().toString())) {
+                        room = r;
                     }
                 }
 
@@ -359,7 +365,6 @@ public class EditSchedule extends Sizeable {
             }
         });
 
-
         this.buttonAddRoom.setOnAction(event -> {
             if (!this.roomOptions.contains(this.tfRoom.getText()) && !this.tfRoom.getText().isEmpty()) {
                 this.school.getRooms().add(new Classroom(this.tfRoom.getText()));
@@ -387,7 +392,6 @@ public class EditSchedule extends Sizeable {
             }
         });
 
-
         this.buttonDeleteGroup.setOnAction(event -> {
             if (!this.groupComboBox.getSelectionModel().isEmpty()) {
                 this.school.getGroups().remove(this.groupComboBox.getSelectionModel().getSelectedIndex());
@@ -398,7 +402,6 @@ public class EditSchedule extends Sizeable {
                 displayInfoMessage(true, "Could not delete group.");
             }
         });
-
 
         this.buttonDeleteRoom.setOnAction(event -> {
             if (!this.roomComboBox.getSelectionModel().isEmpty()) {
@@ -411,7 +414,6 @@ public class EditSchedule extends Sizeable {
             }
         });
 
-
         this.buttonDeleteSubject.setOnAction(event -> {
             if (!this.subjectComboBox.getSelectionModel().isEmpty()) {
                 this.school.getSubjects().remove(this.subjectComboBox.getSelectionModel().getSelectedIndex());
@@ -423,15 +425,6 @@ public class EditSchedule extends Sizeable {
             }
         });
     }
-
-    private void addScheduleFailed(String text) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, text, ButtonType.CLOSE);
-        setAlertPos(alert);
-        alert.setHeaderText("");
-        alert.setTitle("Add failed");
-        alert.showAndWait();
-    }
-
 
     /**
      * This method returns the right Enum-value, depending on the string you enter
@@ -509,5 +502,9 @@ public class EditSchedule extends Sizeable {
             this.labelInfo.setTextFill(Color.web("#228B22")); //Green
         }
         this.labelInfo.setText(text);
+    }
+
+    public BorderPane getEditSchedule() {
+        return this.borderPane;
     }
 }
