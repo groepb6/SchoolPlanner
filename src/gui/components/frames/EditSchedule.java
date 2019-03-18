@@ -96,6 +96,7 @@ public class EditSchedule extends Sizeable {
     private void fixLayout() {
         this.borderPane = new BorderPane();
         this.school = DataReader.readSchool();
+
         this.vBox = new VBox();
         this.hBox1 = new HBox();
         this.hBox2 = new HBox();
@@ -103,15 +104,18 @@ public class EditSchedule extends Sizeable {
         this.hBox4 = new HBox();
         this.hBox5 = new HBox();
         this.hBox6 = new HBox();
+
         this.labelGroup = new Label("Group:");
         this.labelTime = new Label("Time:");
         this.labelTeacher = new Label("Teacher:");
         this.labelRoom = new Label("Room:");
         this.labelSubject = new Label("Subject:");
+
         this.tfGroup = new TextField();
         this.tfTeacher = new TextField();
         this.tfSubject = new TextField();
         this.tfRoom = new TextField();
+
         this.timeComboBox = new ComboBox();
         this.timeOptions = FXCollections.observableArrayList();
         this.groupComboBox = new ComboBox();
@@ -122,30 +126,37 @@ public class EditSchedule extends Sizeable {
         this.roomOptions = FXCollections.observableArrayList();
         this.subjectComboBox = new ComboBox();
         this.subjectOptions = FXCollections.observableArrayList();
+
         this.buttonAddSchedule = new Button("Add schedule");
         this.buttonAddGroup = new Button("Add Group");
         this.buttonAddSubject = new Button("Add Subject");
         this.buttonAddTeacher = new Button("Add Teacher");
         this.buttonAddRoom = new Button("Add Room");
         this.buttonClearAll = new Button("Clear all");
+
         this.buttonDeleteGroup = new Button("Delete Group");
         this.buttonDeleteRoom = new Button("Delete Room");
         this.buttonDeleteSubject = new Button("Delete Subject");
         this.buttonDeleteTeacher = new Button("Delete Teacher");
+
         this.hBox1.setSpacing(5);
         this.hBox2.setSpacing(5);
         this.hBox3.setSpacing(5);
         this.hBox4.setSpacing(5);
         this.hBox5.setSpacing(5);
         this.hBox6.setSpacing(5);
+
         this.hBox6.setTranslateX(80);
+
         this.vBox.setSpacing(5);
+
         this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup,this.buttonDeleteGroup);
         this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject,this.buttonDeleteSubject);
         this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher,this.buttonDeleteTeacher);
-        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom, this.buttonAddRoom,this.buttonDeleteRoom);
+        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox);
         this.hBox5.getChildren().addAll(this.labelTime, this.timeComboBox);
         this.hBox6.getChildren().addAll(this.buttonAddSchedule,this.buttonClearAll);
+
         this.buttonWidth = 150;
         this.labelGroup.setMinWidth(buttonWidth/2.);
         this.labelTime.setMinWidth(buttonWidth/2.);
@@ -160,6 +171,7 @@ public class EditSchedule extends Sizeable {
         this.buttonDeleteSubject.setMinWidth(buttonWidth);
         this.buttonDeleteRoom.setMinWidth(buttonWidth);
         this.buttonDeleteGroup.setMinWidth(buttonWidth);
+
         this.vBox.getChildren().addAll(
                 this.hBox1,
                 this.hBox2,
@@ -168,6 +180,7 @@ public class EditSchedule extends Sizeable {
                 this.hBox5,
                 this.hBox6
         );
+
         this.borderPane.setTop(this.vBox);
         this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
     }
