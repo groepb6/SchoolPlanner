@@ -190,7 +190,7 @@ public class EditSchedule extends Sizeable {
                     !roomComboBox.getSelectionModel().isEmpty() &&
                     !timeComboBox.getSelectionModel().isEmpty() &&
                     !teacherComboBox.getSelectionModel().isEmpty() &&
-                    !subjectComboBox.getSelectionModel().isEmpty()) {                                                       // This checks if none of the comboboxes are empty
+                    !subjectComboBox.getSelectionModel().isEmpty()) {                                                   // This checks if none of the comboboxes are empty
 
                 /**
                  * All the comboboxes get filled from the school object
@@ -299,7 +299,7 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 displayInfoMessage(false, "Group added succesfully.");
             } else {
-                displayInfoMessage(true, "Couldn't add Group.");
+                displayInfoMessage(true, "Could not add Group.");
             }
         });
 
@@ -311,7 +311,7 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 displayInfoMessage(false, "Teacher added succesfully.");
             } else {
-                displayInfoMessage(true, "Couldn't add Teacher.");
+                displayInfoMessage(true, "Could not add Teacher.");
             }
         });
 
@@ -323,7 +323,7 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 displayInfoMessage(false, "Subject added succesfully.");
             } else {
-                displayInfoMessage(true, "Couldn't add Subject.");
+                displayInfoMessage(true, "Could not add Subject.");
             }
         });
 
@@ -335,7 +335,7 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 displayInfoMessage(false, "Room added succesfully.");
             } else {
-                displayInfoMessage(true, "Couldn't add Room.");
+                displayInfoMessage(true, "Could not add Room.");
             }
         });
 
@@ -350,7 +350,7 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 displayInfoMessage(false, "Teacher deleted succesfully.");
             } else {
-                displayInfoMessage(true, "Couldn't delete Teacher.");
+                displayInfoMessage(true, "Could not delete Teacher.");
             }
         });
 
@@ -361,7 +361,7 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 displayInfoMessage(false, "Group deleted succesfully.");
             } else {
-                displayInfoMessage(true, "Couldn't delete group.");
+                displayInfoMessage(true, "Could not delete group.");
             }
         });
 
@@ -372,7 +372,7 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 displayInfoMessage(false, "Room deleted succesfully.");
             } else {
-                displayInfoMessage(true, "Couldn't delete Room.");
+                displayInfoMessage(true, "Could not delete Room.");
             }
         });
 
@@ -383,7 +383,7 @@ public class EditSchedule extends Sizeable {
                 DataWriter.writeSchool(school);
                 displayInfoMessage(false, "Subject deleted succesfully.");
             } else {
-                displayInfoMessage(true, "Couldn't delete Subject.");
+                displayInfoMessage(true, "Could not delete Subject.");
             }
         });
 
