@@ -11,27 +11,19 @@ import data.schedulerelated.Schedule;
 import data.schoolrelated.Group;
 import data.schoolrelated.School;
 import data.schoolrelated.Subject;
-import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import javax.xml.crypto.Data;
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
-
 
 public class EditSchedule extends Sizeable {
 
