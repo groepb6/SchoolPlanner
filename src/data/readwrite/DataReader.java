@@ -12,6 +12,11 @@ import java.util.List;
  */
 public class DataReader {
 
+    /**
+     * This method reads school.txt and returns a School-object when found.
+     * It also prints custom messages to respresent the different exceptions that could occur.
+     */
+
     public static School readSchool() {
         String loadPath = "saves/school/school.txt";
         System.out.println("Attempting to load schedule from " + loadPath);
@@ -57,7 +62,6 @@ public class DataReader {
         System.out.println("The program will probably stop working now.");
         return null;
     }
-
 
     /**
      * CURRENTLY DYSFUNCTIONAL
