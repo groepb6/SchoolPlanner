@@ -27,6 +27,18 @@ public class School implements Serializable {
         this.subjects = new ArrayList<>();
     }
 
+    public boolean hasData() {
+        return (rooms.size()+teachers.size()+groups.size()+subjects.size())>0;
+    }
+
+    public void clearAll() {
+        rooms.clear();
+        teachers.clear();
+        groups.clear();
+        schedules.clear();
+        subjects.clear();
+    }
+
     public void addClassroom(String name, int capacity) {
         this.rooms.add(new Classroom(name));
     }

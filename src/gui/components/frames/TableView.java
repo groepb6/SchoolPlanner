@@ -88,7 +88,7 @@ public class TableView extends Sizeable {
     }
 
     /**
-     * This method returns the final TableView object, which can later be placed in a JavaFX node object, such as a GridPane, BorderPane or any other layoutPane (Slightly irrelevant, but we are using the BorderPane here).
+     * This method returns the final TableView object, which can later be placed in a JavaFX pathfinding object, such as a GridPane, BorderPane or any other layoutPane (Slightly irrelevant, but we are using the BorderPane here).
      *
      * @return Return the TableView object which can be placed in a layout pane later.
      */
@@ -107,7 +107,6 @@ public class TableView extends Sizeable {
         List list = new ArrayList<Plan>();
         try {
             ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
-            System.out.println(schedules.get(0).getGroup().getName());
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }

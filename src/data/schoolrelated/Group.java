@@ -1,5 +1,6 @@
 package data.schoolrelated;
 
+import data.persons.Person;
 import data.persons.Student;
 import data.schedulerelated.Hour;
 import sun.nio.cs.ArrayEncoder;

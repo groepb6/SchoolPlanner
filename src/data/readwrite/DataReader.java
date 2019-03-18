@@ -19,24 +19,24 @@ public class DataReader {
 
     public static School readSchool() {
         String loadPath = "saves/school/school.txt";
-        System.out.println("Attempting to load schedule from " + loadPath);
+//        System.out.println("Attempting to load schedule from " + loadPath);
         try {
             File saveFile = new File(loadPath);
             FileInputStream fileInputStream = new FileInputStream(saveFile);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (School) objectInputStream.readObject();
         } catch (FileNotFoundException exception) {
-            System.out.println("Save file not found!");
-            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+//            System.out.println("Save file not found!");
+//            System.out.println("YOUR FILE COULD NOT BE LOADED!");
         } catch (IOException exception) {
-            System.out.println("An IOException has occurred!");
-            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+//            System.out.println("An IOException has occurred!");
+//            System.out.println("YOUR FILE COULD NOT BE LOADED!");
         } catch (ClassNotFoundException exception) {
-            System.out.println("No object found in file!");
-            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+//            System.out.println("No object found in file!");
+//            System.out.println("YOUR FILE COULD NOT BE LOADED!");
         }
-        System.out.println("Loading has failed!");
-        System.out.println("The program will probably stop working now.");
+//        System.out.println("Loading has failed!");
+//        System.out.println("The program will probably stop working now.");
         return null;
     }
 
