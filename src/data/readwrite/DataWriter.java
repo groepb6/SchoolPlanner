@@ -17,6 +17,13 @@ import java.io.ObjectOutputStream;
  */
 public class DataWriter {
 
+    /**
+     * This method writes the given School-object to the file school.txt
+     * It also prints custom messages to respresent the different exceptions that could occur.
+     *
+     * @param school
+     */
+
     public static void writeSchool(School school) {
         String savePath = "saves/school/school.txt";
         System.out.println("Attempting to save object to " + savePath);

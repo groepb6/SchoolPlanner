@@ -32,14 +32,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-/**
- * @author Dustin Hendriks
- * @author Wout Stevens
- * @since 12-02-2019
- * <p>
- * The class "EditSchedule" builds a borderPane which can add new Plans to the storage .txt file. This pane exists out of a few TextField objects and a Button object.
- * On a button click the inserted information (in the text fields) is being converted to a plan and written to a file, but only if the plan did not exist already.
- */
 
 public class EditSchedule extends Sizeable {
 
@@ -178,7 +170,7 @@ public class EditSchedule extends Sizeable {
         this.hBox1.getChildren().addAll(this.labelGroup, this.groupComboBox, this.tfGroup, this.buttonAddGroup, this.buttonDeleteGroup);
         this.hBox2.getChildren().addAll(this.labelSubject, this.subjectComboBox, this.tfSubject, this.buttonAddSubject, this.buttonDeleteSubject);
         this.hBox3.getChildren().addAll(this.labelTeacher, this.teacherComboBox, this.tfTeacher, this.buttonAddTeacher, this.buttonDeleteTeacher);
-        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom);
+        this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox);
         //this.hBox4.getChildren().addAll(this.labelRoom, this.roomComboBox, this.tfRoom, this.buttonAddRoom, this.buttonDeleteRoom);
         this.hBox5.getChildren().addAll(this.labelTime, this.timeComboBox);
         this.hBox6.getChildren().addAll(this.buttonAddSchedule, this.buttonClearAll, this.buttonLoadPreset);
@@ -202,8 +194,15 @@ public class EditSchedule extends Sizeable {
         this.buttonDeleteGroup.setMinWidth(buttonWidth);
 
         this.buttonAddSchedule.setOnAction(event -> {
-            if (!groupComboBox.getSelectionModel().isEmpty() && !roomComboBox.getSelectionModel().isEmpty() && !timeComboBox.getSelectionModel().isEmpty() && !teacherComboBox.getSelectionModel().isEmpty() && !subjectComboBox.getSelectionModel().isEmpty()) {
-                boolean isAvailableThisTime = true;
+            if (!groupComboBox.getSelectionModel().isEmpty() &&
+                    !roomComboBox.getSelectionModel().isEmpty() &&
+                    !timeComboBox.getSelectionModel().isEmpty() &&
+                    !teacherComboBox.getSelectionModel().isEmpty() &&
+                    !subjectComboBox.getSelectionModel().isEmpty()) {                                                       // This checks if none of the comboboxes are empty
+
+                /**
+                 * All the comboboxes get filled from the school object
+                 */
 
                 Group group = new Group("temp");
                 for (Group g : this.school.getGroups()) {
@@ -232,6 +231,12 @@ public class EditSchedule extends Sizeable {
                         room = r;
                     }
                 }
+
+                /**
+                 * Boolean isAvailableThisTime tells the program whether the schedule that is about to be created conflicts with any existing hours planned by the Room, Teacher and Group.
+                 */
+
+                boolean isAvailableThisTime = true;
                 isAvailableThisTime = isAvailableThisTime(teacher, room, this.getHour(this.timeComboBox.getValue().toString()), group);
 
                 Schedule schedule = new Schedule(
@@ -241,6 +246,11 @@ public class EditSchedule extends Sizeable {
                         teacher,
                         subject
                 );
+
+                /**
+                 * This if-statement implements the schedule into the schoolobject, and writes it to the file.
+                 * It only does this when isAvailable is True and isDuplicateSchedule is false
+                 */
 
                 if (!isDuplicateSchedule(this.school, schedule) && isAvailableThisTime) {
                     room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
@@ -258,13 +268,22 @@ public class EditSchedule extends Sizeable {
             }
         });
 
+        /**
+         * This buttonAction clears the complete data class.
+         */
         this.buttonClearAll.setOnAction(event -> {
-            this.school = new School("School");
+            this.school.getGroups().clear();
+            this.school.getSubjects().clear();
+            this.school.getTeachers().clear();
+            this.school.getSchedules().clear();
             DataWriter.writeSchool(school);
             this.school = DataReader.readSchool();
             displayInfoMessage(true, "All data is cleared.");
         });
 
+        /**
+         * This button checks if a presetfile exists and if it does, it loads it in.
+         */
         this.buttonLoadPreset.setOnAction(event -> {
             File presetFile = new File("saves/school/preset.txt");
             if (presetFile.exists()) {
@@ -277,6 +296,9 @@ public class EditSchedule extends Sizeable {
 
         });
 
+        /**
+         * All following buttons check if the group that is about to be added already exists, and then adds it to the list if it doesnt.
+         */
         this.buttonAddGroup.setOnAction(event -> {
             if (!this.groupOptions.contains(this.tfGroup.getText()) && !this.tfGroup.getText().isEmpty()) {
                 this.school.getGroups().add(new Group(this.tfGroup.getText()));
@@ -324,6 +346,10 @@ public class EditSchedule extends Sizeable {
                 displayInfoMessage(true, "Couldn't add Room.");
             }
         });
+
+        /**
+         * The following buttons Delete the Group, Teacher or Subject, by checking the Schoolobject for the object with the same name and deleting it.
+         */
 
         this.buttonDeleteTeacher.setOnAction(event -> {
             if (!this.teacherComboBox.getSelectionModel().isEmpty()) {
@@ -381,13 +407,23 @@ public class EditSchedule extends Sizeable {
 
         this.borderPane.setTop(this.vBox);
         this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
-
+        /**
+         *This creates a small margin around everything.
+         */
         super.setProportions(0, 2560, 0, 1080, 1100, 500, stage);
     }
 
     public BorderPane getEditSchedule() {
         return this.borderPane;
     }
+
+
+    /**
+     * This method returns the right Enum-value, depending on the string you enter
+     *
+     * @param time
+     * @return Hour
+     */
 
     public Hour getHour(String time) {
         ArrayList<Hour> hours = new ArrayList<>();
@@ -400,24 +436,43 @@ public class EditSchedule extends Sizeable {
         return null;
     }
 
-    public boolean isDuplicateSchedule(School schoolInput, Schedule scheduleInput) {
-        School school = schoolInput;
-        Schedule schedule = scheduleInput;
-        boolean duplicate = false;
 
-        for (Schedule s : school.getSchedules()) {
+    /**
+     * This method checks if the given Schedule is already present in the school object it is given.
+     *
+     * @param schoolInput
+     * @param scheduleInput
+     * @return boolean
+     */
+
+    public boolean isDuplicateSchedule(School schoolInput, Schedule scheduleInput) {
+        School school = schoolInput;                                                                                    // Catch the school
+        Schedule schedule = scheduleInput;                                                                              // Catch the schedule
+        boolean duplicate = false;                                                                                      // The base stat is that the schedule is not a duplicate.
+
+        for (Schedule s : school.getSchedules()) {                                                                      //This loop checks every schedule in school and compares them with the given schedule.
             if (schedule.getGroup().getName().equals(s.getGroup().getName())
                     && schedule.getGroup().getName().equals(s.getGroup().getName())
                     && schedule.getTeacher().getName().equals(s.getTeacher().getName())
                     && schedule.getSubject().getName().equals(s.getSubject().getName())
                     && schedule.getTime().toString().equals(s.getTime().toString())
             ) {
-                duplicate = true;
+                duplicate = true;                                                                                       // If there's a duplicate, update the boolean
             }
         }
         return duplicate;
     }
 
+
+    /**
+     * This method checks if the given hour is already booked in the given Room, Teacher and Group.
+     *
+     * @param teacher
+     * @param room
+     * @param hour
+     * @param group
+     * @return
+     */
     public boolean isAvailableThisTime(Teacher teacher, Room room, Hour hour, Group group) {
         if (teacher.getHours().contains(hour) || room.getHours().contains(hour) || group.getHours().contains(hour)) {
             return false;
@@ -426,6 +481,12 @@ public class EditSchedule extends Sizeable {
         }
     }
 
+    /**
+     * This method is a helper method to change the text of the info label to the given text and change the color depending on the boolean value.
+     *
+     * @param color
+     * @param text
+     */
     private void displayInfoMessage(Boolean color, String text) {
         if (color) {
             this.labelInfo.setTextFill(Color.web("#FF0000")); //Red
