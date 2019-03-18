@@ -5,11 +5,8 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import org.jfree.fx.FXGraphics2D;
-import simulation.pathfinding.Astar;
 import simulation.sims.Sim;
 import simulation.sims.SimSkin;
-
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,9 +45,10 @@ public class SimUpdate {
 
     private void createSims() {
         for (int i =0; i < 9; i++)
-            simSkins.add(new SimSkin(SimSkin.Role.student, 0)); // 0 was i
-        for (int i = 0; i < 100; i++)
-            sims.add(new Sim(new Point2D.Double(Math.random()*canvas.getWidth(),Math.random()*canvas.getHeight()),  Person.Gender.MALE, g2d, simSkins.get((int)(Math.random()*0)), canvas));
+            simSkins.add(new SimSkin(SimSkin.Role.student, i)); // 0 was i
+        for (int i = 0; i < 105; i++) {
+            sims.add(new Sim(new Point2D.Double(Math.random() * canvas.getWidth(), Math.random() * canvas.getHeight()), Person.Gender.MALE, g2d, simSkins.get((int) (Math.random() * simSkins.size()-1)), canvas));
+        }
     }
 
     public void stopTimer() {
@@ -66,11 +64,9 @@ public class SimUpdate {
             updatePositionSims();
             drawSims();
             map.drawWalls();
+            //map.drawLeaves();
+            //map.drawCollision();
         }
-    }
-
-    public void drawMapLayers() {
-        map.drawLayers();
     }
 
     public void drawSims() {
@@ -90,8 +86,8 @@ public class SimUpdate {
         canvas.setOnMouseMoved(e -> {
             for (Sim sim : sims)
                 if (sim.getSpeed()!=0)
-                    sim.setDestinationPos(new Point2D.Double(e.getX(), e.getY()));
-                else sim.setDestinationPos(new Point2D.Double(50, 50));
+                    sim.setTargetPos(new Point2D.Double(e.getX(), e.getY()));
+                else sim.setTargetPos(new Point2D.Double(50, 50));
         });
 
 

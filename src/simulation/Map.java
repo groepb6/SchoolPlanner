@@ -10,7 +10,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
+import simulation.data.Area;
 import simulation.data.Layer;
+import simulation.pathfinding.Node;
+import simulation.pathfinding.PathFinder;
 
 import javax.imageio.ImageIO;
 import javax.json.*;
@@ -29,7 +32,6 @@ public class Map {
     private JsonObject mapFile;
     private Canvas canvas;
     private Scene scene;
-    private int[][] map;
     private double mousePosX;
     private double mousePosY;
     private StartSim startSim;
@@ -37,11 +39,17 @@ public class Map {
     public boolean followPerson = false;
     private Group group;
     private Stage stage;
+    private String map = "schoolmap.json";
     private ArrayList<Layer> layers = new ArrayList<>();
+    private ArrayList<Area> areas = new ArrayList<>();
+    private Layer collisionLayer;
     private java.awt.Image image;
+    private int amountOfTilesWidth;
+    private int amountOfTilesHeight;
 
 
     public Map(FXGraphics2D g2d, Canvas canvas, Scene scene, StartSim startSim, ScrollPane scrollPane, Group group, Stage stage) {
+        readJSON();
         this.scrollPane = scrollPane;
         this.group = group;
         this.stage = stage;
@@ -50,8 +58,10 @@ public class Map {
         this.canvas = canvas;
         setActions();
         this.startSim = startSim;
-        saveSprites("schoolmap.json");
+        saveAreas();
+        saveSprites();
         saveLayers();
+        loadPathFinder();
         drawLayers();
         image = getImageOfCanvas();
     }
@@ -60,13 +70,28 @@ public class Map {
         return SwingFXUtils.fromFXImage( this.canvas.snapshot(new SnapshotParameters(), new WritableImage((int)canvas.getWidth(),(int)canvas.getHeight())), null);
     }
 
-
-    private void saveSprites(String map) {
+    private void readJSON() {
         JsonReader jsonReader = Json.createReader(getClass().getResourceAsStream("/json/maps/" + map));
         mapFile = jsonReader.readObject();
+    }
 
+    //After saveSprites!!!
+    private void loadPathFinder() {
+        PathFinder pathFinder = new PathFinder(collisionLayer.getNodes(), amountOfTilesWidth, amountOfTilesHeight, tileWidth, tileHeight, areas);
+    }
+
+    private void saveAreas() {
+        JsonArray areas = mapFile.getJsonArray("layers").getJsonObject(mapFile.getJsonArray("layers").size()-1).getJsonArray("objects");
+        for (int i = 0; i < areas.size()-1; i++) {
+            this.areas.add(new Area(areas.getJsonObject(i)));
+        }
+    }
+
+    private void saveSprites() {
         tileWidth = mapFile.getInt("tilewidth");
         tileHeight = mapFile.getInt("tileheight");
+        amountOfTilesWidth = mapFile.getInt("width");
+        amountOfTilesHeight = mapFile.getInt("height");
 
         JsonArray data = mapFile.getJsonArray("tilesets");
 
@@ -85,8 +110,12 @@ public class Map {
     }
 
     private void saveLayers() {
-        for (int i = 0; i < mapFile.getJsonArray("layers").size() - 1; i++)
-            layers.add(new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages));
+        for (int i = 0; i < mapFile.getJsonArray("layers").size()-1; i++) {
+            if (!mapFile.getJsonArray("layers").getJsonObject(i).getString("name").equals("Collision"))
+                layers.add(new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages));
+            else collisionLayer=new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages);
+        }
+        System.out.println("done");
     }
 
     public void restoreCanvas() {
@@ -96,7 +125,7 @@ public class Map {
 
     public void drawLeaves() {
         for (Layer layer : layers) {
-            if (layer.getLayerID()==26)
+            if (layer.getLayerName().equals("TreeLeave-layer"))
                 layer.draw();
         }
     }
@@ -113,8 +142,11 @@ public class Map {
         for (Layer layer : layers) {
             if (layer.getLayerName().equals("SchoolWallDoor-layer")) layer.draw();
             if (layer.getLayerName().equals("SchoolWallOutside-layer")) layer.draw();
-            if (layer.getLayerName().equals("SchoolWallOutsideInsideOverlay-layer")) layer.draw();
         }
+    }
+
+    public void drawCollision() {
+        this.collisionLayer.draw();
     }
 
     public Canvas getCanvas() {
@@ -157,14 +189,14 @@ public class Map {
                 }
             }
             if (event.getCharacter().equals("d"))
-                scrollPane.setHvalue(scrollPane.getHvalue() + 0.05);
+                scrollPane.setHvalue(scrollPane.getHvalue() + .2);
             if (event.getCharacter().equals("a"))
-                scrollPane.setHvalue(scrollPane.getHvalue() - 0.05);
+                scrollPane.setHvalue(scrollPane.getHvalue() - .2);
             if (event.getCharacter().equals("w"))
-                scrollPane.setVvalue(scrollPane.getVvalue() - 0.05);
+                scrollPane.setVvalue(scrollPane.getVvalue() - .05);
             if (event.getCharacter().equals("s"))
-                scrollPane.setVvalue(scrollPane.getVvalue() + 0.05);
-            event.consume();
+                scrollPane.setVvalue(scrollPane.getVvalue() + .05);
+            //event.consume();
         });
     }
 }

@@ -3,19 +3,18 @@ package simulation.pathfinding;
 import java.awt.geom.Point2D;
 
 public class Node {
-    private int gCost;
-    private int hCost;
-    private int score;
-    public Point2D position;
+    public int score;
+    public int x;
+    public int y;
+    public boolean walkable = true;
 
-    public Node(Point2D position) {
-//        gCost=(int)startPos.distance(ownPos);
-//        hCost=(int)ownPos.distance(destinationPos);
-//        score=gCost + hCost;
-        this.position = position;
+    public Node(int x, int y, int score) {
+        this.x = x;
+        this.y = y;
+        this.score = score;
     }
 
-    public int getScore() {
-        return this.score;
+    public Point2D getPosition() {
+        return new Point2D.Double(x,y);
     }
 }

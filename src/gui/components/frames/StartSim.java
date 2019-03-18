@@ -28,7 +28,7 @@ public class StartSim extends Sizeable {
 
     public StartSim(Stage stage, Scene scene, ScrollPane scrollPane) {
         super.setProportions(0, 5000, 0, 5000, 800, 600, stage);
-        canvas = new Canvas(3200, 3200);
+        canvas = new Canvas(3200, 3840);
         g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
         this.scene = new Scene(group);
         Map map = new Map(g2d, canvas, scene, this, scrollPane, group, stage);

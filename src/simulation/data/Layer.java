@@ -1,9 +1,11 @@
 package simulation.data;
 
 import org.jfree.fx.FXGraphics2D;
+import simulation.pathfinding.Node;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -17,6 +19,7 @@ public class Layer {
     private int layerWidth;
     private int layerHeight;
     private FXGraphics2D g2d;
+    private Node nodes[][];
 
     public Layer(JsonObject layer, FXGraphics2D g2d, ArrayList<BufferedImage> subImages) {
        this.layer = layer;
@@ -31,11 +34,26 @@ public class Layer {
     }
 
     public void saveTiles() {
+        boolean isCollisionLayer = layerName.equals("Collision");
+
+        int x;
+        int y;
+
+        if (isCollisionLayer) {
+            nodes =new Node[layerWidth][layerHeight];
+        }
         int index = 0;
-        for (int y = 0; y < layerHeight; y++)
-            for (int x = 0; x < layerWidth; x++) {
-                if (data.getInt(index) != 0)
-                    tiles.add(new Tile(subImages.get(data.getInt(index)-1), x, y, g2d));
+        for (y = 0; y < layerHeight; y++)
+            for (x = 0; x < layerWidth; x++) {
+                if (isCollisionLayer) {
+                    nodes[x][y] = new Node(x,y,-1);
+                }
+                if (data.getInt(index) != 0) {
+                    tiles.add(new Tile(subImages.get(data.getInt(index) - 1), x, y, g2d));
+                    if (isCollisionLayer) {
+                        nodes[x][y].walkable=true;
+                    }
+                }
                 index++;
             }
     }
@@ -44,6 +62,10 @@ public class Layer {
         for (Tile tile : tiles) {
             tile.draw();
         }
+    }
+
+    public Node[][] getNodes() {
+        return nodes;
     }
 
     public int getLayerID() {
