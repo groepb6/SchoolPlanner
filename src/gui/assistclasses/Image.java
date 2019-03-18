@@ -38,7 +38,7 @@ public class Image {
     }
 
     /**
-     * Build an imageView of the Image so it can be retrieved and placed in a node later.
+     * Build an imageView of the Image so it can be retrieved and placed in a pathfinding later.
      */
 
     private void buildImageView() {
@@ -46,7 +46,7 @@ public class Image {
     }
 
     /**
-     * @return ImageView to place in a JavaFX node object later.
+     * @return ImageView to place in a JavaFX pathfinding object later.
      */
 
     public ImageView getImageView() {

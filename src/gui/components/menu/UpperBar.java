@@ -31,7 +31,7 @@ public class UpperBar {
 
 
     /**
-     * @return Returns the HBox object (can add this to a node later).
+     * @return Returns the HBox object (can add this to a pathfinding later).
      */
 
     public BorderPane getUpperBar() {

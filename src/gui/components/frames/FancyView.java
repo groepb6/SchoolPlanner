@@ -1,12 +1,18 @@
 package gui.components.frames;
 
+import data.persons.Teacher;
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
+import data.rooms.Room;
+import data.schedulerelated.Hour;
 import data.schedulerelated.Schedule;
+import data.schoolrelated.Group;
+import data.schoolrelated.School;
 import gui.assistclasses.Image;
 import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,8 +20,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Dustin Hendriks
@@ -25,21 +30,22 @@ import java.util.List;
  */
 
 public class FancyView extends Sizeable {
-    private Stage stage;
     private BorderPane borderPane = new BorderPane();
     private HBox searchGroupBar = new HBox();
     private HBox selectGroupBar = new HBox();
     private HBox graphGroupBar = new HBox();
     private HBox graphDrawBar = new HBox();
     private VBox topElements = new VBox();
-    private TextField textField = new TextField("Search group");
+    private ArrayList<Plan> allVirtualizedItems = new ArrayList<>();
+    private TextField textField = new TextField("Search string");
     private Button searchGroupButton = new Button("Search");
     private Button submitGroupButton = new Button("Submit");
-    private Button clearViewButton = new Button("Clear last plan");
+    private Button addAll = new Button("Add all");
+    private Button clearViewButton = new Button("Clear last");
     private Button removePlanButton = new Button("Remove plan completely");
     private Image errorMessageSearch = new Image("errormessage", "functionimages", ".png", "error", "No results found");
     private Image successMessageSearch = new Image("successfulmessage", "functionimages", ".png", "successful", "Search successful");
-    private Image errorMessageSubmit = new Image("errorMessage", "functionimages", ".png", "error", "No group selected");
+    private Image errorMessageSubmit = new Image("errorMessage", "functionimages", ".png", "error", "No group selected / already added");
     private Image successMessageSubmit = new Image("Successfulmessage", "functionimages", ".png", "error", "Submit successful");
     private boolean errorSearchImagePlaced = false;
     private boolean successSearchImagePlaced = false;
@@ -49,14 +55,15 @@ public class FancyView extends Sizeable {
 
     /**
      * The constructor of FancyView handles the layout and already "builds" all HBox components, using the method "buildSearchSelectGraphGroupBar()".
+     *
      * @param stage Stage is needed to set the super positions (define the window minimum, maximum and preferred size.
      */
 
     public FancyView(Stage stage) {
-        super.setProportions(500, 2560, 0, 1080, Sizeable.ignore, 500, stage);
+        super.setProportions(700, 2560, 0, 1080, Sizeable.ignore, 500, stage);
         buildSearchSelectGraphGroupBar();
         topElements.setSpacing(5);
-        searchResults.setPromptText("Select group");
+        searchResults.setPromptText("Select plan");
         searchGroupBar.setSpacing(5);
         selectGroupBar.setSpacing(5);
         graphGroupBar.setSpacing(5);
@@ -68,9 +75,55 @@ public class FancyView extends Sizeable {
         submitGroupButton.setMinWidth(100);
         submitGroupButton.setMaxWidth(100);
         searchGroupButton.setMinWidth(100);
+        clearViewButton.setMinWidth(90);
         searchGroupButton.setMaxWidth(100);
         searchGroupBar.setMinWidth(500);
-        removePlanButton.setMinWidth(260);
+        removePlanButton.setMinWidth(155);
+        addAll.setMinWidth(100);
+        this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
+    }
+
+    /**
+     * Search list for duplicate input, if so don't add. Else add.
+     */
+
+    private void setAllButton() {
+        addAll.setOnMouseClicked(event -> {
+            boolean canAdd = true;
+            String input = textField.getText();
+            ArrayList<Plan> filteredData = search(input);
+            for (int j = 0; j < filteredData.size(); j++) {
+                for (int i = 0; i < allVirtualizedItems.size(); i++)
+                    if (j > allVirtualizedItems.size() - 1)
+                        canAdd = true;
+                    else if (allVirtualizedItems.get(i).isEqualTo(filteredData.get(j)))
+                        canAdd = false;
+                boolean mergeNeeded = false;
+                for (int i = 0; i < allVirtualizedItems.size(); i++) {
+                    if (allVirtualizedItems.get(i).isEqualToExceptTime(filteredData.get(j))) {
+                        mergeNeeded = true;
+                        if (testDataToBeginTime(allVirtualizedItems.get(i).getTime()) < testDataToEndTime(filteredData.get(j).getTime()))
+                            filteredData.get(j).setTime(testDataToBeginString(allVirtualizedItems.get(i).getTime()) + " - " + testDataToEndString(filteredData.get(j).getTime()));
+                        else
+                            filteredData.get(j).setTime(testDataToBeginString(filteredData.get(j).getTime()) + " - " + testDataToEndString(allVirtualizedItems.get(i).getTime()));
+                    }
+                }
+                if (!mergeNeeded)
+                    if (canAdd) {
+                        graphDrawBar.getChildren().add(VirtualizedView.schedule(testDataToBeginTime(filteredData.get(j).getTime()), testDataToEndTime(filteredData.get(j).getTime()), filteredData.get(j).getSubject()));
+                        allVirtualizedItems.add(filteredData.get(j));
+                    } else;
+                else {
+                    graphDrawBar.getChildren().remove(graphDrawBar.getChildren().size() - 1);
+                    if (allVirtualizedItems.size() > 0)
+                        allVirtualizedItems.remove(allVirtualizedItems.size() - 1);
+                    search(this.textField.getText());
+                    graphDrawBar.getChildren().add(VirtualizedView.schedule(testDataToBeginTime(filteredData.get(j).getTime()), testDataToEndTime(filteredData.get(j).getTime()), filteredData.get(j).getSubject()));
+                    allVirtualizedItems.add(filteredData.get(j));
+                    addSubmitSuccessfulMessage();
+                }
+            }
+        });
     }
 
     /**
@@ -82,12 +135,20 @@ public class FancyView extends Sizeable {
         removePlanButton.setOnMouseClicked(event -> {
             boolean foundDuplicate = false;
             try {
-                ArrayList<Schedule> scheduleData = (ArrayList<Schedule>) DataReader.readScheduleList();
+                School school = DataReader.readSchool();
+                ArrayList<Schedule> scheduleData = school.getSchedules();
                 if (searchResults.getSelectionModel().getSelectedItem() != null) {
                     Plan plan;
                     for (int i = 0; i < scheduleData.size(); i++) {
                         plan = (Plan) searchResults.getSelectionModel().getSelectedItem();
                         if (plan.isEqualTo(scheduleData.get(i).getPlan())) {
+                            Hour hour = scheduleData.get(i).getTime();
+                            Teacher teacher = scheduleData.get(i).getTeacher();
+                            Room room = scheduleData.get(i).getRoom();
+                            Group group = scheduleData.get(i).getGroup();
+                            teacher.getHours().remove(hour);
+                            room.getHours().remove(hour);
+                            group.getHours().remove(hour);
                             scheduleData.remove(i);
                             i--;
                             foundDuplicate = true;
@@ -96,7 +157,8 @@ public class FancyView extends Sizeable {
                 }
                 searchResults.getSelectionModel().selectFirst();
                 if (foundDuplicate) {
-                    DataWriter.writeScheduleList(scheduleData);
+                    school.setSchedules(scheduleData);
+                    DataWriter.writeSchool(school);
                     search(textField.getText());
                 }
             } catch (Exception e) {
@@ -112,14 +174,22 @@ public class FancyView extends Sizeable {
     private void buildSearchSelectGraphGroupBar() {
         searchGroupBar.getChildren().addAll(textField, searchGroupButton);
         selectGroupBar.getChildren().addAll(searchResults, submitGroupButton);
-        graphGroupBar.getChildren().addAll(clearViewButton, removePlanButton);
+        graphGroupBar.getChildren().addAll(clearViewButton, removePlanButton, addAll);
         graphDrawBar.getChildren().addAll(VirtualizedView.drawTimePanel());
         topElements.getChildren().addAll(searchGroupBar, selectGroupBar, graphGroupBar, graphDrawBar);
         borderPane.setTop(topElements);
+        setTextfieldOnClick();
         setSearchButtonActionOnClick();
         setSubmitButtonActionOnClick();
         setClearViewButtonActionOnClick();
         setRemovePlanButton();
+        setAllButton();
+    }
+
+    private void setTextfieldOnClick() {
+        textField.setOnMouseClicked(event -> {
+            textField.clear();
+        });
     }
 
     //=======================BEGIN OF CODE FOR ALL ACTION ON CLICK EVENTS================================
@@ -148,9 +218,40 @@ public class FancyView extends Sizeable {
             if (searchResults.getSelectionModel().isEmpty())
                 addSubmitErrorMessage();
             else {
-                addSubmitSuccessfulMessage();
                 Plan plan = (Plan) searchResults.getSelectionModel().getSelectedItem();
-                graphDrawBar.getChildren().add(VirtualizedView.schedule(testDataToBeginTime(plan.getTime()), testDataToEndTime(plan.getTime()), plan.getSubject()));
+
+                boolean doubleDetected = false;
+                for (int i = 0; i < allVirtualizedItems.size(); i++) {
+                    if (allVirtualizedItems.get(i).isEqualTo(plan)) doubleDetected = true;
+                }
+
+                boolean mergeNeeded = false;
+                for (int i = 0; i < allVirtualizedItems.size(); i++) {
+                    if (allVirtualizedItems.get(i).isEqualToExceptTime(plan)) {
+                        mergeNeeded = true;
+                        if (testDataToBeginTime(allVirtualizedItems.get(i).getTime()) < testDataToEndTime(plan.getTime()))
+                            plan.setTime(testDataToBeginString(allVirtualizedItems.get(i).getTime()) + " - " + testDataToEndString(plan.getTime()));
+                        else
+                            plan.setTime(testDataToBeginString(plan.getTime()) + " - " + testDataToEndString(allVirtualizedItems.get(i).getTime()));
+                    }
+                }
+
+                if (!mergeNeeded)
+                    if (!doubleDetected) {
+                        graphDrawBar.getChildren().add(VirtualizedView.schedule(testDataToBeginTime(plan.getTime()), testDataToEndTime(plan.getTime()), plan.getSubject()));
+                        allVirtualizedItems.add(plan);
+                        addSubmitSuccessfulMessage();
+                    } else
+                        addSubmitErrorMessage();
+                else {
+                    graphDrawBar.getChildren().remove(graphDrawBar.getChildren().size() - 1);
+                    if (allVirtualizedItems.size() > 0)
+                        allVirtualizedItems.remove(allVirtualizedItems.size() - 1);
+                    search(this.textField.getText());
+                    graphDrawBar.getChildren().add(VirtualizedView.schedule(testDataToBeginTime(plan.getTime()), testDataToEndTime(plan.getTime()), plan.getSubject()));
+                    allVirtualizedItems.add(plan);
+                    addSubmitSuccessfulMessage();
+                }
             }
         });
     }
@@ -161,8 +262,10 @@ public class FancyView extends Sizeable {
 
     private void setClearViewButtonActionOnClick() {
         clearViewButton.setOnMouseClicked(event -> {
-            if (graphDrawBar.getChildren().size() > 1)
+            if (graphDrawBar.getChildren().size() > 1) {
                 graphDrawBar.getChildren().remove(graphDrawBar.getChildren().size() - 1);
+                allVirtualizedItems.remove(allVirtualizedItems.size() - 1);
+            }
         });
     }
 
@@ -170,13 +273,14 @@ public class FancyView extends Sizeable {
 
     /**
      * The retrieveScheduleData method reads all data from a text file and packs it in a list.
+     *
      * @return Returns an arrayList of Plans.
      */
 
     private ArrayList<Plan> retrieveScheduleData() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = (ArrayList<Schedule>) DataReader.readScheduleList();
+            ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }
@@ -188,6 +292,7 @@ public class FancyView extends Sizeable {
 
     /**
      * The method search can look for a specific text String in the list of groups. If a corresponding item is found it is returned.
+     *
      * @param search Defines which item should be looked for (if [strict] is typed after the search String the quick search is disabled and the search string should be exactly the same)
      * @return Returns a list of filtered data, which can be plotted later.
      */
@@ -196,27 +301,25 @@ public class FancyView extends Sizeable {
         ArrayList<Plan> data = retrieveScheduleData();
         ArrayList<Plan> filteredData = new ArrayList<>();
         boolean strictSearch = false;
-
         if (search.contains("[strict]")) {
             fixStringForStrictSearching(search);
             strictSearch = true;
             search = fixStringForStrictSearching(search);
         }
-
-        for (int i = 0; i < data.size(); i++) {
+        for (Plan plan : data) {
             if (strictSearch)
-                if (data.get(i).getGroup().trim().equals(search))
-                    filteredData.add(data.get(i));
-            if ((data.get(i).getGroup().trim().toLowerCase().contains(search.trim().toLowerCase())) && !strictSearch)
-                filteredData.add(data.get(i));
+                if (plan.getGroup().trim().equals(search) || plan.getTeacher().trim().equals(search) || plan.getLocation().trim().equals(search))
+                    filteredData.add(plan);
+            if (((plan.getGroup().trim().toLowerCase().contains(search.trim().toLowerCase())) || plan.getTeacher().trim().toLowerCase().contains(search.trim().toLowerCase()) || plan.getLocation().trim().toLowerCase().contains(search.trim().toLowerCase()) || plan.getSubject().trim().toLowerCase().contains(search.trim())) && !strictSearch)
+                filteredData.add(plan);
         }
-
         displayClassSearchResults(filteredData);
         return (filteredData);
     }
 
     /**
      * Seperate the strict keyword from the actual command.
+     *
      * @param input Defines the input including the keyword [strict]
      * @return Return the true input without [strict]
      */
@@ -225,13 +328,14 @@ public class FancyView extends Sizeable {
     }
 
     /**
-     *  Retrieve the filtered data and place it in the search results (must be observable).
-      * @param filteredData Data arrayList of all results taking into account the keyword.
+     * Retrieve the filtered data and place it in the search results (must be observable).
+     *
+     * @param filteredData Data arrayList of all results taking into account the keyword.
      */
 
     private void displayClassSearchResults(ArrayList filteredData) {
         searchResults.setItems(FXCollections.observableList(filteredData));
-        if (searchResults.getItems().size() > 1)
+        if (searchResults.getItems().size() > 0)
             searchResults.setPromptText(searchResults.getItems().toString());
         else searchResults.setPromptText("");
         searchResults.autosize();
@@ -280,6 +384,7 @@ public class FancyView extends Sizeable {
                 searchGroupBar.getChildren().add(successMessage);
                 this.successMessageSearch.getImageView().setOnMouseExited(eventExit -> {
                     searchGroupBar.getChildren().remove(searchGroupBar.getChildren().size() - 1);
+                    //removeSearchSuccessErrorMessage();
                 });
             });
         }
@@ -346,6 +451,8 @@ public class FancyView extends Sizeable {
 
     private void addSubmitErrorMessage() {
         if (!errorSubmitImagePlaced) {
+            if (successSubmitImagePlaced)
+                removeSubmitSuccessErrorMessage();
             errorSubmitImagePlaced = true;
             errorMessageSubmit.getImageView().setFitWidth(25);
             errorMessageSubmit.getImageView().setFitHeight(20);
@@ -368,6 +475,8 @@ public class FancyView extends Sizeable {
 
     private void addSubmitSuccessfulMessage() {
         if (!successSubmitImagePlaced) {
+            if (errorSubmitImagePlaced)
+                removeSubmitErrorMessage();
             successSubmitImagePlaced = true;
             successMessageSubmit.getImageView().setFitWidth(25);
             successMessageSubmit.getImageView().setFitHeight(20);
@@ -391,10 +500,7 @@ public class FancyView extends Sizeable {
     private void initActionSubmitErrorMessage() {
         searchResults.setOnMouseClicked(event -> {
             removeSubmitErrorMessage();
-        });
-
-        searchResults.setOnMouseDragged(event -> {
-            removeSubmitErrorMessage();
+            removeSubmitSuccessErrorMessage();
         });
     }
 
@@ -436,32 +542,47 @@ public class FancyView extends Sizeable {
 
     /**
      * Retrieve amount of minutes from a time string.
+     *
      * @param data Time string, for example: ax:by
      * @return Return a time in minutes.
      */
 
-    private int testDataToBeginTime(String data) {
+    public static int testDataToBeginTime(String data) {
         int seperator = data.indexOf("-");
         data = data.substring(0, seperator - 1);
         seperator = data.indexOf(":");
         return (Integer.parseInt(data.substring(0, seperator)) - 8) * 60 + Integer.parseInt(data.substring(seperator + 1));
     }
 
+    private static String testDataToBeginString(String data) {
+        int seperator = data.indexOf("-");
+        data = data.substring(0, seperator - 1);
+        return data;
+    }
+
     /**
      * Retrieve amount of minutes from a time string.
+     *
      * @param data Time string, for example: ax:by
      * @return Return a time in minutes.
      */
 
-    private int testDataToEndTime(String data) {
+    public static int testDataToEndTime(String data) {
         int seperator = data.indexOf("-");
         data = data.substring(seperator + 2);
         seperator = data.indexOf(":");
         return (Integer.parseInt(data.substring(0, seperator)) - 8) * 60 + Integer.parseInt(data.substring(seperator + 1));
     }
 
+    private static String testDataToEndString(String data) {
+        int seperator = data.indexOf("-");
+        data = data.substring(seperator + 2);
+        return data;
+    }
+
     /**
      * Send the borderPane which stores the entire graphical panel
+     *
      * @return Return the borderPane on which all nodes and elements are stored.
      */
 

@@ -1,11 +1,8 @@
 package data.objects;
 
-public class Toilet {
-    private int id;
-    private boolean isAvailable;
+public class Toilet extends Chair {
 
-    public Toilet(int id, boolean isAvailable) {
-        this.id = id;
-        this.isAvailable = isAvailable;
+    public Toilet() {
+        super();
     }
 }

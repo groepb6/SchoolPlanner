@@ -49,19 +49,19 @@ public class TableView extends Sizeable {
     private void buildRows() {
         TableColumn timeCol = new TableColumn("Time");
         TableColumn groupCol = new TableColumn("Group");
-        TableColumn locationCol = new TableColumn("Location");
+        TableColumn roomCol = new TableColumn("Room");
         TableColumn teacherCol = new TableColumn("Teacher");
         TableColumn subjectCol = new TableColumn("Subject");
 
         tableColumns.add(timeCol);
         tableColumns.add(groupCol);
-        tableColumns.add(locationCol);
+        tableColumns.add(roomCol);
         tableColumns.add(teacherCol);
         tableColumns.add(subjectCol);
 
         timeCol.setCellValueFactory(new PropertyValueFactory<Plan, String>("time"));
         groupCol.setCellValueFactory(new PropertyValueFactory<Plan, String>("group"));
-        locationCol.setCellValueFactory(new PropertyValueFactory<Plan, String>("location"));
+        roomCol.setCellValueFactory(new PropertyValueFactory<Plan, String>("location"));
         teacherCol.setCellValueFactory(new PropertyValueFactory<Plan, String>("teacher"));
         subjectCol.setCellValueFactory(new PropertyValueFactory<Plan, String>("subject"));
 
@@ -69,11 +69,11 @@ public class TableView extends Sizeable {
 
         timeCol.setPrefWidth(200);
         groupCol.setPrefWidth(200);
-        locationCol.setPrefWidth(200);
+        roomCol.setPrefWidth(200);
         teacherCol.setPrefWidth(200);
         subjectCol.setPrefWidth(200);
 
-        tableView.getColumns().setAll(groupCol, timeCol, locationCol, subjectCol, teacherCol);
+        tableView.getColumns().setAll(groupCol, subjectCol, teacherCol, roomCol, timeCol );
     }
 
     /**
@@ -88,7 +88,7 @@ public class TableView extends Sizeable {
     }
 
     /**
-     * This method returns the final TableView object, which can later be placed in a JavaFX node object, such as a GridPane, BorderPane or any other layoutPane (Slightly irrelevant, but we are using the BorderPane here).
+     * This method returns the final TableView object, which can later be placed in a JavaFX pathfinding object, such as a GridPane, BorderPane or any other layoutPane (Slightly irrelevant, but we are using the BorderPane here).
      *
      * @return Return the TableView object which can be placed in a layout pane later.
      */
@@ -106,11 +106,10 @@ public class TableView extends Sizeable {
     private List retrieveDataList() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = (ArrayList<Schedule>) DataReader.readScheduleList();
+            ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }
-
         } catch (Exception e) {
         }
         return list;

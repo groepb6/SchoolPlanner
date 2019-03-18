@@ -1,68 +1,72 @@
 package data.schedulerelated;
 
+import data.persons.Teacher;
+import data.rooms.Room;
+import data.schoolrelated.Group;
+import data.schoolrelated.Subject;
 import gui.assistclasses.Plan;
 
-import data.Saveable;
+import data.readwrite.Saveable;
 
 import java.io.Serializable;
 
 public class Schedule implements Serializable, Saveable {
 
-    private String time;
-    private String group;
-    private String location;
-    private String teacher;
-    private String subject;
+    private Hour time;
+    private Group group;
+    private Room room;
+    private Teacher teacher;
+    private Subject subject;
 
-    public Schedule(Plan plan) {
-        this.time = plan.getTime();
-        this.group = plan.getGroup();
-        this.location = plan.getLocation();
-        this.teacher = plan.getTeacher();
-        this.subject = plan.getSubject();
+    public Schedule(Hour time, Group group, Room room, Teacher teacher, Subject subject) {
+        this.time = time;
+        this.group = group;
+        this.room = room;
+        this.teacher = teacher;
+        this.subject = subject;
     }
 
     public Plan getPlan() {
-        return new Plan(this.time, this.group, this.location, this.teacher, this.subject);
+        return new Plan(this.time.getTime(), this.group.getName(), this.room.getName(), this.teacher.getName(), this.subject.getName());
     }
 
-    public String getTime() {
+    public Hour getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Hour time) {
         this.time = time;
     }
 
-    public String getGroup() {
+    public Group getGroup() {
         return group;
     }
 
-    public void setGroup(String group) {
+    public void setGroup(Group group) {
         this.group = group;
     }
 
-    public String getLocation() {
-        return location;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public String getTeacher() {
+    public Teacher getTeacher() {
         return teacher;
     }
 
-    public void setTeacher(String teacher) {
+    public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
 
-    public String getSubject() {
+    public Subject getSubject() {
         return subject;
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(Subject subject) {
         this.subject = subject;
     }
 
@@ -80,7 +84,7 @@ public class Schedule implements Serializable, Saveable {
         return "Schedule{" +
                 "time='" + time + '\'' +
                 ", group='" + group + '\'' +
-                ", location='" + location + '\'' +
+                ", location='" + room + '\'' +
                 ", teacher='" + teacher + '\'' +
                 ", subject='" + subject + '\'' +
                 '}';
