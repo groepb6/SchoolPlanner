@@ -15,7 +15,7 @@ import java.util.Map;
 public class School implements Serializable {
     private String name;
     private ArrayList<Room> rooms;
-    private ArrayList<Person> teachers;
+    private ArrayList<Teacher> teachers;
     private ArrayList<Group> groups;
     private ArrayList<Schedule> schedules;
     private ArrayList<Subject> subjects;
@@ -30,8 +30,8 @@ public class School implements Serializable {
     }
 
     /**
-     * Finds all of the schedules that belong to a certain group, and puts those in a HashMap.
-     * @return A SchoolMap that has every Group of the School as key, and a List of Schedule objects as value.
+     * Finds all of the schedules that belong to a certain Group, and puts those in a HashMap.
+     * @return A Map that has every Group of the School as key, and a List of Schedule objects as value.
      */
     public Map<Group, List<Schedule>> findGroupSchedules() {
         Map<Group, List<Schedule>> groupSchedules = new HashMap<>();
@@ -45,6 +45,37 @@ public class School implements Serializable {
             groupSchedules.put(group, foundSchedules);
         }
         return groupSchedules;
+    }
+
+    /**
+     * Finds all of the schedules that belong to a certain Teacher, and puts those in a HashMap.
+     * @return A Map that has every Teacher of the School as key, and a List of Schedule objects as value.
+     */
+    public Map<Teacher, List<Schedule>> findTeacherSchedules() {
+        Map<Teacher, List<Schedule>> teacherSchedules = new HashMap<>();
+        for (Teacher teacher : this.teachers) {
+            List<Schedule> foundSchedules = new ArrayList<>();
+            for (Schedule schedule : this.schedules) {
+                if (schedule.getTeacher().equals(teacher)) {
+                    foundSchedules.add(schedule);
+                }
+            }
+            teacherSchedules.put(teacher, foundSchedules);
+        }
+        return teacherSchedules;
+    }
+
+    /**
+     * Calculates the amount of Person objects contained within the school.
+     * @return The amount of Person objects as an integer
+     */
+    public int amountOfPeople() {
+        int amount = 0;
+        amount += this.teachers.size();
+        for (Group group : this.groups) {
+            amount += group.getStudents().size();
+        }
+        return amount;
     }
 
     public boolean hasData() {
@@ -87,7 +118,7 @@ public class School implements Serializable {
         return rooms;
     }
 
-    public ArrayList<Person> getTeachers() {
+    public ArrayList<Teacher> getTeachers() {
         return teachers;
     }
 

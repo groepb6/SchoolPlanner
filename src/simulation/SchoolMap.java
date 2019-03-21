@@ -23,7 +23,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class SchoolMap {
-    private FXGraphics2D g2d;
+
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
     private ArrayList<BufferedImage> subImages = new ArrayList<>();
     private int tileWidth;
@@ -53,14 +53,14 @@ public class SchoolMap {
         this.scrollPane = scrollPane;
         this.group = group;
         this.stage = stage;
-        this.g2d = g2d;
+
         this.scene = scene;
         this.canvas = canvas;
         setActions();
         this.startSim = startSim;
         saveAreas();
         saveSprites();
-        saveLayers();
+        saveLayers(g2d);
         loadPathFinder();
         drawLayers();
         image = getImageOfCanvas();
@@ -109,18 +109,18 @@ public class SchoolMap {
         });
     }
 
-    private void saveLayers() {
+    private void saveLayers(FXGraphics2D graphics) {
         for (int i = 0; i < mapFile.getJsonArray("layers").size()-1; i++) {
             if (!mapFile.getJsonArray("layers").getJsonObject(i).getString("name").equals("Collision"))
-                layers.add(new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages));
-            else collisionLayer=new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages);
+                layers.add(new Layer(mapFile.getJsonArray("layers").getJsonObject(i), graphics, subImages));
+            else collisionLayer=new Layer(mapFile.getJsonArray("layers").getJsonObject(i), graphics, subImages);
         }
         System.out.println("done");
     }
 
-    public void restoreCanvas() {
-        g2d.clearRect(0,0, (int)canvas.getWidth(), (int)canvas.getHeight());
-        g2d.drawImage(image, null, null);
+    public void restoreCanvas(FXGraphics2D graphics) {
+        graphics.clearRect(0,0, (int)canvas.getWidth(), (int)canvas.getHeight());
+        graphics.drawImage(image, null, null);
     }
 
     public void drawLeaves() {
