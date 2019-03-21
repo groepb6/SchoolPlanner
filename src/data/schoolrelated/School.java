@@ -8,7 +8,9 @@ import data.schedulerelated.Schedule;
 
 import java.util.ArrayList;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class School implements Serializable {
     private String name;
@@ -25,6 +27,24 @@ public class School implements Serializable {
         this.groups = new ArrayList<>();
         this.schedules = new ArrayList<>();
         this.subjects = new ArrayList<>();
+    }
+
+    /**
+     * Finds all of the schedules that belong to a certain group, and puts those in a HashMap.
+     * @return A Map that has every Group of the School as key, and a List of Schedule objects as value.
+     */
+    public Map<Group, List<Schedule>> findGroupSchedules() {
+        Map<Group, List<Schedule>> groupSchedules = new HashMap<>();
+        for (Group group : this.groups) {
+            List<Schedule> foundSchedules = new ArrayList<>();
+            for (Schedule schedule : this.schedules) {
+                if (schedule.getGroup().equals(group)) {
+                    foundSchedules.add(schedule);
+                }
+            }
+            groupSchedules.put(group, foundSchedules);
+        }
+        return groupSchedules;
     }
 
     public boolean hasData() {

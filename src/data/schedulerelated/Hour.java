@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public enum Hour implements Serializable {
+    NONE("18:00 - 8:00"),
     FIRST("8:00 - 9:00"),
     SECOND("9:00 - 10:00"),
     THIRD("10:00 - 11:00"),
