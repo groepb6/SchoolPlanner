@@ -18,20 +18,16 @@ public class Sim {
     private int speed;
     Point2D currentPos;
     Point2D targetPos;
-    private FXGraphics2D g2d;
     private BufferedImage bufferedImage;
-    private Canvas canvas;
     private ArrayList<Sim> sims = new ArrayList<>();
     private double angleMin = 9999;
     private double angleMax = -9999;
 
-    public Sim(Point2D startPos, FXGraphics2D g2d, SimSkin simSkin, Canvas canvas) {
+    public Sim(Point2D startPos, SimSkin simSkin) {
         this.currentPos = startPos;
         this.targetPos = startPos;
         this.speed = (int) (Math.random() * 2) + 3;
-        this.g2d = g2d;
         this.simSkin = simSkin;
-        this.canvas = canvas;
         this.angle = Math.random() * Math.PI * 2;
         this.targetPos = new Point2D.Double(500, 500);
     }
@@ -119,10 +115,10 @@ public class Sim {
         return this.speed;
     }
 
-    public void draw() {
+    public void draw(FXGraphics2D graphics) {
         AffineTransform affineTransform = new AffineTransform();
         affineTransform.translate(currentPos.getX() - 32, currentPos.getY() - 32 - 28); // extra -28 to translate to feet
-        g2d.drawImage(bufferedImage, affineTransform, null);
+        graphics.drawImage(bufferedImage, affineTransform, null);
     }
 
     public boolean pushAside(ArrayList<Sim> sims, Point2D position) {
@@ -150,6 +146,10 @@ public class Sim {
 
     public void setSimSkinDir(BufferedImage bufferedImage) {
         this.bufferedImage = bufferedImage;
+    }
+
+    public void updateDestination() {
+
     }
 
 
