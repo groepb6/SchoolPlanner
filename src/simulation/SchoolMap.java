@@ -22,7 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Map {
+public class SchoolMap {
     private FXGraphics2D g2d;
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
     private ArrayList<BufferedImage> subImages = new ArrayList<>();
@@ -48,7 +48,7 @@ public class Map {
     private int amountOfTilesHeight;
 
 
-    public Map(FXGraphics2D g2d, Canvas canvas, Scene scene, StartSim startSim, ScrollPane scrollPane, Group group, Stage stage) {
+    public SchoolMap(FXGraphics2D g2d, Canvas canvas, Scene scene, StartSim startSim, ScrollPane scrollPane, Group group, Stage stage) {
         readJSON();
         this.scrollPane = scrollPane;
         this.group = group;

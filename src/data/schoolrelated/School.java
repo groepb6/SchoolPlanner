@@ -31,7 +31,7 @@ public class School implements Serializable {
 
     /**
      * Finds all of the schedules that belong to a certain group, and puts those in a HashMap.
-     * @return A Map that has every Group of the School as key, and a List of Schedule objects as value.
+     * @return A SchoolMap that has every Group of the School as key, and a List of Schedule objects as value.
      */
     public Map<Group, List<Schedule>> findGroupSchedules() {
         Map<Group, List<Schedule>> groupSchedules = new HashMap<>();

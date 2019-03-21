@@ -7,7 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
-import simulation.Map;
+import simulation.SchoolMap;
 import simulation.SimUpdate;
 
 
@@ -31,10 +31,10 @@ public class StartSim extends Sizeable {
         canvas = new Canvas(3200, 3840);
         g2d = new FXGraphics2D(canvas.getGraphicsContext2D());
         this.scene = new Scene(group);
-        Map map = new Map(g2d, canvas, scene, this, scrollPane, group, stage);
-        group.getChildren().add(map.getCanvas());
+        SchoolMap schoolMap = new SchoolMap(g2d, canvas, scene, this, scrollPane, group, stage);
+        group.getChildren().add(schoolMap.getCanvas());
         group.setAutoSizeChildren(false);
-        this.simUpdate = new SimUpdate(g2d, canvas, scene, map);
+        this.simUpdate = new SimUpdate(g2d, canvas, scene, schoolMap);
     }
 
     public void clean() {

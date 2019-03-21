@@ -1,6 +1,5 @@
 package simulation;
 
-import data.persons.Person;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -17,16 +16,16 @@ public class SimUpdate {
     private Scene scene;
     private double delay = 0.;
     private int counter = 0;
-    private Map map;
+    private SchoolMap schoolMap;
     private ArrayList<Sim> sims = new ArrayList<>();
     public AnimationTimer animationTimer;
     private ArrayList<SimSkin> simSkins = new ArrayList<>();
 
-    public SimUpdate(FXGraphics2D g2d, Canvas canvas, Scene scene, Map map) {
+    public SimUpdate(FXGraphics2D g2d, Canvas canvas, Scene scene, SchoolMap schoolMap) {
         this.g2d = g2d;
         this.canvas = canvas;
         this.scene = scene;
-        this.map = map;
+        this.schoolMap = schoolMap;
         createSims();
 
         animationTimer = new AnimationTimer() {
@@ -60,12 +59,12 @@ public class SimUpdate {
         counter = (int)(Math.round(delay*10.)/10.);
         if (delay >= 0.075 ) {
             delay=0;
-            map.restoreCanvas();
+            schoolMap.restoreCanvas();
             updatePositionSims();
             drawSims();
-            map.drawWalls();
-            //map.drawLeaves();
-            //map.drawCollision();
+            schoolMap.drawWalls();
+            //schoolMap.drawLeaves();
+            //schoolMap.drawCollision();
         }
     }
 
