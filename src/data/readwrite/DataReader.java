@@ -73,6 +73,7 @@ public class DataReader {
      * @return A School object with no usable info.
      */
     public static School emergencySchool() { //TODO: This will most likely mess up any simulation!
+        System.out.println("No proper school could be loaded, creating a new one...");
         School school = new School("");
         Schedule schedule = new Schedule(Hour.NONE, new Group(""), new Classroom(""), new Teacher(""), new Subject(""));
         school.addSchedule(schedule);

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public enum Hour implements Serializable {
-    NONE("18:00 - 8:00"),
     FIRST("8:00 - 9:00"),
     SECOND("9:00 - 10:00"),
     THIRD("10:00 - 11:00"),
@@ -14,7 +13,8 @@ public enum Hour implements Serializable {
     SEVENTH("14:00 - 15:00"),
     EIGHTH("15:00 - 16:00"),
     NINTH("16:00 - 17:00"),
-    TENTH("17:00 - 18:00");
+    TENTH("17:00 - 18:00"),
+    NONE("18:00 - 8:00"); //TODO: keep this from popping up in time selection?
 
     public String time;
 

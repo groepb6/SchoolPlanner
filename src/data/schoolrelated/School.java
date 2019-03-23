@@ -1,32 +1,28 @@
 package data.schoolrelated;
 
-import data.persons.Person;
 import data.persons.Teacher;
 import data.rooms.Classroom;
 import data.rooms.Room;
 import data.schedulerelated.Schedule;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.io.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class School implements Serializable {
     private String name;
-    private ArrayList<Room> rooms;
-    private ArrayList<Teacher> teachers;
-    private ArrayList<Group> groups;
-    private ArrayList<Schedule> schedules;
-    private ArrayList<Subject> subjects;
+    private Set<Room> rooms;
+    private Set<Teacher> teachers;
+    private Set<Group> groups;
+    private Set<Schedule> schedules;
+    private Set<Subject> subjects;
 
     public School(String name) {
         this.name = name;
-        this.rooms = new ArrayList<>();
-        this.teachers = new ArrayList<>();
-        this.groups = new ArrayList<>();
-        this.schedules = new ArrayList<>();
-        this.subjects = new ArrayList<>();
+        this.rooms = new HashSet<>();
+        this.teachers = new HashSet<>();
+        this.groups = new HashSet<>();
+        this.schedules = new HashSet<>();
+        this.subjects = new HashSet<>();
     }
 
     /**
@@ -110,19 +106,27 @@ public class School implements Serializable {
         this.groups.add(group);
     }
 
+    /**
+     * Adds a schedule and adds all schedule information to the school.
+     * @param schedule The Schedule that needs to be added.
+     */
     public void addSchedule(Schedule schedule) {
         this.schedules.add(schedule);
+        this.rooms.add(schedule.getRoom());
+        this.teachers.add(schedule.getTeacher());
+        this.groups.add(schedule.getGroup());
+        this.subjects.add(schedule.getSubject());
     }
 
-    public ArrayList<Room> getRooms() {
+    public Set<Room> getRooms() {
         return rooms;
     }
 
-    public ArrayList<Teacher> getTeachers() {
+    public Set<Teacher> getTeachers() {
         return teachers;
     }
 
-    public ArrayList<Group> getGroups() {
+    public Set<Group> getGroups() {
 
         return groups;
     }
@@ -140,15 +144,15 @@ public class School implements Serializable {
         return groupString;
     }
 
-    public ArrayList<Schedule> getSchedules() {
+    public Set<Schedule> getSchedules() {
         return schedules;
     }
 
-    public ArrayList<Subject> getSubjects() {
+    public Set<Subject> getSubjects() {
         return subjects;
     }
 
-    public void setSchedules(ArrayList<Schedule> schedules) {
+    public void setSchedules(Set<Schedule> schedules) {
         this.schedules = schedules;
     }
 }
