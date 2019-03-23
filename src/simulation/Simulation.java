@@ -6,19 +6,23 @@ import data.persons.Teacher;
 import data.schedulerelated.Schedule;
 import data.schoolrelated.Group;
 import data.schoolrelated.School;
+import data.schoolrelated.Subject;
 import javafx.animation.AnimationTimer;
 import org.jfree.fx.FXGraphics2D;
 import simulation.sims.Sim;
 import simulation.sims.SimSkin;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Simulation {
     private School school;
-    private Map<Group, List<Schedule>> groupSchedules;
-    private Map<Teacher, List<Schedule>> teacherSchedules;
+    private Map<Group, Set<Schedule>> groupSchedules;
+    private Map<Teacher, Set<Schedule>> teacherSchedules;
     private SimTime time;
     private SchoolMap map;
     private Sim[] sims;
@@ -30,6 +34,30 @@ public class Simulation {
         this.time = new SimTime(8, 1.0);
         this.setupTimer(graphics);
         this.map = map;
+        this.createPeople();
+        this.createSims();
+
+    }
+
+    /**
+     * Adds Student objects to Groups and a Teacher object for every Subject, but only if the School doesn't have Student or Teacher objects.
+     */
+    private void createPeople() {
+        for (Group group : this.school.getGroups()) {
+            if (group.getStudents().size() < 1) {
+                for (int i = 0; i < 1; i++) {
+                    group.addStudent(new Student(""));
+                }
+            }
+        }
+
+        if (this.school.getTeachers().size() < 1) {
+            for (Subject subject : this.school.getSubjects()) {
+                Teacher teacher = new Teacher("");
+                teacher.setSubject(subject);
+                this.school.addTeacher(teacher);
+            }
+        }
 
     }
 
@@ -64,6 +92,7 @@ public class Simulation {
 
     public void update(double deltaTime) {
         this.time.update(deltaTime);
+        this.updateGroups();
 
         for (Sim sim : this.sims) {
             sim.update(this.sims);
@@ -74,11 +103,13 @@ public class Simulation {
 
     public void draw(FXGraphics2D graphics) {
         this.map.restoreCanvas(graphics);
-        this.map.drawWalls();
 
         for (Sim sim : this.sims) {
             sim.draw(graphics);
         }
+
+        this.map.drawWalls();
+
         //TODO: add map drawing methods
         //TODO: add sim drawing methods
     }

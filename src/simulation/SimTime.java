@@ -1,6 +1,7 @@
 package simulation;
 
 import data.schedulerelated.Hour;
+import org.jfree.fx.FXGraphics2D;
 
 /**
  * Handles the time of the simulation
@@ -40,6 +41,10 @@ public class SimTime {
                 this.hours = 0;
             }
         }
+    }
+
+    public void draw(FXGraphics2D graphics) {
+        
     }
 
     public void reset() { //TODO: test proper reset procedures
@@ -101,4 +106,13 @@ public class SimTime {
         }
     }
 
+    @Override
+    public String toString() {
+        return "SimTime{" +
+                "hours=" + hours +
+                ", minutes=" + minutes +
+                ", speed=" + speed +
+                ", updated=" + updated +
+                '}';
+    }
 }
