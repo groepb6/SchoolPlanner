@@ -11,7 +11,6 @@ public class Teacher extends Person implements Serializable {
 
     public Teacher(String name) {
         super(name);
-        this.subject=subject;
         this.hours = new ArrayList<>();
     }
 

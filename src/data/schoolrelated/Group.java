@@ -18,12 +18,8 @@ public class Group implements Serializable {
         this.hours = new HashSet<>();
     }
 
-    public void addStudents(Student student) {
+    public void addStudent(Student student) {
         this.students.add(student);
-    }
-
-    public void addStudents(String name, int id) {
-        this.students.add(new Student(name));
     }
 
     public String getName() {

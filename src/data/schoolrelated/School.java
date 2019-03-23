@@ -29,10 +29,10 @@ public class School implements Serializable {
      * Finds all of the schedules that belong to a certain Group, and puts those in a HashMap.
      * @return A Map that has every Group of the School as key, and a List of Schedule objects as value.
      */
-    public Map<Group, List<Schedule>> findGroupSchedules() {
-        Map<Group, List<Schedule>> groupSchedules = new HashMap<>();
+    public Map<Group, Set<Schedule>> findGroupSchedules() {
+        Map<Group, Set<Schedule>> groupSchedules = new HashMap<>();
         for (Group group : this.groups) {
-            List<Schedule> foundSchedules = new ArrayList<>();
+            Set<Schedule> foundSchedules = new HashSet<>();
             for (Schedule schedule : this.schedules) {
                 if (schedule.getGroup().equals(group)) {
                     foundSchedules.add(schedule);
@@ -47,10 +47,10 @@ public class School implements Serializable {
      * Finds all of the schedules that belong to a certain Teacher, and puts those in a HashMap.
      * @return A Map that has every Teacher of the School as key, and a List of Schedule objects as value.
      */
-    public Map<Teacher, List<Schedule>> findTeacherSchedules() {
-        Map<Teacher, List<Schedule>> teacherSchedules = new HashMap<>();
+    public Map<Teacher, Set<Schedule>> findTeacherSchedules() {
+        Map<Teacher, Set<Schedule>> teacherSchedules = new HashMap<>();
         for (Teacher teacher : this.teachers) {
-            List<Schedule> foundSchedules = new ArrayList<>();
+            Set<Schedule> foundSchedules = new HashSet<>();
             for (Schedule schedule : this.schedules) {
                 if (schedule.getTeacher().equals(teacher)) {
                     foundSchedules.add(schedule);
