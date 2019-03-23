@@ -28,7 +28,7 @@ public class Simulation {
         this.groupSchedules = school.findGroupSchedules();
         this.teacherSchedules = school.findTeacherSchedules();
         this.time = new SimTime(8, 1.0);
-        this.setupTimer(graphics); //TODO: move draw method out of here?
+        this.setupTimer(graphics);
         this.map = map;
 
     }
@@ -64,12 +64,21 @@ public class Simulation {
 
     public void update(double deltaTime) {
         this.time.update(deltaTime);
+
+        for (Sim sim : this.sims) {
+            sim.update(this.sims);
+        }
         //TODO: add update methods
 
     }
 
     public void draw(FXGraphics2D graphics) {
         this.map.restoreCanvas(graphics);
+        this.map.drawWalls();
+
+        for (Sim sim : this.sims) {
+            sim.draw(graphics);
+        }
         //TODO: add map drawing methods
         //TODO: add sim drawing methods
     }

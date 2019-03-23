@@ -6,6 +6,7 @@ import data.schedulerelated.Hour;
  * Handles the time of the simulation
  */
 public class SimTime {
+    private int startingHour;
     private int hours;
     private double minutes;
     private double speed;
@@ -17,6 +18,7 @@ public class SimTime {
      * @param speed        The starting speed of this SimTime object.
      */
     public SimTime(int startingHour, double speed) {
+        this.startingHour = startingHour;
         this.hours = startingHour;
         this.minutes = 0;
         this.speed = speed;
@@ -38,6 +40,13 @@ public class SimTime {
                 this.hours = 0;
             }
         }
+    }
+
+    public void reset() { //TODO: test proper reset procedures
+        this.hours = this.startingHour;
+        this.minutes = 0.0;
+        this.speed = 1;
+        this.updated = true;
     }
 
     public void setSpeed(double speed) {

@@ -1,5 +1,7 @@
 package gui.components.frames;
 
+import data.readwrite.DataReader;
+import data.schoolrelated.School;
 import gui.components.window.Sizeable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -8,7 +10,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 import simulation.SchoolMap;
-import simulation.SimUpdate;
+import simulation.Simulation;
 
 
 /**
@@ -24,7 +26,6 @@ public class StartSim extends Sizeable {
     public Group group = new Group();
     private FXGraphics2D g2d;
     private ScrollPane scrollPane;
-    private SimUpdate simUpdate;
 
     public StartSim(Stage stage, Scene scene, ScrollPane scrollPane) {
         super.setProportions(0, 5000, 0, 5000, 800, 600, stage);
@@ -34,11 +35,13 @@ public class StartSim extends Sizeable {
         SchoolMap schoolMap = new SchoolMap(g2d, canvas, scene, this, scrollPane, group, stage);
         group.getChildren().add(schoolMap.getCanvas());
         group.setAutoSizeChildren(false);
-        this.simUpdate = new SimUpdate(g2d, canvas, scene, schoolMap);
+        //this.simUpdate = new SimUpdate(g2d, canvas, scene, schoolMap);
+        School school = DataReader.readSchool();
+        Simulation simulation = new Simulation(school, schoolMap, g2d);
     }
 
     public void clean() {
-        this.simUpdate.stopTimer();
+        //this.simUpdate.stopTimer();
     }
 
     public Scene getSim() {

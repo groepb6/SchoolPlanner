@@ -19,7 +19,6 @@ public class Sim {
     Point2D currentPos;
     Point2D targetPos;
     private BufferedImage bufferedImage;
-    private ArrayList<Sim> sims = new ArrayList<>();
     private double angleMin = 9999;
     private double angleMax = -9999;
 
@@ -48,9 +47,8 @@ public class Sim {
         this.currentPos = currentPos;
     }
 
-    public void update(ArrayList<Sim> sims) {
+    public void update(Sim[] sims) {
         Point2D newPos = new Point2D.Double(currentPos.getX() + this.speed * Math.cos(angle), currentPos.getY() + this.speed * Math.sin(angle));
-        this.sims = sims;
         boolean hasCollision = false;
         for (Sim sim : sims) {
             if (sim != this && sim.simCollision(newPos)) {

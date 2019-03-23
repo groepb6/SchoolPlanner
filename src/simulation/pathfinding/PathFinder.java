@@ -65,7 +65,7 @@ public class PathFinder {
                 closedList.add(belowNode);
                 openList.add(belowNode);
             }
-        System.out.println(closedList.size());
+        //System.out.println(closedList.size()); //TODO: !Hier zitten superveel dingen in blijkbaar!
 
     }
 
