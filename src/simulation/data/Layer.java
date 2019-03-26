@@ -35,7 +35,7 @@ public class Layer {
 
     public void saveTiles() {
         boolean isCollisionLayer = layerName.equals("Collision");
-
+        ;
         int x;
         int y;
 
@@ -47,11 +47,12 @@ public class Layer {
             for (x = 0; x < layerWidth; x++) {
                 if (isCollisionLayer) {
                     nodes[x][y] = new Node(x,y,-1);
+                    nodes[x][y].walkable=true;
                 }
                 if (data.getInt(index) != 0) {
                     tiles.add(new Tile(subImages.get(data.getInt(index) - 1), x, y, g2d));
                     if (isCollisionLayer) {
-                        nodes[x][y].walkable=true;
+                        nodes[x][y].walkable=false;
                     }
                 }
                 index++;
