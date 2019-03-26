@@ -8,7 +8,7 @@ public class DevSetup {
 
     /**
      * Main method to run the setup
-     * @param args
+     * @param args Can be used to parse extra command line arguments.
      */
     public static void main(String[] args) {
         DevSetup.setupEverything();
@@ -17,7 +17,7 @@ public class DevSetup {
     /**
      * Executes all DevSetup methods (might not be safe to run multiple
      */
-    public static void setupEverything() {
+    private static void setupEverything() {
         DevSetup.setupSaveDirectories();
     }
 
@@ -25,10 +25,16 @@ public class DevSetup {
      * OUTDATED, but can be used as an example
      * Sets up the save directories (safe to run multiple times)
      */
-    public static void setupSaveDirectories() {
+    private static void setupSaveDirectories() {
         try {
-            if (Files.notExists(Paths.get("saves/school"))) {
-                Files.createDirectories(Paths.get("saves/school"));
+            if (Files.notExists(Paths.get("saves/groups"))) {
+                Files.createDirectories(Paths.get("saves/groups"));
+            }
+            if (Files.notExists(Paths.get("saves/schedules"))) {
+                Files.createDirectories(Paths.get("saves/schedules"));
+            }
+            if (Files.notExists(Paths.get("saves/teachers"))) {
+                Files.createDirectories(Paths.get("saves/teachers"));
             }
         } catch (Exception exception) {
             System.out.println("Error, could not create save directories!");
