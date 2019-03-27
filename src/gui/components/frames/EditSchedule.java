@@ -24,6 +24,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ * */
+
 public class EditSchedule extends Sizeable {
     private School school;
     private BorderPane borderPane;
@@ -265,10 +270,10 @@ public class EditSchedule extends Sizeable {
                      */
 
                     boolean isAvailableThisTime = true;
-                    isAvailableThisTime = isAvailableThisTime(teacher, room, this.getHour(this.timeComboBox.getValue().toString()), group);
+                    isAvailableThisTime = isAvailableThisTime(teacher, room, Hour.valueOf(this.timeComboBox.getValue().toString()), group);
 
                     Schedule schedule = new Schedule(
-                            this.getHour(this.timeComboBox.getValue().toString()),
+                            Hour.valueOf(this.timeComboBox.getValue().toString()),
                             group,
                             room,
                             teacher,
@@ -281,9 +286,9 @@ public class EditSchedule extends Sizeable {
                      */
 
                     if (!isDuplicateSchedule(this.school, schedule) && isAvailableThisTime) {
-                        room.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
-                        teacher.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
-                        group.getHours().add(this.getHour(this.timeComboBox.getValue().toString()));
+                        room.getHours().add(Hour.valueOf(this.timeComboBox.getValue().toString()));
+                        teacher.getHours().add(Hour.valueOf(this.timeComboBox.getValue().toString()));
+                        group.getHours().add(Hour.valueOf(this.timeComboBox.getValue().toString()));
 
                         this.school.addSchedule(schedule);
                         DataWriter.writeSchool(school);
@@ -446,25 +451,6 @@ public class EditSchedule extends Sizeable {
             }
         });
     }
-
-    /**
-     * This method returns the right Enum-value, depending on the string you enter
-     *
-     * @param time
-     * @return Hour
-     */
-
-    public Hour getHour(String time) {
-        ArrayList<Hour> hours = new ArrayList<>();
-        EnumSet.allOf(Hour.class).forEach(Hour -> hours.add(Hour));
-        for (Hour h : hours) {
-            if (h.getTime().equals(time)) {
-                return h;
-            }
-        }
-        return null;
-    }
-
 
     /**
      * This method checks if the given Schedule is already present in the school object it is given.

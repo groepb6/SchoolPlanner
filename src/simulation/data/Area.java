@@ -3,6 +3,10 @@ package simulation.data;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
+/**
+ * @author Dustin Hendriks
+ */
+
 public class Area {
     public JsonArray data;
     public String areaName;

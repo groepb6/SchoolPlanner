@@ -9,6 +9,10 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * @author Dustin Hendriks
+ */
+
 public class Sim {
     SimSkin simSkin;
     private static final double aggressionFactorInBehaviour = .6;
@@ -66,7 +70,7 @@ public class Sim {
         boolean onTarget = currentPos.distance(targetPos) < speed;
         if (!onTarget) {
             if (!hasCollision) currentPos = newPos;
-            else angle += 2* aggressionFactorInBehaviour;
+            else angle += 2 * aggressionFactorInBehaviour;
             Point2D difference = new Point2D.Double(targetPos.getX() - currentPos.getX(), targetPos.getY() - currentPos.getY());
             double targetAngle = Math.atan2(difference.getY(), difference.getX());
             double angleDifference = targetAngle - angle;
@@ -83,10 +87,13 @@ public class Sim {
 
     private void setFrame() {
         double angleRad = angle / Math.PI;
-        while (angleRad>1) angleRad -= 2;
-        while (angleRad<-1) angleRad+=2;
-        if (angleRad>0.75) { angleRad=angleRad-2; };
-        int rotatedAngle = (int)((((angleRad)*2)+2.5)); // 0 t/m 7
+        while (angleRad > 1) angleRad -= 2;
+        while (angleRad < -1) angleRad += 2;
+        if (angleRad > 0.75) {
+            angleRad = angleRad - 2;
+        }
+        ;
+        int rotatedAngle = (int) ((((angleRad) * 2) + 2.5)); // 0 t/m 7
         //System.out.println("degrees "+Math.toDegrees(angle)+" angleInRad: "+ ((angle/Math.PI))+" rotatedAngle "+rotatedAngle);
         switch (rotatedAngle) {
             case 0:
@@ -102,7 +109,7 @@ public class Sim {
                 setSimSkinDir(simSkin.walkDown(this));
                 break;
             default:
-                System.out.println(rotatedAngle+" ERROR");
+                System.out.println(rotatedAngle + " ERROR");
         }
     }
 

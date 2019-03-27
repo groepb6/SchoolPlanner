@@ -2,6 +2,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
+ * @author Noah Walsmits
+ * @author Hanno Brandwijk
+ */
+
+/**
  * This class contains methods for developers to set up things that aren't synchronised within git
  */
 public class DevSetup {

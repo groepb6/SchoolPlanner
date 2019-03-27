@@ -11,6 +11,10 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * @author Dustin Hendriks
+ */
+
 public class SimUpdate {
     private FXGraphics2D g2d;
     private Canvas canvas;

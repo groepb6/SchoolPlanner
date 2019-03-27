@@ -8,6 +8,10 @@ import data.schoolrelated.Group;
 import data.schoolrelated.School;
 import data.schoolrelated.Subject;
 
+/**
+ * @author Dustin Hendriks
+ * */
+
 public class SampleData {
     private School school = new School("School");
 

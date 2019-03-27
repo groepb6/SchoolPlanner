@@ -4,6 +4,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * @author Dustin Hendriks
+ */
+
 public class SimSkin {
     private BufferedImage simSpriteSheet;
     private ArrayList<BufferedImage> walkLeftAnimation = new ArrayList<>();
@@ -14,7 +18,7 @@ public class SimSkin {
     private ArrayList<BufferedImage> pointWithStickLeftFrontFacing = new ArrayList<>();
     private ArrayList<BufferedImage> pointWithStickRightBackFacing = new ArrayList<>();
     private ArrayList<BufferedImage> hitStudentWithStick = new ArrayList<>();
-    private boolean finishedAnimation= false;
+    private boolean finishedAnimation = false;
 
     private int tileWidth = 64;
     private int tileHeight = 64;
@@ -29,13 +33,13 @@ public class SimSkin {
     public SimSkin(Role role, int numberOfOutfit) {
         try {
             simSpriteSheet = ImageIO.read(getClass().getResourceAsStream("/simsprites/" + role.toString() + Integer.toString(numberOfOutfit) + ".png"));
-            int rowNumber=8;
+            int rowNumber = 8;
             for (int x = 0; x < 9; x++)
                 walkUpAnimation.add(getSpriteImage(x, rowNumber));
             rowNumber = 9;
             for (int x = 0; x < 9; x++)
                 walkLeftAnimation.add(getSpriteImage(x, rowNumber));
-            rowNumber =10;
+            rowNumber = 10;
             for (int x = 0; x < 9; x++)
                 walkDownAnimation.add(getSpriteImage(x, rowNumber));
             rowNumber = 11;
@@ -113,7 +117,7 @@ public class SimSkin {
     }
 
     public BufferedImage pointWithStickLeftFrontFacingStationary() {
-        return pointWithStickLeftFrontFacing.get(pointWithStickLeftFrontFacing.size()-1);
+        return pointWithStickLeftFrontFacing.get(pointWithStickLeftFrontFacing.size() - 1);
     }
 
     public BufferedImage pointWithStickRightFrontFacing(Sim sim) {
@@ -125,7 +129,7 @@ public class SimSkin {
     }
 
     public BufferedImage pointWithStickRightFrontFacingStationary() {
-        return pointWithStickRightFrontFacing.get(pointWithStickRightFrontFacing.size()-1);
+        return pointWithStickRightFrontFacing.get(pointWithStickRightFrontFacing.size() - 1);
     }
 
     public BufferedImage pointWithStickRightBackFacing(Sim sim) {
@@ -137,7 +141,7 @@ public class SimSkin {
     }
 
     public BufferedImage pointWithStickRightBackFacingStationary() {
-        return pointWithStickRightBackFacing.get(pointWithStickRightBackFacing.size()-1);
+        return pointWithStickRightBackFacing.get(pointWithStickRightBackFacing.size() - 1);
     }
 
     public BufferedImage hitStudent(Sim sim) {

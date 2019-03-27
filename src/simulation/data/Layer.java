@@ -9,6 +9,10 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * @author Dustin Hendriks
+ */
+
 public class Layer {
     private JsonObject layer;
     private JsonArray data;
@@ -22,15 +26,15 @@ public class Layer {
     private Node nodes[][];
 
     public Layer(JsonObject layer, FXGraphics2D g2d, ArrayList<BufferedImage> subImages) {
-       this.layer = layer;
-       this.subImages = subImages;
-       this.g2d = g2d;
-       data = layer.getJsonArray("data");
-       layerName = layer.getString("name");
-       layerID = layer.getInt("id");
-       layerWidth = layer.getInt("width");
-       layerHeight = layer.getInt("height");
-       saveTiles();
+        this.layer = layer;
+        this.subImages = subImages;
+        this.g2d = g2d;
+        data = layer.getJsonArray("data");
+        layerName = layer.getString("name");
+        layerID = layer.getInt("id");
+        layerWidth = layer.getInt("width");
+        layerHeight = layer.getInt("height");
+        saveTiles();
     }
 
     public void saveTiles() {
@@ -40,18 +44,18 @@ public class Layer {
         int y;
 
         if (isCollisionLayer) {
-            nodes =new Node[layerWidth][layerHeight];
+            nodes = new Node[layerWidth][layerHeight];
         }
         int index = 0;
         for (y = 0; y < layerHeight; y++)
             for (x = 0; x < layerWidth; x++) {
                 if (isCollisionLayer) {
-                    nodes[x][y] = new Node(x,y,-1);
+                    nodes[x][y] = new Node(x, y, -1);
                 }
                 if (data.getInt(index) != 0) {
                     tiles.add(new Tile(subImages.get(data.getInt(index) - 1), x, y, g2d));
                     if (isCollisionLayer) {
-                        nodes[x][y].walkable=true;
+                        nodes[x][y].walkable = true;
                     }
                 }
                 index++;
@@ -71,5 +75,8 @@ public class Layer {
     public int getLayerID() {
         return layerID;
     }
-    public String getLayerName() { return layerName; }
+
+    public String getLayerName() {
+        return layerName;
+    }
 }

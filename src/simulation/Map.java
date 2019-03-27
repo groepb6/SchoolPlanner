@@ -22,6 +22,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * @author Dustin Hendriks
+ */
+
 public class Map {
     private FXGraphics2D g2d;
     private ArrayList<BufferedImage> sprites = new ArrayList<>();
@@ -67,7 +71,7 @@ public class Map {
     }
 
     private Image getImageOfCanvas() {
-        return SwingFXUtils.fromFXImage( this.canvas.snapshot(new SnapshotParameters(), new WritableImage((int)canvas.getWidth(),(int)canvas.getHeight())), null);
+        return SwingFXUtils.fromFXImage(this.canvas.snapshot(new SnapshotParameters(), new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight())), null);
     }
 
     private void readJSON() {
@@ -81,8 +85,8 @@ public class Map {
     }
 
     private void saveAreas() {
-        JsonArray areas = mapFile.getJsonArray("layers").getJsonObject(mapFile.getJsonArray("layers").size()-1).getJsonArray("objects");
-        for (int i = 0; i < areas.size()-1; i++) {
+        JsonArray areas = mapFile.getJsonArray("layers").getJsonObject(mapFile.getJsonArray("layers").size() - 1).getJsonArray("objects");
+        for (int i = 0; i < areas.size() - 1; i++) {
             this.areas.add(new Area(areas.getJsonObject(i)));
         }
     }
@@ -110,16 +114,16 @@ public class Map {
     }
 
     private void saveLayers() {
-        for (int i = 0; i < mapFile.getJsonArray("layers").size()-1; i++) {
+        for (int i = 0; i < mapFile.getJsonArray("layers").size() - 1; i++) {
             if (!mapFile.getJsonArray("layers").getJsonObject(i).getString("name").equals("Collision"))
                 layers.add(new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages));
-            else collisionLayer=new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages);
+            else collisionLayer = new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages);
         }
         System.out.println("done");
     }
 
     public void restoreCanvas() {
-        g2d.clearRect(0,0, (int)canvas.getWidth(), (int)canvas.getHeight());
+        g2d.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
         g2d.drawImage(image, null, null);
     }
 

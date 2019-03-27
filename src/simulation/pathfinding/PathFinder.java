@@ -1,8 +1,14 @@
 package simulation.pathfinding;
+
 import simulation.data.Area;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+/**
+ * @author Dustin Hendriks
+ */
 
 public class PathFinder {
     private LinkedList<Node> openList = new LinkedList<>(); // Moet nog gedaan worden
@@ -20,10 +26,10 @@ public class PathFinder {
         int areaX = testArea.x / tileWidth;
         int areaY = testArea.y / tileHeight;
         //Point2D targetPoint = new Point2D.Double(areaX, areaY);
-        Point2D targetPoint = new Point2D.Double(50,50);
-        openList.add(new Node(100,100, 0));
+        Point2D targetPoint = new Point2D.Double(50, 50);
+        openList.add(new Node(100, 100, 0));
         addPoint(openList.get(0));
-        while (openList.size() >0)
+        while (openList.size() > 0)
             addPoint(openList.get(0));
     }
 
@@ -39,21 +45,21 @@ public class PathFinder {
 
         if (leftNode != null)
             if (checkCanAdd(leftNode)) {
-                leftNode.score=(node.score + 1);
+                leftNode.score = (node.score + 1);
                 closedList.add(leftNode);
                 openList.add(leftNode);
             }
 
         if (rightNode != null)
             if (checkCanAdd(rightNode)) {
-                rightNode.score=(node.score + 1);
+                rightNode.score = (node.score + 1);
                 closedList.add(rightNode);
                 openList.add(rightNode);
             }
 
         if (aboveNode != null)
             if (checkCanAdd(aboveNode)) {
-                aboveNode.score=(node.score+ 1);
+                aboveNode.score = (node.score + 1);
                 closedList.add(aboveNode);
                 openList.add(aboveNode);
 
@@ -61,7 +67,7 @@ public class PathFinder {
 
         if (belowNode != null)
             if (checkCanAdd(belowNode)) {
-                belowNode.score=(node.score + 1);
+                belowNode.score = (node.score + 1);
                 closedList.add(belowNode);
                 openList.add(belowNode);
             }
@@ -83,7 +89,6 @@ public class PathFinder {
     public LinkedList<Node> getClosedList() {
         return closedList;
     }
-
 
 
 }

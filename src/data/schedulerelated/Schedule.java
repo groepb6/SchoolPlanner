@@ -6,11 +6,9 @@ import data.schoolrelated.Group;
 import data.schoolrelated.Subject;
 import gui.assistclasses.Plan;
 
-import data.readwrite.Saveable;
-
 import java.io.Serializable;
 
-public class Schedule implements Serializable, Saveable {
+public class Schedule implements Serializable {
 
     private Hour time;
     private Group group;
