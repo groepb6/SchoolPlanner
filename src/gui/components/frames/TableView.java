@@ -12,10 +12,11 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Dustin Hendriks
- * @since 09-02-2019
+ * @since 27-03-2019
  * <p>
  * The tableView class generates multiple columns in which data can be displayed. Data such as time, group, location, teacher and subject can be shown to generate a basic schedule.
  */
@@ -106,7 +107,7 @@ public class TableView extends Sizeable {
     private List retrieveDataList() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
+            Set<Schedule> schedules = DataReader.readSchool().getSchedules();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }

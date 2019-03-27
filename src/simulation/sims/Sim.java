@@ -25,7 +25,7 @@ public class Sim {
     private BufferedImage bufferedImage;
     private Node nodes[][];
     private Canvas canvas;
-    private ArrayList<Sim> sims = new ArrayList<>();
+    private Sim[] sims;
 
     public ArrayList<Area> areas = new ArrayList<>();
     public int targetArea;
@@ -59,7 +59,7 @@ public class Sim {
         this.currentPos = currentPos;
     }
 
-    public void update(ArrayList<Sim> sims, Node[][] collisionNodes) {
+    public void update(Sim[] sims, Node[][] collisionNodes) {
         Point2D newPos = new Point2D.Double(currentPos.getX() + this.speed * Math.cos(angle), currentPos.getY() + this.speed * Math.sin(angle));
         this.sims = sims;
         boolean hasCollision = false;
@@ -184,7 +184,7 @@ public class Sim {
         return nodes[targetPosX][targetPosY].scores[targetArea];
     }
 
-    public boolean checkCollision(ArrayList<Sim> sims, Point2D position) {
+    public boolean checkCollision(Sim[] sims, Point2D position) {
         for (Sim sim : sims) {
             if ((hasCollision(position, sim.currentPos)) && sim != this) return true;
         }
