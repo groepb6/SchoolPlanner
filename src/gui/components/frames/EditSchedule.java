@@ -183,6 +183,7 @@ public class EditSchedule extends Sizeable {
 
     private void setComboBox() {
         EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
+        this.timeOptions.remove(Hour.NONE.getTime());
         this.timeComboBox.setItems(this.timeOptions);
         this.timeComboBox.setMinWidth(150);
 
