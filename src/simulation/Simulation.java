@@ -31,7 +31,7 @@ public class Simulation {
         this.school = school;
         this.groupSchedules = school.findGroupSchedules();
         this.teacherSchedules = school.findTeacherSchedules();
-        this.time = new SimTime(8, 1.0);
+        this.time = new SimTime(8);
         this.setupTimer(graphics);
         this.map = map;
         this.createPeople();
@@ -92,7 +92,7 @@ public class Simulation {
 
     public void update(double deltaTime) {
         this.time.update(deltaTime);
-        this.updateGroups();
+        this.updateLessons();
 
         for (Sim sim : this.sims) {
             sim.update(this.sims);
@@ -117,25 +117,56 @@ public class Simulation {
         //TODO: add sim drawing methods
     }
 
+//    /**
+//     * Checks if any groups have a Schedule with a time that corresponds to the current simulation time.
+//     */
+//    public void updateGroups() { //TODO: update teachers
+//        if (this.time.isUpdated()) { //Makes it only update every hour
+//
+//            for (Group group : this.school.getGroups()) {
+//                for (Schedule schedule : this.groupSchedules.get(group)) {
+//                    if (schedule.getTime() == this.time.getTimeSlot()) {
+//                        //TODO: Send all students in that group to the location
+//                        for (Person person : group.getStudents()) {
+//                            person.getSim().updateDestination(); //TODO: updateDestination method
+//                        }
+//
+//                    }
+//                }
+//            }
+//            this.time.updateRecieved();
+//        }
+//    }
+
     /**
-     * Checks if any groups have a Schedule with a time that corresponds to the current simulation time.
+     * Checks if there are any schedules starting during this hour and executes the startSchedule method with those schedules.
+     * Only runs when SimTime has been updated.
      */
-    public void updateGroups() { //TODO: update teachers
-        if (this.time.isUpdated()) { //Makes it only update every hour
-
-            for (Group group : this.school.getGroups()) {
-                for (Schedule schedule : this.groupSchedules.get(group)) {
-                    if (schedule.getTime() == this.time.getTimeSlot()) {
-                        //TODO: Send all students in that group to the location
-                        for (Person person : group.getStudents()) {
-                            person.getSim().updateDestination(); //TODO: updateDestination method
-                        }
-
-                    }
+    public void updateLessons() {
+        if (this.time.isUpdated()) {
+            for (Schedule schedule : this.school.getSchedules()) {
+                if (schedule.getTime() == this.time.getTimeSlot()) {
+                    this.startSchedule(schedule);
                 }
             }
-            this.time.setUpdated(false);
+            this.time.updateRecieved();
         }
+    }
+
+    /**
+     * Gives a notification about the schedule that is starting and sends the students and teacher to the appropriate classroom.
+     * @param schedule The schedule that is starting.
+     */
+    public void startSchedule(Schedule schedule) {
+        System.out.println("Class: " + schedule.getGroup().getName() +
+                " is going to classroom: " + schedule.getRoom().getName() +
+                " for " + schedule.getSubject().getName() +
+                " with " + schedule.getTeacher().getName());
+
+        for (Student student : schedule.getGroup().getStudents()) {
+            //student.getSim().
+        }
+        //schedule.getTeacher().getSim().
     }
 
 
