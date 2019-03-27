@@ -37,7 +37,7 @@ public class StartSim extends Sizeable {
         group.setAutoSizeChildren(false);
         //this.simUpdate = new SimUpdate(g2d, canvas, scene, schoolMap);
         School school = DataReader.readSchool();
-        Simulation simulation = new Simulation(school, schoolMap, g2d);
+        Simulation simulation = new Simulation(school, schoolMap, g2d, canvas);
     }
 
     public void clean() {

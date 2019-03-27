@@ -1,5 +1,6 @@
 package data.schoolrelated;
 
+import data.persons.Person;
 import data.persons.Student;
 import data.persons.Teacher;
 import data.rooms.Classroom;
@@ -16,6 +17,7 @@ public class School implements Serializable {
     private Set<Group> groups;
     private Set<Schedule> schedules;
     private Set<Subject> subjects;
+    private Set<Person> people;
 
     public School(String name) {
         this.name = name;
@@ -24,6 +26,7 @@ public class School implements Serializable {
         this.groups = new HashSet<>();
         this.schedules = new HashSet<>();
         this.subjects = new HashSet<>();
+        this.people = new HashSet<>();
     }
 
     /**
@@ -63,7 +66,7 @@ public class School implements Serializable {
     }
 
     /**
-     * Adds Student objects to each Group in the school if they don't have any.
+     * Adds Student objects to each Group in the school if they don't have any. Executes the refreshPeople method after adding the students.
      * @param studentsPerGroup The amount of students a group should have.
      */
     public void createStudents(int studentsPerGroup) {
@@ -76,17 +79,27 @@ public class School implements Serializable {
         }
     }
 
+//    /**
+//     * Calculates the amount of Person objects contained within the school.
+//     * @return The amount of Person objects as an integer
+//     */
+//    public int amountOfPeople() {
+//        int amount = 0;
+//        amount += this.teachers.size();
+//        for (Group group : this.groups) {
+//            amount += group.getStudents().size();
+//        }
+//        return amount;
+//    }
+
     /**
-     * Calculates the amount of Person objects contained within the school.
-     * @return The amount of Person objects as an integer
+     * Used to add any Person objects in students and teachers that are not yet contained in people.
      */
-    public int amountOfPeople() {
-        int amount = 0;
-        amount += this.teachers.size();
+    public void refreshPeople() {
+        this.people.addAll(this.teachers);
         for (Group group : this.groups) {
-            amount += group.getStudents().size();
+            this.people.addAll(group.getStudents());
         }
-        return amount;
     }
 
     public boolean hasData() {
@@ -169,5 +182,14 @@ public class School implements Serializable {
 
     public void setSchedules(Set<Schedule> schedules) {
         this.schedules = schedules;
+    }
+
+    /**
+     * A getter for people that executes refreshPeople.
+     * @return A Set with all of the Person objects contained within the School.
+     */
+    public Set<Person> getPeople() {
+        this.refreshPeople();
+        return people;
     }
 }
