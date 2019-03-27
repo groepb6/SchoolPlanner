@@ -22,20 +22,20 @@ public class Layer {
     private Node nodes[][];
 
     public Layer(JsonObject layer, FXGraphics2D g2d, ArrayList<BufferedImage> subImages) {
-       this.layer = layer;
-       this.subImages = subImages;
-       this.g2d = g2d;
-       data = layer.getJsonArray("data");
-       layerName = layer.getString("name");
-       layerID = layer.getInt("id");
-       layerWidth = layer.getInt("width");
-       layerHeight = layer.getInt("height");
-       saveTiles();
+        this.layer = layer;
+        this.subImages = subImages;
+        this.g2d = g2d;
+        data = layer.getJsonArray("data");
+        layerName = layer.getString("name");
+        layerID = layer.getInt("id");
+        layerWidth = layer.getInt("width");
+        layerHeight = layer.getInt("height");
+        saveTiles();
     }
 
     public void saveTiles() {
         boolean isCollisionLayer = layerName.equals("Collision");
-
+        ;
         int x;
         int y;
 
@@ -47,11 +47,12 @@ public class Layer {
             for (x = 0; x < layerWidth; x++) {
                 if (isCollisionLayer) {
                     nodes[x][y] = new Node(x,y,-1);
+                    nodes[x][y].walkable=true;
                 }
                 if (data.getInt(index) != 0) {
                     tiles.add(new Tile(subImages.get(data.getInt(index) - 1), x, y, g2d));
                     if (isCollisionLayer) {
-                        nodes[x][y].walkable=true;
+                        nodes[x][y].walkable=false;
                     }
                 }
                 index++;
