@@ -44,7 +44,7 @@ public class SimTime {
     }
 
     public void draw(FXGraphics2D graphics) {
-        
+
     }
 
     public void reset() { //TODO: test proper reset procedures

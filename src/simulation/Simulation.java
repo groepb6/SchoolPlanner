@@ -45,7 +45,7 @@ public class Simulation {
     private void createPeople() {
         for (Group group : this.school.getGroups()) {
             if (group.getStudents().size() < 1) {
-                for (int i = 0; i < 1; i++) {
+                for (int i = 0; i < 10; i++) {
                     group.addStudent(new Student(""));
                 }
             }
@@ -109,6 +109,9 @@ public class Simulation {
         }
 
         this.map.drawWalls();
+
+        //graphics.setColor(Color.BLUE);
+        //graphics.drawString(this.time.toString(), 50, 50);
 
         //TODO: add map drawing methods
         //TODO: add sim drawing methods
