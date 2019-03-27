@@ -5,7 +5,7 @@ import org.jfree.fx.FXGraphics2D;
 
 /**
  * Handles the time of the simulation
- * @Author Noah Walmits
+ * @author Noah Walmits
  */
 public class SimTime {
     private int startingHour;
@@ -38,12 +38,10 @@ public class SimTime {
     public void update(double deltaTime) {
         this.minutes += deltaTime * this.speed;
         if (this.minutes >= 60.0) {
-            this.setUpdated(true);
+            this.updated = true;
             this.hours++;
-            this.minutes = 0;
-            if (this.hours >= 24) {
-                this.hours = 0;
-            }
+            this.minutes = this.minutes % 60.0;
+            this.hours = this.hours % 24;
         }
     }
 
@@ -58,9 +56,6 @@ public class SimTime {
         this.updated = true;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
 
     /**
      * Changes the speed of SimTime. The speed cannot be decreased under the minimum speed as set by the constant MINSPEED.
@@ -85,8 +80,11 @@ public class SimTime {
         return (int) this.minutes;
     }
 
-    public void setUpdated(boolean updated) {
-        this.updated = updated;
+    /**
+     * Used by a non-SimTime object to set updated to false.
+     */
+    public void updateRecieved() {
+        this.updated = false;
     }
 
     public boolean isUpdated() {
