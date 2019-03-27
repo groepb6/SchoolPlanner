@@ -1,5 +1,6 @@
 package data.schoolrelated;
 
+import data.persons.Student;
 import data.persons.Teacher;
 import data.rooms.Classroom;
 import data.rooms.Room;
@@ -59,6 +60,20 @@ public class School implements Serializable {
             teacherSchedules.put(teacher, foundSchedules);
         }
         return teacherSchedules;
+    }
+
+    /**
+     * Adds Student objects to each Group in the school if they don't have any.
+     * @param studentsPerGroup The amount of students a group should have.
+     */
+    public void createStudents(int studentsPerGroup) {
+        for (Group group : this.groups) {
+            if (group.getStudents().size() < 1) {
+                for (int i = 0; i < studentsPerGroup; i++) {
+                    group.addStudent(new Student(""));
+                }
+            }
+        }
     }
 
     /**

@@ -6,16 +6,12 @@ import data.persons.Teacher;
 import data.schedulerelated.Schedule;
 import data.schoolrelated.Group;
 import data.schoolrelated.School;
-import data.schoolrelated.Subject;
 import javafx.animation.AnimationTimer;
 import org.jfree.fx.FXGraphics2D;
 import simulation.sims.Sim;
 import simulation.sims.SimSkin;
 
-import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +23,8 @@ public class Simulation {
     private SchoolMap map;
     private Sim[] sims;
 
+    public static final int STUDENTSPERGROUP = 10;
+
     public Simulation(School school, SchoolMap map, FXGraphics2D graphics) {
         this.school = school;
         this.groupSchedules = school.findGroupSchedules();
@@ -34,30 +32,8 @@ public class Simulation {
         this.time = new SimTime(8);
         this.setupTimer(graphics);
         this.map = map;
-        this.createPeople();
+        this.school.createStudents(this.STUDENTSPERGROUP);
         this.createSims();
-
-    }
-
-    /**
-     * Adds Student objects to Groups and a Teacher object for every Subject, but only if the School doesn't have Student or Teacher objects.
-     */
-    private void createPeople() {
-        for (Group group : this.school.getGroups()) {
-            if (group.getStudents().size() < 1) {
-                for (int i = 0; i < 10; i++) {
-                    group.addStudent(new Student(""));
-                }
-            }
-        }
-
-        if (this.school.getTeachers().size() < 1) {
-            for (Subject subject : this.school.getSubjects()) {
-                Teacher teacher = new Teacher("");
-                teacher.setSubject(subject);
-                this.school.addTeacher(teacher);
-            }
-        }
 
     }
 
@@ -74,7 +50,7 @@ public class Simulation {
         this.sims = new Sim[this.school.amountOfPeople()];
         for (Group group : this.school.getGroups()) {
             for (Student student : group.getStudents()) {
-                Sim sim = new Sim(new Point2D.Double(0, 0), simSkins[(int) (Math.random() * simSkins.length-1)]); //Todo: location
+                Sim sim = new Sim(new Point2D.Double(0, 0), simSkins[(int) (Math.random() * simSkins.length - 1)]); //Todo: location
                 student.setSim(sim);
                 this.sims[index] = sim;
                 index++;
@@ -82,7 +58,7 @@ public class Simulation {
         }
 
         for (Person teacher : this.school.getTeachers()) {
-            Sim sim = new Sim(new Point2D.Double(0, 0), simSkins[(int) (Math.random() * simSkins.length-1)]); //Todo: location
+            Sim sim = new Sim(new Point2D.Double(0, 0), simSkins[(int) (Math.random() * simSkins.length - 1)]); //Todo: location
             teacher.setSim(sim);
             this.sims[index] = sim;
             index++;
@@ -117,27 +93,6 @@ public class Simulation {
         //TODO: add sim drawing methods
     }
 
-//    /**
-//     * Checks if any groups have a Schedule with a time that corresponds to the current simulation time.
-//     */
-//    public void updateGroups() { //TODO: update teachers
-//        if (this.time.isUpdated()) { //Makes it only update every hour
-//
-//            for (Group group : this.school.getGroups()) {
-//                for (Schedule schedule : this.groupSchedules.get(group)) {
-//                    if (schedule.getTime() == this.time.getTimeSlot()) {
-//                        //TODO: Send all students in that group to the location
-//                        for (Person person : group.getStudents()) {
-//                            person.getSim().updateDestination(); //TODO: updateDestination method
-//                        }
-//
-//                    }
-//                }
-//            }
-//            this.time.updateRecieved();
-//        }
-//    }
-
     /**
      * Checks if there are any schedules starting during this hour and executes the startSchedule method with those schedules.
      * Only runs when SimTime has been updated.
@@ -155,6 +110,7 @@ public class Simulation {
 
     /**
      * Gives a notification about the schedule that is starting and sends the students and teacher to the appropriate classroom.
+     *
      * @param schedule The schedule that is starting.
      */
     public void startSchedule(Schedule schedule) {
