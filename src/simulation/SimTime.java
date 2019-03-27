@@ -5,6 +5,7 @@ import org.jfree.fx.FXGraphics2D;
 
 /**
  * Handles the time of the simulation
+ * @Author Noah Walmits
  */
 public class SimTime {
     private int startingHour;
@@ -13,16 +14,19 @@ public class SimTime {
     private double speed;
     private boolean updated;
 
+    public static final double DEFAULTSPEED = 1.0;
+    public static final double MINSPEED = 0.1;
+    public static final double MAXSPEED = 10;
+
     /**
      * Creates a SimTime object. The starting hour can be decided, but the starting minute cannot.
      * @param startingHour The hour this SimTime object should start at
-     * @param speed        The starting speed of this SimTime object.
      */
-    public SimTime(int startingHour, double speed) {
+    public SimTime(int startingHour) {
         this.startingHour = startingHour;
         this.hours = startingHour;
         this.minutes = 0;
-        this.speed = speed;
+        this.speed = this.DEFAULTSPEED;
         this.updated = true;
     }
 
@@ -56,6 +60,21 @@ public class SimTime {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    /**
+     * Changes the speed of SimTime. The speed cannot be decreased under the minimum speed as set by the constant MINSPEED.
+     * The speed cannot be increased above the maximum as set by the constant MAXSPEED. Any speed change that causes the speed
+     * to go over/under the maximum/minimum will be reverted, in order to prevent the speed settings from getting out of sync.
+     * @param speedChange A positive or negative double that will be added to the current speed.
+     */
+    public void changeSpeed(double speedChange) {
+        this.speed += speedChange;
+        if (this.speed < this.MINSPEED) {
+            this.speed -= speedChange;
+        } else if (this.speed > this.MAXSPEED) {
+            this.speed -= speedChange;
+        }
     }
 
     public int getHours() {
