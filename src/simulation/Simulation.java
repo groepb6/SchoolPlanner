@@ -2,9 +2,7 @@ package simulation;
 
 import data.persons.Person;
 import data.persons.Student;
-import data.persons.Teacher;
 import data.schedulerelated.Schedule;
-import data.schoolrelated.Group;
 import data.schoolrelated.School;
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
@@ -13,11 +11,10 @@ import simulation.data.Area;
 import simulation.sims.Sim;
 import simulation.sims.SimSkin;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Runs the simulation
@@ -25,20 +22,16 @@ import java.util.Set;
  */
 public class Simulation {
     private School school;
-    //private Map<Group, Set<Schedule>> groupSchedules;
-    //private Map<Teacher, Set<Schedule>> teacherSchedules;
     private SimTime time;
     private SchoolMap map;
     private Sim[] sims;
 
     public static final int STUDENTSPERGROUP = 10;
     public static final String SPAWNAREA = "ParkingLot";
-    public static final int MAXSPAWNATTEMPTS = 5;
+    public static final int MAXSPAWNATTEMPTS = 10;
 
     public Simulation(School school, SchoolMap map, FXGraphics2D graphics, Canvas canvas) {
         this.school = school;
-        //this.groupSchedules = school.findGroupSchedules();
-        //this.teacherSchedules = school.findTeacherSchedules();
         this.time = new SimTime(8);
         this.map = map;
         this.school.createStudents(this.STUDENTSPERGROUP);
@@ -47,13 +40,13 @@ public class Simulation {
 
     }
 
-    public void update(double deltaTime) {
+    public void update(double deltaTime) { //TODO: disable updates when loading pathfinding
         this.time.update(deltaTime);
         this.updateLessons();
         this.map.activatePathFindingOnSims();
 
         for (Sim sim : this.sims) {
-            sim.update(this.sims, this.map.getCollisionLayer());
+            sim.update(this.sims, this.map.getCollisionLayer()); //TODO: fix out of bounds error, fix sims ignoring collision.
         }
 
     }
@@ -68,9 +61,10 @@ public class Simulation {
         this.map.drawWalls();
         this.map.drawCollision();
         this.map.drawStringPathFinder(0);
+        //TODO: draw the timer
 
-        //graphics.setColor(Color.BLUE);
-        //graphics.drawString(this.time.toString(), 50, 50);
+//        graphics.setColor(Color.BLUE);
+//        graphics.drawString(this.time.toString(), 50, 50);
     }
 
     /**
@@ -98,11 +92,20 @@ public class Simulation {
                 " is going to classroom: " + schedule.getRoom().getName() +
                 " for " + schedule.getSubject().getName() +
                 " with " + schedule.getTeacher().getName());
+        //TODO: Graphical implementation of this println
 
+        Area area = this.map.searchArea(schedule.getRoom().getName());
         for (Student student : schedule.getGroup().getStudents()) {
-            //student.getSim().setTargetPos(schedule.getRoom().getArea());
+            student.getSim().setTargetPos(area.getCenter());
         }
-        //schedule.getTeacher().getSim().
+        schedule.getTeacher().getSim().setTargetPos(area.getCenter());
+    }
+
+    /**
+     * Resets the simulation so it can run from the beginning.
+     */
+    public void reset() {
+        //TODO: make and test method
     }
 
     /**
@@ -126,6 +129,7 @@ public class Simulation {
         animationTimer.start();
     }
 
+
     /**
      * Gets all Sim objects held by people and puts them in an array.
      */
@@ -134,6 +138,19 @@ public class Simulation {
         int index = 0;
         for (Person person : this.school.getPeople()) {
             this.sims[index] = person.getSim();
+            index++;
+        }
+    }
+
+    /**
+     * Puts sims from a list into the sims array.
+     * @param tempSims The List of Sim objects the simulation should have.
+     */
+    private void makeSimsArray(List<Sim> tempSims) {
+        int index = 0;
+        this.sims = new Sim[tempSims.size()];
+        for (Sim sim : tempSims) {
+            this.sims[index] = sim;
             index++;
         }
     }
@@ -163,7 +180,7 @@ public class Simulation {
         }
         if (spawnArea == null) {
             System.out.println("Spawn area could not be found!");
-            System.out.println("Your resources might not support areas!");
+            System.out.println("Your resources might not support areas, or the area is not referenced correctly!");
         }
 
         //Spawning sims
@@ -176,9 +193,10 @@ public class Simulation {
                 if (person.getSim() == null) {
                     noneNeeded = false;
                     Point2D spawnPos = new Point2D.Double(spawnArea.x + (Math.random() * spawnArea.areaWidth), spawnArea.y + (Math.random() * spawnArea.areaHeight));
-                    if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) {
+                    if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) { //TODO: sims walk out of bounds
                         if (canAdd(spawnPos, tempSims)) {
                             Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas);
+                            sim.setTargetPos(this.map.searchArea(this.SPAWNAREA).getCenter());
                             tempSims.add(sim);
                             person.setSim(sim);
                         }
@@ -191,11 +209,11 @@ public class Simulation {
             amountOfTries++;
             if (amountOfTries >= this.MAXSPAWNATTEMPTS) {
                 System.out.println("Was unable to spawn all sims after " + this.MAXSPAWNATTEMPTS + " tries!");
+                System.out.println("Created " + tempSims.size() + " sims out of " + this.school.getPeople().size());
                 break;
-            }
+            } //TODO: this method of spawning sims is unreliable
         }
-        //this.makeSimsArray(tempSims);
-        this.refreshSims();
+        this.makeSimsArray(tempSims);
     }
 
     /**

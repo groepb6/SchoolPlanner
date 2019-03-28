@@ -54,7 +54,7 @@ public class SchoolMap {
     private int amountOfTilesWidth;
     private int amountOfTilesHeight;
     private boolean showDebug = false;
-    boolean activatedPathFinding = false;
+    boolean activatedPathFinding = true;
     private boolean showCollision = false;
     ArrayList<Sim> sims = new ArrayList<>();
 
@@ -161,6 +161,28 @@ public class SchoolMap {
         for (int i = 0; i < areas.size() - 1; i++) {
             this.areas.add(new Area(areas.getJsonObject(i)));
         }
+    }
+
+    /**
+     * Searches for an Area by name. Any Classroom that is associated with a Schedule needs a name that matches the area layer name.
+     * @param searchedAreaName The name of the Area being searched.
+     * @return An Area that matches with the searched name or null if nothing is found.
+     * @author Noah Walsmits
+     */
+    public Area searchArea(String searchedAreaName) {
+        Area foundArea = null;
+        //searchedAreaName = searchedAreaName.trim().toLowerCase();
+        for (Area area : this.areas) {
+            //String comparedAreaName = area.areaName.trim().toLowerCase();
+            //if (comparedAreaName.equals(searchedAreaName)) {
+            if (area.areaName.equals(searchedAreaName)) {
+                foundArea = area;
+            }
+        }
+        if (foundArea == null) {
+            System.out.println("COULD NOT FIND AREA");
+        }
+        return foundArea;
     }
 
     /**
