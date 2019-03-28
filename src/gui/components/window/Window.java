@@ -7,9 +7,17 @@ import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToolBar;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import simulation.TimeButton;
+
+import javax.imageio.ImageIO;
 
 public class Window {
     private BorderPane windowPane = new BorderPane();
@@ -19,6 +27,10 @@ public class Window {
     private Stage stage;
     private Scene scene;
     private StartSim startSim;
+    private VBox vBox;
+
+    private int x;
+    private int y;
 
     /**
      * @author Dustin Hendriks
@@ -31,10 +43,12 @@ public class Window {
      */
 
     public Window(String identifier, Stage stage, Scene originalScene) {
+        vBox = new VBox();
         this.originalScene = originalScene;
         buildBackButton();
         topBar.setBackground(new Background(new BackgroundFill(ApplicationSettings.themeColor, CornerRadii.EMPTY, Insets.EMPTY)));
-        windowPane.setTop(topBar);
+        vBox.getChildren().add(topBar);
+        windowPane.setTop(vBox);
         this.stage = stage;
         setActionOnClick();
         scene = new Scene(windowPane);
@@ -55,6 +69,9 @@ public class Window {
                 startSim = new StartSim(stage, scene, scrollPane);
                 scrollPane.setContent(startSim.getGroup());
                 windowPane.setCenter(scrollPane);
+                TimeButton timeButton = new TimeButton();
+                vBox.getChildren().add(timeButton.timeButtons(new BorderPane()));
+                //timeButtons(new BorderPane());
                 //windowPane.setCenter(startSim.getGroup());
                 break;
             case "editschedule":
@@ -96,4 +113,82 @@ public class Window {
             stage.setMaxHeight(505);
         });
     }
+
+   /* private ImageView getImage(String folder, String name, String extension) {
+        return new ImageView(getClass().getResource("/images/" + folder + "/" + name + extension).toString());
+    }
+
+    private void timeButtons(BorderPane borderPane){
+        HBox hBox = new HBox();
+        HBox hBox1 = new HBox();
+        ComboBox comboBox = new ComboBox();
+
+        String folder ="timeimages";
+        String name="";
+        String extension = ".png";
+        try {
+            name = "fastbackward";
+            ImageView imageView1 = getImage(folder, name, extension);
+
+            name = "backward";
+            ImageView imageView2 = getImage(folder,name,extension);
+
+            name = "start-stop";
+            ImageView imageView3 = getImage(folder,name,extension);
+
+            name = "forward";
+            ImageView imageView4 = getImage(folder,name,extension);
+
+            name = "fastfoward";
+            ImageView imageView5 = getImage(folder,name,extension);
+
+            imageView1.setPickOnBounds(true);
+            imageView2.setPickOnBounds(true);
+            imageView3.setPickOnBounds(true);
+            imageView4.setPickOnBounds(true);
+            imageView5.setPickOnBounds(true);
+
+            imageView1.setFitWidth(50);
+            imageView1.setFitHeight(50);
+            imageView2.setFitWidth(50);
+            imageView2.setFitHeight(50);
+            imageView3.setFitWidth(50);
+            imageView3.setFitHeight(50);
+            imageView4.setFitWidth(50);
+            imageView4.setFitHeight(50);
+            imageView5.setFitWidth(50);
+            imageView5.setFitHeight(50);
+
+            System.out.println("test");
+            //HBox hBox = new HBox(imageView1,imageView2,imageView3,imageView4,imageView5);
+            hBox.setBackground(new Background(new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+            //hBox.getItems().addAll(imageView1, imageView2, imageView3, imageView4, imageView5);
+            //hBox.setLayoutX(50);
+            hBox.getChildren().addAll(imageView1, imageView2, imageView3, imageView4, imageView5);
+           // hBox.setMaxWidth(50);
+            hBox.setMinWidth(1000);
+           // borderPane.setCenter(hBox);
+            hBox.setSpacing(50);
+            hBox.setMaxWidth(450);
+            Stage stage1 = new Stage();
+            Scene scene = new Scene(hBox);
+            stage1.setScene(scene);
+
+            scene.setOnMouseMoved(event -> {
+                x=(int) event.getX();
+                y = (int) event.getY();
+            });
+
+            scene.setOnMouseClicked(event -> {
+                stage1.setX(x);
+                stage1.setY(y);
+            });
+
+            stage1.setMaxWidth(450);
+            stage1.setMaxHeight(200);
+            stage1.show();
+            vBox.getChildren().add(borderPane);
+        } catch (Exception e) {e.printStackTrace();}
+    }*/
 }
