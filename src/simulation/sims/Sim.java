@@ -28,7 +28,7 @@ public class Sim {
     private Sim[] sims;
 
     public ArrayList<Area> areas = new ArrayList<>();
-    public int targetArea;
+    private int targetArea;
 
     public Sim(Point2D startPos, FXGraphics2D g2d, SimSkin simSkin, Canvas canvas, ArrayList<Area> areas) {
         this.currentPos = startPos;
@@ -41,6 +41,10 @@ public class Sim {
         this.targetPos = new Point2D.Double(500, 500);
         this.areas = areas;
         this.targetArea = (int)(Math.random()*areas.size()-1);
+    }
+
+    public void setTargetArea(Area area) {
+        this.targetArea = area.areaID; //TODO: make Sim use Area objects instead of just the ID
     }
 
     public void setTargetAngle(double angle) {

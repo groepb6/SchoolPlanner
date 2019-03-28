@@ -26,7 +26,7 @@ public class Simulation {
     private SchoolMap map;
     private Sim[] sims;
 
-    public static final int STUDENTSPERGROUP = 10;
+    public static final int STUDENTSPERGROUP = 1;
     public static final String SPAWNAREA = "ParkingLot";
     public static final int MAXSPAWNATTEMPTS = 10;
 
@@ -96,9 +96,9 @@ public class Simulation {
 
         Area area = this.map.searchArea(schedule.getRoom().getName());
         for (Student student : schedule.getGroup().getStudents()) {
-            student.getSim().setTargetPos(area.getCenter());
+            student.getSim().setTargetArea(area);
         }
-        schedule.getTeacher().getSim().setTargetPos(area.getCenter());
+        schedule.getTeacher().getSim().setTargetArea(area);
     }
 
     /**
