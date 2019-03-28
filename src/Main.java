@@ -26,3 +26,7 @@ public class Main {
         launch(SchoolManager.class);
     }
 }
+
+//TODO: search no longer automatically empties search box when searching before box is clicked
+//TODO: remove unneeded attributes from data classes
+//TODO: remove unused methods to avoid confusion

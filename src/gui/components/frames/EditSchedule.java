@@ -39,7 +39,7 @@ import java.util.List;
  * On a button click the inserted information (in the text fields) is being converted to a plan and written to a file, but only if the plan did not exist already.
  */
 
-public class EditSchedule extends Sizeable {
+public class EditSchedule extends Sizeable { //TODO: remove Hour.NONE from the combobox
     private School school;
     private BorderPane borderPane;
     private VBox vBox;

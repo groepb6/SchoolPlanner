@@ -73,7 +73,7 @@ public class Sim {
         boolean onTarget = currentPos.distance(targetPos) < speed;
         if (!onTarget) {
             if (!isOutOfBounds(newPos))
-                if (!hasCollision && collisionNodes[(int)Math.round(newPos.getX() / 32)][(int)Math.round(newPos.getY() / 32)].walkable)
+                if (!hasCollision && collisionNodes[(int)Math.round(newPos.getX() / 32)][(int)Math.round(newPos.getY() / 32)].walkable) //TODO: ERROR out of bounds [120]
                     currentPos = newPos;
                 else angle += 1.5 * aggressionFactorInBehaviour;
             Point2D difference = new Point2D.Double(targetPos.getX() - currentPos.getX(), targetPos.getY() - currentPos.getY());

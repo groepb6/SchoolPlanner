@@ -14,7 +14,9 @@ public enum Hour implements Serializable {
     EIGHTH("15:00 - 16:00"),
     NINTH("16:00 - 17:00"),
     TENTH("17:00 - 18:00"),
-    NONE("18:00 - 8:00"); //TODO: keep this from popping up in time selection?
+    NONE("18:00 - 8:00 DONT MAKE IT SHOW UP");
+    //TODO: stop NONE from appearing in combobox
+    //TODO: make value of NONE "18:00 - 8:00" after completing previous todo
 
     public String time;
 

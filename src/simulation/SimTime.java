@@ -5,6 +5,7 @@ import org.jfree.fx.FXGraphics2D;
 
 /**
  * Handles the time of the simulation
+ * TODO: documentation
  * @author Noah Walmits
  */
 public class SimTime {
