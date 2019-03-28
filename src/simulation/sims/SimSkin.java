@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class SimSkin {
+public class SimSkin { //TODO: look into changing these ArrayLists into arrays or something else
     private BufferedImage simSpriteSheet;
     private ArrayList<BufferedImage> walkLeftAnimation = new ArrayList<>();
     private ArrayList<BufferedImage> walkRightAnimation = new ArrayList<>();
