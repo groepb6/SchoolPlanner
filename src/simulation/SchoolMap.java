@@ -39,7 +39,7 @@ public class SchoolMap {
     private Scene scene;
     private double mousePosX;
     private double mousePosY;
-    private StartSim startSim;
+    private StartSim startSim; //TODO: remove this attribute
     private ScrollPane scrollPane;
     private PathFinder pathFinder;
     public boolean followPerson = false;
