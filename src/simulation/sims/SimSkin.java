@@ -14,6 +14,7 @@ public class SimSkin {
     private ArrayList<BufferedImage> pointWithStickLeftFrontFacing = new ArrayList<>();
     private ArrayList<BufferedImage> pointWithStickRightBackFacing = new ArrayList<>();
     private ArrayList<BufferedImage> hitStudentWithStick = new ArrayList<>();
+    private BufferedImage peeImage;
     private boolean finishedAnimation= false;
 
     private int tileWidth = 64;
@@ -53,7 +54,9 @@ public class SimSkin {
             rowNumber = 15;
             for (int x = 0; x < 6; x++)
                 pointWithStickRightFrontFacing.add(getSpriteImage(x, rowNumber));
-
+            rowNumber = 0;
+            int x =3;
+            peeImage = getSpriteImage(x, rowNumber);
 
         } catch (Exception error) {
             error.printStackTrace();
@@ -102,6 +105,10 @@ public class SimSkin {
         if (sim.index + 1 > walkDownAnimation.size())
             sim.index = 1;
         return walkDownAnimation.get(sim.index++);
+    }
+
+    public BufferedImage toiletPee(Sim sim) {
+        return null;
     }
 
     public BufferedImage pointWithStickLeftFrontFacing(Sim sim) {

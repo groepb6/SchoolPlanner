@@ -76,11 +76,6 @@ public class School implements Serializable {
         return groups;
     }
 
-    /**
-     * This method was used for testing whether a list had groups in them.
-     * @return
-     */
-
     public ArrayList<String> groupsToString(){
         ArrayList<String> groupString = new ArrayList<>();
         for (Group g : groups) {

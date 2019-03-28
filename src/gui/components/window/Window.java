@@ -59,8 +59,6 @@ public class Window {
                 break;
             case "editschedule":
                 windowPane.setCenter(new gui.components.frames.EditSchedule(stage).getEditSchedule());
-                this.stage.setMinWidth(730);
-                this.stage.setMinHeight(295);
                 break;
         }
     }

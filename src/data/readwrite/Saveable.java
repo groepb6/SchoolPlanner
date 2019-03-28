@@ -1,7 +1,7 @@
 package data.readwrite;
 
 /**
- * This Interface is used to make it so all objects can be stored.
+ * PACKAGE LOCATION STILL UP FOR DEBATE
  */
 public interface Saveable {
 
