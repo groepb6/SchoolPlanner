@@ -1,15 +1,10 @@
 package data.readwrite;
 
-import data.persons.Teacher;
-import data.rooms.Classroom;
-import data.schedulerelated.Hour;
-import data.schedulerelated.Schedule;
-import data.schoolrelated.Group;
+
+import data.sampledata.SampleData;
 import data.schoolrelated.School;
-import data.schoolrelated.Subject;
 
 import java.io.*;
-import java.util.List;
 
 /**
  * Class to load objects saved to a file
@@ -69,15 +64,15 @@ public class DataReader {
     }
 
     /**
-     * Creates a School object with useless info. Used to create a School object when the saved object cannot be properly read.
-     * @return A School object with no usable info.
+     * Gets a School object from SampleData. Used to create a School object when the saved object cannot be properly read.
+     *
+     * @return A School object from SampleData.
      */
-    public static School emergencySchool() { //TODO: This will most likely mess up any simulation!
+    public static School emergencySchool() {
         System.out.println("No proper school could be loaded, creating a new one...");
-        School school = new School("");
-        Schedule schedule = new Schedule(Hour.NONE, new Group(""), new Classroom(""), new Teacher(""), new Subject(""));
-        school.addSchedule(schedule);
-        return school;
+        SampleData sampleData = new SampleData();
+        return sampleData.getSchool();
     }
+    //TODO: **IMPORTANT** check if succesfully loaded School has the classrooms with proper names!
 
 }
