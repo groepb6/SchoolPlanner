@@ -40,13 +40,15 @@ public class Simulation {
 
     }
 
-    public void update(double deltaTime) { //TODO: disable updates when loading pathfinding
-        this.time.update(deltaTime);
-        this.updateLessons();
-        this.map.activatePathFindingOnSims();
+    public void update(double deltaTime) {
+        if (this.map.getPathFinder().loaded) {
+            this.time.update(deltaTime);
+            this.updateLessons();
+            this.map.activatePathFindingOnSims();
 
-        for (Sim sim : this.sims) {
-            sim.update(this.sims, this.map.getCollisionLayer()); //TODO: fix out of bounds error, fix sims ignoring collision.
+            for (Sim sim : this.sims) {
+                sim.update(this.sims, this.map.getCollisionLayer());
+            }
         }
 
     }
@@ -60,7 +62,7 @@ public class Simulation {
 
         this.map.drawWalls();
         this.map.drawCollision();
-        this.map.drawStringPathFinder(0);
+        this.map.drawStringPathFinder(9);
         //TODO: draw the timer
 
 //        graphics.setColor(Color.BLUE);
@@ -97,6 +99,7 @@ public class Simulation {
         Area area = this.map.searchArea(schedule.getRoom().getName());
         for (Student student : schedule.getGroup().getStudents()) {
             student.getSim().setTargetArea(area);
+            //System.out.println(area.areaID);
         }
         schedule.getTeacher().getSim().setTargetArea(area);
     }
@@ -196,7 +199,7 @@ public class Simulation {
                     if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) { //TODO: sims walk out of bounds
                         if (canAdd(spawnPos, tempSims)) {
                             Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas);
-                            sim.setTargetPos(this.map.searchArea(this.SPAWNAREA).getCenter());
+                            sim.setTargetArea(this.map.searchArea(this.SPAWNAREA));
                             tempSims.add(sim);
                             person.setSim(sim);
                         }

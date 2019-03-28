@@ -15,7 +15,7 @@ public class SimTime {
     private double speed;
     private boolean updated;
 
-    public static final double DEFAULTSPEED = 1.0;
+    public static final double DEFAULTSPEED = 4.0;
     public static final double MINSPEED = 0.1;
     public static final double MAXSPEED = 10;
 

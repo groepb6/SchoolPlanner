@@ -118,11 +118,11 @@ public class SchoolMap {
      */
 
     void activatePathFindingOnSims() {
-        if (activatedPathFinding) {
+        //if (activatedPathFinding) {
             for (Sim sim : sims) {
                 sim.pathFind(pathFinder.getAllNodes());
             }
-        }
+        //}
     }
 
     /**
