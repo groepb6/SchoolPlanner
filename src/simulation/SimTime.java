@@ -15,6 +15,7 @@ public class SimTime {
     private double speed;
     private boolean updated;
     private boolean updatesEnabled;
+    private boolean speedUpdated;
 
     public static final double DEFAULTSPEED = 1.0;
     public static final double MINSPEED = 0.1;
@@ -32,6 +33,7 @@ public class SimTime {
         this.speed = this.DEFAULTSPEED;
         this.updated = true;
         this.updatesEnabled = true;
+        this.speedUpdated = true;
     }
 
     /**
@@ -73,6 +75,7 @@ public class SimTime {
         } else if (this.speed > this.MAXSPEED) {
             this.speed -= speedChange;
         }
+        this.speedUpdated = true;
     }
 
     public int getHours() {
@@ -86,7 +89,7 @@ public class SimTime {
     /**
      * Used by a non-SimTime object to set updated to false.
      */
-    public void updateRecieved() {
+    public void updateReceived() {
         this.updated = false;
     }
 
@@ -94,7 +97,11 @@ public class SimTime {
         return this.updated;
     }
 
+    /**
+     * Allows updated to be set to true again and sets updated to true.
+     */
     public void enableUpdates() {
+        this.updated = true;
         this.updatesEnabled = true;
     }
 
@@ -103,6 +110,21 @@ public class SimTime {
      */
     public void disableUpdates() {
         this.updatesEnabled = false;
+    }
+
+    /**
+     * Used by a non-SimTime object to set speedUpdated to false.
+     */
+    public void speedUpdateReceived() {
+        this.speedUpdated = false;
+    }
+
+    public boolean isSpeedUpdated() {
+        return speedUpdated;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     /**

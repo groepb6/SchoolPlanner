@@ -80,7 +80,7 @@ public class Simulation {
                     this.startSchedule(schedule);
                 }
             }
-            this.time.updateRecieved();
+            this.time.updateReceived();
         }
     }
 
@@ -102,6 +102,18 @@ public class Simulation {
             //System.out.println(area.areaID);
         }
         schedule.getTeacher().getSim().setTargetArea(area);
+    }
+
+    /**
+     * Checks if the speed of SimTime has been updated. If it was updated, the speed of every Sim will be changed.
+     */
+    private void updateSpeed() {
+        if (this.time.isSpeedUpdated()) {
+            for (Sim sim : this.sims) {
+                sim.setSimSpeed((int) this.time.getSpeed() * Sim.DEFAULTSPEED);
+            }
+            this.time.speedUpdateReceived();
+        }
     }
 
     /**

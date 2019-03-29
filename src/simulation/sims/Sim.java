@@ -18,7 +18,7 @@ public class Sim {
     public int index = 0;
     private double angle;
     private double targetAngle = 0;
-    private int speed;
+    private int speed; //TODO: turn into double
     Point2D currentPos;
     Point2D targetPos;
     private FXGraphics2D g2d;
@@ -27,8 +27,10 @@ public class Sim {
     private Canvas canvas;
     private Sim[] sims;
 
-    public ArrayList<Area> areas = new ArrayList<>();
+    public ArrayList<Area> areas;
     private int targetArea;
+
+    public static final int DEFAULTSPEED = 3;
 
     public Sim(Point2D startPos, FXGraphics2D g2d, SimSkin simSkin, Canvas canvas, ArrayList<Area> areas) {
         this.currentPos = startPos;
