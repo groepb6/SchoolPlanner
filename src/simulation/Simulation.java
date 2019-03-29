@@ -3,6 +3,7 @@ package simulation;
 import data.persons.Student;
 import data.schedulerelated.Schedule;
 import data.schoolrelated.School;
+import gui.settings.ApplicationSettings;
 import javafx.animation.AnimationTimer;
 import org.jfree.fx.FXGraphics2D;
 import simulation.data.Area;
@@ -134,7 +135,7 @@ public class Simulation {
 
     private void updateSimSpeed() {
         for (Sim sim : this.sims) {
-            sim.setSimSpeed((int) this.time.getSpeed() * Sim.DEFAULTSPEED);
+            sim.setSimSpeed(this.time.getSpeed() * ApplicationSettings.SIMDEFAULTSPEED);
         }
     }
 

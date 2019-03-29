@@ -27,4 +27,5 @@ public class ApplicationSettings {
     public static final String schoolPath = "saves/school/school.txt";
     public static final String saveNodePath = "saves/school/nodes.txt";
     public static final String namePath = "/additional/names.txt";
+    public static final double SIMDEFAULTSPEED = 3;
 }

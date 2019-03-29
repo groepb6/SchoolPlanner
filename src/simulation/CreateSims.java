@@ -107,7 +107,7 @@ public class CreateSims {
                     Point2D spawnPos = new Point2D.Double(spawnArea.x + (Math.random() * spawnArea.areaWidth), spawnArea.y + (Math.random() * spawnArea.areaHeight));
                     if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) {
                         if (canAdd(spawnPos, tempSims)) {
-                            Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas);
+                            Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas, "");
                             sim.setTargetArea(this.map.searchArea(this.SPAWNAREA));
                             tempSims.add(sim);
                             person.setSim(sim);

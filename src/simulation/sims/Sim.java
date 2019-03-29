@@ -1,24 +1,22 @@
 package simulation.sims;
 
-import data.persons.Person;
+import gui.settings.ApplicationSettings;
 import javafx.scene.canvas.Canvas;
 import org.jfree.fx.FXGraphics2D;
 import simulation.data.Area;
 import simulation.pathfinding.Node;
-
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Sim {
     SimSkin simSkin;
     private static final double aggressionFactorInBehaviour = .5;
-    public int index = 0;
+    int index = 0;
     private double angle;
     private double targetAngle = 0;
-    private int speed; //TODO: turn into double
+    private double speed;
     Point2D currentPos;
     Point2D targetPos;
     private FXGraphics2D g2d;
@@ -26,16 +24,15 @@ public class Sim {
     private Node nodes[][];
     private Canvas canvas;
     private Sim[] sims;
-
     public ArrayList<Area> areas;
     private int targetArea;
+    private int oldTargetArea;
+    public String name;
 
-    public static final int DEFAULTSPEED = 3;
-
-    public Sim(Point2D startPos, FXGraphics2D g2d, SimSkin simSkin, Canvas canvas, ArrayList<Area> areas) {
+    public Sim(Point2D startPos, FXGraphics2D g2d, SimSkin simSkin, Canvas canvas, ArrayList<Area> areas, String name) {
         this.currentPos = startPos;
         this.targetPos = startPos;
-        this.speed = (int) (Math.random() * 2) + 3;
+        this.speed = ApplicationSettings.SIMDEFAULTSPEED;
         this.g2d = g2d;
         this.simSkin = simSkin;
         this.canvas = canvas;
@@ -43,26 +40,15 @@ public class Sim {
         this.targetPos = new Point2D.Double(500, 500);
         this.areas = areas;
         this.targetArea = (int)(Math.random()*areas.size()-1);
-    }
-
-    public void setTargetArea(Area area) {
-        this.targetArea = area.areaID; //TODO: make Sim use Area objects instead of just the ID
+        this.name = name;
     }
 
     public void setTargetAngle(double angle) {
         targetAngle = angle;
     }
 
-    public void setSimSpeed(int speed) {
-        this.speed = speed;
-    }
-
     public void setTargetPos(Point2D targetPos) {
         this.targetPos = targetPos;
-    }
-
-    public void setCurrentPos(Point2D currentPos) {
-        this.currentPos = currentPos;
     }
 
     public void update(Sim[] sims, Node[][] collisionNodes) {
@@ -119,37 +105,37 @@ public class Sim {
                 setSimSkinDir(simSkin.walkDown(this));
                 break;
             default:
-                System.out.println(rotatedAngle + " ERROR");
+                System.out.println(rotatedAngle + " ERROR IN SIM ANGLE");
+                throw new IllegalArgumentException("Your SIM angle is invalid!");
         }
-    }
-
-
-    private boolean isAvailable(Point2D position, Point2D simPosition) {
-        return (position.distance(simPosition) < 32);
     }
 
     public Point2D getCurrentPos() {
         return this.currentPos;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return this.speed;
     }
 
     public void draw() {
         AffineTransform affineTransform = new AffineTransform();
-        affineTransform.translate(currentPos.getX() - 32, currentPos.getY() - 32 - 28); // extra -28 to translate to feet
+        affineTransform.translate(currentPos.getX()-16, currentPos.getY() - 32 - 28); // extra -28 to translate to feet
         g2d.drawImage(bufferedImage, affineTransform, null);
     }
 
     private boolean isOutOfBounds(Point2D pos) {
-        return (pos.getX() < 0 || pos.getX() > canvas.getWidth() || pos.getY() < 0 || pos.getY() > canvas.getHeight());
+        return (pos.getX() < 0 || pos.getX() >= canvas.getWidth() || pos.getY() < 0 || pos.getY() >= canvas.getHeight());
     }
 
     private boolean isBetterNode(int score, int currentPosX, int currentPosY, Node[][] nodes, int maxWidth, int maxHeight) {
         if (currentPosX > -1 && currentPosX < maxWidth && currentPosY > -1 && currentPosY < maxHeight && nodes[currentPosX][currentPosY].scores[this.targetArea] != -1) {
             return (nodes[currentPosX][currentPosY].scores[this.targetArea] < score);
         } else return false;
+    }
+
+    public boolean isInTargetArea() {
+        return (((currentPos.getX() > areas.get(targetArea).x) && currentPos.getX() < (areas.get(targetArea).x+areas.get(targetArea).areaWidth)) && ((currentPos.getY() > areas.get(targetArea).y)) && currentPos.getY() < (areas.get(targetArea).y+areas.get(targetArea).areaHeight));
     }
 
     public void pathFind(Node[][] nodes) {
@@ -183,35 +169,35 @@ public class Sim {
                 bestNode.scores[targetArea] = -1;
             bestNode = nodes[currentPosX][currentPosY + 1];
         }
-        this.targetPos = new Point2D.Double((int) bestNode.getPosition().getX() * 32, (int) bestNode.getPosition().getY() * 32);
+        this.targetPos = new Point2D.Double((int) bestNode.getPosition().getX()*32, (int) bestNode.getPosition().getY() * 32);
     }
 
-    public int getNumber(int targetPosX, int targetPosY, Node[][] nodes) {
-        return nodes[targetPosX][targetPosY].scores[targetArea];
+    public int getTargetArea() {
+        return targetArea;
     }
 
-    public boolean checkCollision(Sim[] sims, Point2D position) {
-        for (Sim sim : sims) {
-            if ((hasCollision(position, sim.currentPos)) && sim != this) return true;
-        }
-        return false;
+    public void setTargetArea(int areaNumber) {
+        this.oldTargetArea = targetArea;
+        this.targetArea = areaNumber;
     }
 
-    public void setNodes(Node[][] nodes) {
-        this.nodes = nodes;
+    public void setTargetArea(Area area) {
+        this.targetArea = area.areaID;
     }
 
-    public boolean simCollision(Point2D otherPos) {
+    public void setSimSpeed(double speed) { //TODO: check
+        this.speed = speed;
+    }
+
+    public void setOldTargetArea() {
+        this.targetArea=oldTargetArea;
+    }
+
+    private boolean simCollision(Point2D otherPos) {
         return otherPos.distance(currentPos) < 32;
     }
 
-    public boolean hasCollision(Point2D position, Point2D comparePosition) {
-        return comparePosition.distance(position) < 32; // was 64
-    }
-
-    public void setSimSkinDir(BufferedImage bufferedImage) {
+    private void setSimSkinDir(BufferedImage bufferedImage) {
         this.bufferedImage = bufferedImage;
     }
-
-
 }
