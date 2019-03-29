@@ -1,6 +1,7 @@
 package simulation;
 
 import data.persons.Person;
+import data.readwrite.DataReader;
 import data.schoolrelated.School;
 import javafx.scene.canvas.Canvas;
 import org.jfree.fx.FXGraphics2D;
@@ -21,13 +22,14 @@ public class CreateSims {
     private SchoolMap map;
     private Sim[] sims;
 
-    public static final int STUDENTSPERGROUP = 1;
+    public static final int STUDENTSPERGROUP = 2;
     public static final String SPAWNAREA = "ParkingLot";
     public static final int MAXSPAWNATTEMPTS = 10;
 
     public CreateSims(School school, SchoolMap map, FXGraphics2D graphics, Canvas canvas) {
         this.school = school;
         this.map = map;
+        this.checkSchool();
         this.school.createStudents(this.STUDENTSPERGROUP);
         this.createSims(graphics, canvas);
         this.map.setSims(this.sims);
@@ -43,6 +45,15 @@ public class CreateSims {
 
     public Sim[] getSims() {
         return sims;
+    }
+
+    /**
+     * Checks if the School has 6 rooms.
+     */
+    private void checkSchool() {
+        if (!DataReader.hasRooms(this.school)) {
+            this.school = DataReader.emergencySchool();
+        }
     }
 
     /**

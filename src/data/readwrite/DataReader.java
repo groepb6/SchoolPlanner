@@ -10,6 +10,7 @@ import java.io.*;
  * Class to load objects saved to a file
  */
 public class DataReader {
+    public static final int ROOMCOUNT = 6;
 
     /**
      * This method reads school.txt and returns a School-object when found.
@@ -61,6 +62,18 @@ public class DataReader {
         System.out.println("Loading has failed!");
         System.out.println("The program will probably stop working now.");
         return DataReader.emergencySchool();
+    }
+
+    /**
+     * TODO documentation
+     * @param school
+     * @return
+     */
+    public static boolean hasRooms(School school) {
+        if (school.getRooms().size() == ROOMCOUNT) {
+            return true;
+        }
+        return false;
     }
 
     /**
