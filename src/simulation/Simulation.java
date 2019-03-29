@@ -22,8 +22,6 @@ public class Simulation {
     private Sim[] sims;
     private boolean paused;
 
-    public static final int STARTINGHOUR = 8;
-
     /**
      * Creates a Simulation object and automatically starts the simulation.
      *
@@ -36,7 +34,7 @@ public class Simulation {
         this.school = school;
         this.map = map;
         this.sims = sims;
-        this.time = new SimTime(this.STARTINGHOUR);
+        this.time = new SimTime(ApplicationSettings.SIMULATIONSTARTINGHOUR);
         this.paused = false;
         this.setupTimer(graphics);
 
@@ -116,6 +114,7 @@ public class Simulation {
 
     /**
      * Runs the changeSpeed method on SimTime and updates the speed of all sims.
+     *
      * @param speedChange A positive or negative double that will be added to the current speed.
      */
     public void changeSpeed(double speedChange) {

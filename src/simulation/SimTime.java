@@ -1,8 +1,7 @@
 package simulation;
 
 import data.schedulerelated.Hour;
-import javafx.beans.property.SimpleStringProperty;
-import org.jfree.fx.FXGraphics2D;
+import gui.settings.ApplicationSettings;
 import simulation.controls.SimulationBar;
 
 /**
@@ -19,10 +18,6 @@ public class SimTime {
     private boolean updatesEnabled;
     private SimulationBar simulationBar;
 
-    public static final double DEFAULTSPEED = 1.0;
-    public static final double MINSPEED = 0.1;
-    public static final double MAXSPEED = 10;
-
     /**
      * Creates a SimTime object. The starting hour can be decided, but the starting minute cannot.
      *
@@ -32,7 +27,7 @@ public class SimTime {
         this.startingHour = startingHour;
         this.hours = startingHour;
         this.minutes = 0;
-        this.speed = this.DEFAULTSPEED;
+        this.speed = ApplicationSettings.TIMERDEFAULTSPEED;
         this.updated = true;
         this.updatesEnabled = true;
     }
@@ -72,19 +67,19 @@ public class SimTime {
      */
     public void changeSpeed(double speedChange) {
         this.speed += speedChange;
-        if (this.speed < this.MINSPEED) {
+        if (this.speed < ApplicationSettings.TIMERMINSPEED) {
             this.speed -= speedChange;
-        } else if (this.speed > this.MAXSPEED) {
+        } else if (this.speed > ApplicationSettings.TIMERMAXSPEED) {
             this.speed -= speedChange;
         }
     }
 
     public void minSpeed() {
-        this.speed = MINSPEED;
+        this.speed = ApplicationSettings.TIMERMINSPEED;
     }
 
     public void maxSpeed() {
-        this.speed = MAXSPEED;
+        this.speed = ApplicationSettings.TIMERMAXSPEED;
     }
 
     public double getSpeed() {

@@ -28,4 +28,8 @@ public class ApplicationSettings {
     public static final String saveNodePath = "saves/school/nodes.txt";
     public static final String namePath = "/additional/names.txt";
     public static final double SIMDEFAULTSPEED = 3;
+    public static final double TIMERDEFAULTSPEED = 1.0;
+    public static final double TIMERMINSPEED = 0.1;
+    public static final double TIMERMAXSPEED = 3;
+    public static final int SIMULATIONSTARTINGHOUR = 8;
 }
