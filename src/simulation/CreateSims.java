@@ -6,6 +6,7 @@ import data.schoolrelated.School;
 import javafx.scene.canvas.Canvas;
 import org.jfree.fx.FXGraphics2D;
 import simulation.data.Area;
+import simulation.sims.NameList;
 import simulation.sims.Sim;
 import simulation.sims.SimSkin;
 
@@ -21,6 +22,7 @@ public class CreateSims {
     private School school;
     private SchoolMap map;
     private Sim[] sims;
+    private NameList nameList;
 
     public static final int STUDENTSPERGROUP = 2;
     public static final String SPAWNAREA = "ParkingLot";
@@ -29,6 +31,7 @@ public class CreateSims {
     public CreateSims(School school, SchoolMap map, FXGraphics2D graphics, Canvas canvas) {
         this.school = school;
         this.map = map;
+        this.nameList = new NameList();
         this.checkSchool();
         this.school.createStudents(this.STUDENTSPERGROUP);
         this.createSims(graphics, canvas);
@@ -107,7 +110,7 @@ public class CreateSims {
                     Point2D spawnPos = new Point2D.Double(spawnArea.x + (Math.random() * spawnArea.areaWidth), spawnArea.y + (Math.random() * spawnArea.areaHeight));
                     if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) {
                         if (canAdd(spawnPos, tempSims)) {
-                            Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas, "");
+                            Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas, nameList.getName());
                             sim.setTargetArea(this.map.searchArea(this.SPAWNAREA));
                             tempSims.add(sim);
                             person.setSim(sim);
