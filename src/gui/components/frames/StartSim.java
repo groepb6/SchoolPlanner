@@ -9,6 +9,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
+import simulation.CreateSims;
 import simulation.SchoolMap;
 import simulation.Simulation;
 
@@ -35,9 +36,10 @@ public class StartSim extends Sizeable {
         SchoolMap schoolMap = new SchoolMap(g2d, canvas, scene, this, scrollPane, group, stage);
         group.getChildren().add(schoolMap.getCanvas());
         group.setAutoSizeChildren(false);
-        //this.simUpdate = new SimUpdate(g2d, canvas, scene, schoolMap);
+
         School school = DataReader.readSchool();
-        Simulation simulation = new Simulation(school, schoolMap, g2d, canvas);
+        CreateSims createSims = new CreateSims(school, schoolMap, g2d, canvas);
+        Simulation simulation = new Simulation(createSims.getSchool(), createSims.getMap(), createSims.getSims(), g2d);
     }
 
     public void clean() {

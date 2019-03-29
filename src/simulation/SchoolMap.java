@@ -56,7 +56,7 @@ public class SchoolMap {
     private boolean showDebug = false;
     boolean activatedPathFinding = true;
     private boolean showCollision = false;
-    ArrayList<Sim> sims = new ArrayList<>();
+    private Sim[] sims;
 
     /**
      * The map class needs a few parameters to initialize.
@@ -85,6 +85,10 @@ public class SchoolMap {
         loadPathFinder();
         drawLayers();
         image = getImageOfCanvas();
+    }
+
+    public void setSims(Sim[] sims) {
+        this.sims = sims;
     }
 
     /**
