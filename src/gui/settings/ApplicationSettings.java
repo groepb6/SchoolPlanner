@@ -1,9 +1,8 @@
 package gui.settings;
 
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
-import java.util.ArrayList;
+import java.awt.*;
 
 /**
  * @author Dustin Hendriks
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 
 public class ApplicationSettings {
     public static final Color themeColor = Color.CORNFLOWERBLUE;
+    public static final int simulatorImageWidthAndHeight=35;
+    public static final int maxSimSpeed=32;
     public static final int minWidth = 200;
     public static final int maxWidth = 200;
     public static final int minHeight = 200;
@@ -21,5 +22,9 @@ public class ApplicationSettings {
     public static final int margin = 5;
     public static final int standardTextSize = 10;
     public static final int headerTextSize = 20;
-    public static final Font headerFont = new Font(javafx.scene.text.Font.getFamilies().get(7), 30);
+    public static final java.awt.Font font = new java.awt.Font("Courier", Font.PLAIN, 15);
+    public static final String saveSlotPath = "saves/school/defaults.txt";
+    public static final String schoolPath = "saves/school/school.txt";
+    public static final String saveNodePath = "saves/school/nodes.txt";
+    public static final String namePath = "/additional/names.txt";
 }

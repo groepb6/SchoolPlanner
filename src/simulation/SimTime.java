@@ -86,6 +86,14 @@ public class SimTime {
         return (int) this.minutes;
     }
 
+    public void minSpeed() {
+        this.speed = MINSPEED;
+    }
+
+    public void maxSpeed() {
+        this.speed = MAXSPEED;
+    }
+
     /**
      * Used by a non-SimTime object to set updated to false.
      */
@@ -110,17 +118,6 @@ public class SimTime {
      */
     public void disableUpdates() {
         this.updatesEnabled = false;
-    }
-
-    /**
-     * Used by a non-SimTime object to set speedUpdated to false.
-     */
-    public void speedUpdateReceived() {
-        this.speedUpdated = false;
-    }
-
-    public boolean isSpeedUpdated() {
-        return speedUpdated;
     }
 
     public double getSpeed() {

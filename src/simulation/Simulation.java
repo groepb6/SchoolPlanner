@@ -19,6 +19,7 @@ public class Simulation {
     private SimTime time;
     private SchoolMap map;
     private Sim[] sims;
+    private boolean paused;
 
     public static final int STARTINGHOUR = 8;
 
@@ -35,12 +36,13 @@ public class Simulation {
         this.map = map;
         this.sims = sims;
         this.time = new SimTime(this.STARTINGHOUR);
+        this.paused = false;
         this.setupTimer(graphics);
 
     }
 
     public void update(double deltaTime) {
-        if (this.map.getPathFinder().loaded) {
+        if (this.map.getPathFinder().loaded && !this.paused) {
             this.time.update(deltaTime);
             this.updateLessons();
 
@@ -105,14 +107,34 @@ public class Simulation {
     }
 
     /**
-     * Checks if the speed of SimTime has been updated. If it was updated, the speed of every Sim will be changed.
+     * Pauses the simulation if it is not paused, and unpauses it if it is paused.
      */
-    private void updateSpeed() {
-        if (this.time.isSpeedUpdated()) {
-            for (Sim sim : this.sims) {
-                sim.setSimSpeed((int) this.time.getSpeed() * Sim.DEFAULTSPEED);
-            }
-            this.time.speedUpdateReceived();
+    public void pausePlay() {
+        this.paused = !this.paused;
+    }
+
+    /**
+     * Runs the changeSpeed method on SimTime and updates the speed of all sims.
+     * @param speedChange A positive or negative double that will be added to the current speed.
+     */
+    public void changeSpeed(double speedChange) {
+        this.time.changeSpeed(speedChange);
+        this.updateSimSpeed();
+    }
+
+    public void minSpeed() {
+        this.time.minSpeed();
+        this.updateSimSpeed();
+    }
+
+    public void maxSpeed() {
+        this.time.maxSpeed();
+        this.updateSimSpeed();
+    }
+
+    private void updateSimSpeed() {
+        for (Sim sim : this.sims) {
+            sim.setSimSpeed((int) this.time.getSpeed() * Sim.DEFAULTSPEED);
         }
     }
 
@@ -122,6 +144,10 @@ public class Simulation {
     public void reset() {
         //TODO: make and test method
         //It is preferable to create a new Simulation
+    }
+
+    public SimTime getTime() {
+        return time;
     }
 
     /**

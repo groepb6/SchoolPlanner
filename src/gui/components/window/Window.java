@@ -10,15 +10,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import simulation.controls.SimulationBar;
 
 public class Window {
     private BorderPane windowPane = new BorderPane();
     private HBox topBar = new HBox();
+    private VBox bars = new VBox();
     private Image backButton;
     private Scene originalScene;
     private Stage stage;
     private Scene scene;
     private StartSim startSim;
+    private SimulationBar simulationBar;
 
     /**
      * @author Dustin Hendriks
@@ -34,11 +37,11 @@ public class Window {
         this.originalScene = originalScene;
         buildBackButton();
         topBar.setBackground(new Background(new BackgroundFill(ApplicationSettings.themeColor, CornerRadii.EMPTY, Insets.EMPTY)));
-        windowPane.setTop(topBar);
+        bars.getChildren().add(topBar);
+        windowPane.setTop(bars);
         this.stage = stage;
         setActionOnClick();
         scene = new Scene(windowPane);
-
         stage.setScene(scene);
 
         switch (identifier) {
@@ -53,6 +56,8 @@ public class Window {
                 scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                 scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                 startSim = new StartSim(stage, scene, scrollPane);
+                this.simulationBar = new SimulationBar(this.startSim);
+                this.bars.getChildren().add(this.simulationBar.getHBox());
                 scrollPane.setContent(startSim.getGroup());
                 windowPane.setCenter(scrollPane);
                 //windowPane.setCenter(startSim.getGroup());

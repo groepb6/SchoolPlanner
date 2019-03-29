@@ -27,6 +27,7 @@ public class StartSim extends Sizeable {
     public Group group = new Group();
     private FXGraphics2D g2d;
     private ScrollPane scrollPane;
+    private Simulation simulation;
 
     public StartSim(Stage stage, Scene scene, ScrollPane scrollPane) {
         super.setProportions(0, 5000, 0, 5000, 800, 600, stage);
@@ -39,15 +40,15 @@ public class StartSim extends Sizeable {
 
         School school = DataReader.readSchool();
         CreateSims createSims = new CreateSims(school, schoolMap, g2d, canvas);
-        Simulation simulation = new Simulation(createSims.getSchool(), createSims.getMap(), createSims.getSims(), g2d);
+        this.simulation = new Simulation(createSims.getSchool(), createSims.getMap(), createSims.getSims(), g2d);
     }
 
     public void clean() {
         //this.simUpdate.stopTimer();
     }
 
-    public Scene getSim() {
-        return scene;
+    public Simulation getSimulation() {
+        return this.simulation;
     }
 
     public Group getGroup() {
