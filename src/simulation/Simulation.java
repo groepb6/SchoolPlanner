@@ -109,6 +109,7 @@ public class Simulation {
      */
     public void reset() {
         //TODO: make and test method
+        //It is preferable to create a new Simulation
     }
 
     /**

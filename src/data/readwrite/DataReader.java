@@ -65,9 +65,9 @@ public class DataReader {
     }
 
     /**
-     * TODO documentation
-     * @param school
-     * @return
+     * Checks if the School has the right amount of rooms.
+     * @param school The School that is checked.
+     * @return True if the School does have the right amount of rooms, and otherwise false.
      */
     public static boolean hasRooms(School school) {
         if (school.getRooms().size() == ROOMCOUNT) {

@@ -105,7 +105,7 @@ public class CreateSims {
                 if (person.getSim() == null) {
                     noneNeeded = false;
                     Point2D spawnPos = new Point2D.Double(spawnArea.x + (Math.random() * spawnArea.areaWidth), spawnArea.y + (Math.random() * spawnArea.areaHeight));
-                    if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) { //TODO: sims walk out of bounds
+                    if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) {
                         if (canAdd(spawnPos, tempSims)) {
                             Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas);
                             sim.setTargetArea(this.map.searchArea(this.SPAWNAREA));
@@ -123,7 +123,7 @@ public class CreateSims {
                 System.out.println("Was unable to spawn all sims after " + this.MAXSPAWNATTEMPTS + " tries!");
                 System.out.println("Created " + tempSims.size() + " sims out of " + this.school.getPeople().size());
                 break;
-            } //TODO: this method of spawning sims is unreliable
+            }
         }
         this.makeSimsArray(tempSims);
     }
