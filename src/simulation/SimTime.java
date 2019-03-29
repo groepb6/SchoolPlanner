@@ -26,7 +26,7 @@ public class SimTime {
     /**
      * Creates a SimTime object. The starting hour can be decided, but the starting minute cannot.
      *
-     * @param startingHour The hour this SimTime object should start at
+     * @param startingHour The hour this SimTime object should start at.
      */
     public SimTime(int startingHour) {
         this.startingHour = startingHour;
@@ -162,6 +162,7 @@ public class SimTime {
 
     /**
      * Connects SimTime to the SimulationBar so that the time display can be updated from here.
+     *
      * @param simulationBar The SimulationBar object will run this method and give itself as parameter.
      */
     public void connectToSimulationBar(SimulationBar simulationBar) {
@@ -171,7 +172,7 @@ public class SimTime {
     public String getDisplay() {
         return String.format("%02d", this.hours) +
                 " : " +
-                String.format("%02d", (int)this.minutes);
+                String.format("%02d", (int) this.minutes);
     }
 
     @Override
