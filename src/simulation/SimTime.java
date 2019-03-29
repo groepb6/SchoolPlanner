@@ -1,7 +1,9 @@
 package simulation;
 
 import data.schedulerelated.Hour;
+import javafx.beans.property.SimpleStringProperty;
 import org.jfree.fx.FXGraphics2D;
+import simulation.controls.SimulationBar;
 
 /**
  * Tracks the hours and minutes of the simulation.
@@ -15,7 +17,7 @@ public class SimTime {
     private double speed;
     private boolean updated;
     private boolean updatesEnabled;
-    private boolean speedUpdated;
+    private SimulationBar simulationBar;
 
     public static final double DEFAULTSPEED = 1.0;
     public static final double MINSPEED = 0.1;
@@ -33,7 +35,6 @@ public class SimTime {
         this.speed = this.DEFAULTSPEED;
         this.updated = true;
         this.updatesEnabled = true;
-        this.speedUpdated = true;
     }
 
     /**
@@ -52,6 +53,7 @@ public class SimTime {
             this.minutes = this.minutes % 60.0;
             this.hours = this.hours % 24;
         }
+        this.simulationBar.updateTimeDisplay(this.getDisplay());
     }
 
     public void reset() { //TODO: test proper reset procedures
@@ -75,15 +77,6 @@ public class SimTime {
         } else if (this.speed > this.MAXSPEED) {
             this.speed -= speedChange;
         }
-        this.speedUpdated = true;
-    }
-
-    public int getHours() {
-        return this.hours;
-    }
-
-    public int getMinutes() {
-        return (int) this.minutes;
     }
 
     public void minSpeed() {
@@ -92,6 +85,10 @@ public class SimTime {
 
     public void maxSpeed() {
         this.speed = MAXSPEED;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     /**
@@ -118,10 +115,6 @@ public class SimTime {
      */
     public void disableUpdates() {
         this.updatesEnabled = false;
-    }
-
-    public double getSpeed() {
-        return speed;
     }
 
     /**
@@ -165,6 +158,20 @@ public class SimTime {
         } else {
             return Hour.NONE;
         }
+    }
+
+    /**
+     * Connects SimTime to the SimulationBar so that the time display can be updated from here.
+     * @param simulationBar The SimulationBar object will run this method and give itself as parameter.
+     */
+    public void connectToSimulationBar(SimulationBar simulationBar) {
+        this.simulationBar = simulationBar;
+    }
+
+    public String getDisplay() {
+        return String.format("%02d", this.hours) +
+                " : " +
+                String.format("%02d", (int)this.minutes);
     }
 
     @Override

@@ -23,6 +23,7 @@ public class SimulationBar {
     private ImageView fastForward;
     private ImageView fire;
     private Label timerMultiplier=new Label("Speed x1.0");
+    private Label timeDisplay;
     private StartSim startSim;
     //private boolean paused = false;
 
@@ -57,6 +58,7 @@ public class SimulationBar {
                 hBox.getChildren().add(imageView);
             }
             addTimerMultiplier();
+            this.addTimeDisplay();
             hBox.setBackground(new Background(new BackgroundFill(ApplicationSettings.themeColor, CornerRadii.EMPTY, Insets.EMPTY)));
             hBox.setSpacing(50);
             setActions();
@@ -71,34 +73,37 @@ public class SimulationBar {
         timerMultiplier.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.DOTTED, null, new BorderWidths(2))));
     }
 
+    private void addTimeDisplay() {
+        this.timeDisplay = new Label(this.startSim.getSimulation().getTime().getDisplay());
+        hBox.getChildren().add(this.timeDisplay);
+        Font font = new Font("Courier", 25);
+        timeDisplay.setFont(font);
+        timeDisplay.setBackground(Background.EMPTY);
+        timeDisplay.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.DOTTED, null, new BorderWidths(2))));
+        this.startSim.getSimulation().getTime().connectToSimulationBar(this);
+    }
+
     private void setActions() {
         fire.setOnMouseClicked(fire -> {
             //startSim.getMap().fireDrill();
         });
         startstop.setOnMouseClicked(startstop -> {
-//            paused=!paused;
-//            if (paused) startSim.getSimUpdate().stopTimer();
-//            else startSim.getSimUpdate().startTimer();
             this.startSim.getSimulation().pausePlay();
             updateBox();
         });
         forward.setOnMouseClicked(forward-> {
-//            startSim.getSimUpdate().increaseSpeed();
             this.startSim.getSimulation().changeSpeed(0.5);
             updateBox();
         });
         backward.setOnMouseClicked(backward -> {
-//            startSim.getSimUpdate().decreaseSpeed();
             this.startSim.getSimulation().changeSpeed(-0.5);
             updateBox();
         });
         fastForward.setOnMouseClicked(fastForward -> {
-//            startSim.getSimUpdate().maxSpeed();
             this.startSim.getSimulation().maxSpeed();
             updateBox();
         });
         fastBackward.setOnMouseClicked(fastBackward -> {
-//            startSim.getSimUpdate().minSpeed();
             this.startSim.getSimulation().minSpeed();
             updateBox();
         });
@@ -106,6 +111,10 @@ public class SimulationBar {
 
     private void updateBox() {
         timerMultiplier.setText("Speed x"+Double.toString(startSim.getSimulation().getTime().getSpeed()));
+    }
+
+    public void updateTimeDisplay(String display) {
+        this.timeDisplay.setText(display);
     }
 
     public HBox getHBox() {
