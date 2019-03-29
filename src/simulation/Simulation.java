@@ -1,20 +1,12 @@
 package simulation;
 
-import data.persons.Person;
 import data.persons.Student;
 import data.schedulerelated.Schedule;
 import data.schoolrelated.School;
 import javafx.animation.AnimationTimer;
-import javafx.scene.canvas.Canvas;
 import org.jfree.fx.FXGraphics2D;
 import simulation.data.Area;
 import simulation.sims.Sim;
-import simulation.sims.SimSkin;
-
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Runs the simulation
@@ -36,13 +28,13 @@ public class Simulation {
      * @param school   Should be obtained from CreateSims.getSchool().
      * @param map      Should be obtained from CreateSims.getMap().
      * @param sims     Should be obtained from CreateSims.getSims().
-     * @param graphics
+     * @param graphics An FXGraphics2D object to draw everything.
      */
     public Simulation(School school, SchoolMap map, Sim[] sims, FXGraphics2D graphics) {
         this.school = school;
         this.map = map;
         this.sims = sims;
-        this.time = new SimTime(8);
+        this.time = new SimTime(this.STARTINGHOUR);
         this.setupTimer(graphics);
 
     }

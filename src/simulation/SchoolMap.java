@@ -118,18 +118,6 @@ public class SchoolMap {
     }
 
     /**
-     * Activates the pathfinding for every Sim.
-     */
-
-    void activatePathFindingOnSims() {
-        //if (activatedPathFinding) {
-            for (Sim sim : sims) {
-                sim.pathFind(pathFinder.getAllNodes());
-            }
-        //}
-    }
-
-    /**
      * Receive an object of the PathFinder class. Can be used to guide Sims automatically to their target.
      * @return Receive a pathfinder object.
      */
@@ -164,6 +152,7 @@ public class SchoolMap {
         JsonArray areas = mapFile.getJsonArray("layers").getJsonObject(mapFile.getJsonArray("layers").size() - 1).getJsonArray("objects");
         for (int i = 0; i < areas.size() - 1; i++) {
             this.areas.add(new Area(areas.getJsonObject(i)));
+            this.areas.get(i).areaID = i; //**VERY IMPORTANT DO NOT DELETE IN MERGE**
         }
     }
 
@@ -175,10 +164,7 @@ public class SchoolMap {
      */
     public Area searchArea(String searchedAreaName) {
         Area foundArea = null;
-        //searchedAreaName = searchedAreaName.trim().toLowerCase();
         for (Area area : this.areas) {
-            //String comparedAreaName = area.areaName.trim().toLowerCase();
-            //if (comparedAreaName.equals(searchedAreaName)) {
             if (area.areaName.equals(searchedAreaName)) {
                 foundArea = area;
             }

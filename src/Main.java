@@ -30,3 +30,5 @@ public class Main {
 //TODO: search no longer automatically empties search box when searching before box is clicked
 //TODO: remove unneeded attributes from data classes
 //TODO: remove unused methods to avoid confusion
+//TODO: prevent gui from crashing after deleting all schedules
+//TODO: prevent gui from deleting rooms
