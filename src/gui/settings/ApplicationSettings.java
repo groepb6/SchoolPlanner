@@ -32,8 +32,7 @@ public class ApplicationSettings {
     public static final int TIMERMAXSPEED = 20;
     public static final int TIMERTIMECHANGE = 1;
     public static final int SIMULATIONSTARTINGHOUR = 8;
-
-    public static final int STUDENTSPERGROUP = 2;
+    public static final int STUDENTSPERGROUP = 20;
     public static final String SIMSPAWNAREA = "ParkingLot";
     public static final int MAXSPAWNATTEMPTS = 10;
 
