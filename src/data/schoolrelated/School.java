@@ -93,6 +93,10 @@ public class School implements Serializable {
         }
     }
 
+    public void sort() {
+        //todo: sorting on name.
+    }
+
     public boolean hasData() {
         return (teachers.size()+groups.size()+subjects.size())>0;
     }

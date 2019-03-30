@@ -1,5 +1,7 @@
 package data.readwrite;
 
+import data.rooms.Classroom;
+import data.rooms.Room;
 import data.sampledata.SampleData;
 import data.schoolrelated.School;
 import gui.settings.ApplicationSettings;
@@ -83,26 +85,52 @@ public class DataReader {
     }
 
     /**
-     * Checks if the School has the right amount of rooms.
+     * Checks if the School has the right rooms.
      * @param school The School that is checked.
-     * @return True if the School does have the right amount of rooms, and otherwise false.
+     * @return True if the School does have the right rooms, and otherwise false.
      */
     public static boolean hasRooms(School school) {
-        if (school.getRooms().size() == ROOMCOUNT) {
-            return true;
+        boolean b001 = false;
+        boolean b002 = false;
+        boolean b003 = false;
+        boolean b004 = false;
+        boolean b005 = false;
+        boolean b006 = false;
+
+        for (Room room : school.getRooms()) {
+            if (room.getName().equals("LA001")) {
+                b001 = true;
+            } else if (room.getName().equals("LA002")) {
+                b002 = true;
+            } else if (room.getName().equals("LA003")) {
+                b003 = true;
+            } else if (room.getName().equals("LA004")) {
+                b004 = true;
+            } else if (room.getName().equals("LA005")) {
+                b005 = true;
+            } else if (room.getName().equals("LA006")) {
+                b006 = true;
+            }
         }
-        return false;
+        return b001 && b002 && b003 && b004 && b005 && b006;
     }
 
     /**
-     * Gets a School object from SampleData. Used to create a School object when the saved object cannot be properly read.
+     * Creates a School with the rooms needed for the simulation and writes it to the save file.
      *
-     * @return A School object from SampleData.
+     * @return A School object with 6 rooms and nothing else.
      */
     public static School emergencySchool() {
         System.out.println("No proper school could be loaded, creating a new one...");
-        SampleData sampleData = new SampleData();
-        return sampleData.getSchool();
+        School school = new School("School");
+        school.getRooms().add(new Classroom("LA001"));
+        school.getRooms().add(new Classroom("LA002"));
+        school.getRooms().add(new Classroom("LA003"));
+        school.getRooms().add(new Classroom("LA004"));
+        school.getRooms().add(new Classroom("LA005"));
+        school.getRooms().add(new Classroom("LA006"));
+        DataWriter.writeSchool(school);
+        return school;
     }
     //TODO: **IMPORTANT** check if succesfully loaded School has the classrooms with proper names!
 }
