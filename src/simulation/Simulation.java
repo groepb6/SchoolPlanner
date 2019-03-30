@@ -46,8 +46,11 @@ public class Simulation {
             this.updateLessons();
 
             for (Sim sim : this.sims) {
+                if (!sim.equals(this.map.simToFollow) || !this.map.hijackedSim) {
+                    sim.pathFind(this.map.getPathFinder().getAllNodes());
+                }
                 sim.update(this.sims, this.map.getCollisionLayer());
-                sim.pathFind(this.map.getPathFinder().getAllNodes());
+                this.map.sitOnChair(sim);
             }
         }
 
@@ -120,24 +123,24 @@ public class Simulation {
      */
     public void changeSpeed(double speedChange) {
         this.time.changeSpeed(speedChange);
-        this.updateSimSpeed();
+        //this.updateSimSpeed();
     }
 
     public void minSpeed() {
         this.time.minSpeed();
-        this.updateSimSpeed();
+        //this.updateSimSpeed();
     }
 
     public void maxSpeed() {
         this.time.maxSpeed();
-        this.updateSimSpeed();
+        //this.updateSimSpeed();
     }
 
-    private void updateSimSpeed() {
-        for (Sim sim : this.sims) {
-            sim.setSimSpeed(this.time.getSpeed() * ApplicationSettings.SIMDEFAULTSPEED);
-        }
-    }
+//    private void updateSimSpeed() {
+//        for (Sim sim : this.sims) {
+//            sim.setSimSpeed(this.time.getSpeed() * ApplicationSettings.SIMDEFAULTSPEED);
+//        }
+//    }
 
     /**
      * Resets the simulation so it can run from the beginning.
@@ -149,6 +152,10 @@ public class Simulation {
 
     public SimTime getTime() {
         return time;
+    }
+
+    public SchoolMap getMap() {
+        return map;
     }
 
     /**

@@ -1,11 +1,9 @@
 package gui.components.window;
 
-import data.schoolrelated.School;
 import gui.assistclasses.Image;
 import gui.components.frames.StartSim;
 import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -56,11 +54,10 @@ public class Window {
                 scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                 scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
                 startSim = new StartSim(stage, scene, scrollPane);
-                this.simulationBar = new SimulationBar(this.startSim);
-                this.bars.getChildren().add(this.simulationBar.getHBox());
+                simulationBar = new SimulationBar(startSim);
+                bars.getChildren().add(simulationBar.getHBox());
                 scrollPane.setContent(startSim.getGroup());
                 windowPane.setCenter(scrollPane);
-                //windowPane.setCenter(startSim.getGroup());
                 break;
             case "editschedule":
                 windowPane.setCenter(new gui.components.frames.EditSchedule(stage).getEditSchedule());

@@ -31,6 +31,7 @@ public class ApplicationSettings {
     public static final double TIMERDEFAULTSPEED = 1.0;
     public static final double TIMERMINSPEED = 0.1;
     public static final double TIMERMAXSPEED = 3;
+    public static final double TIMERTIMECHANGE = 0.5;
     public static final int SIMULATIONSTARTINGHOUR = 8;
 
     public static boolean getHorizontalFirst(String room) {
