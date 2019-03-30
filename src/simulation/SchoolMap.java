@@ -164,7 +164,7 @@ public class SchoolMap {
         JsonArray areas = mapFile.getJsonArray("layers").getJsonObject(mapFile.getJsonArray("layers").size() - 1).getJsonArray("objects");
         for (int i = 0; i < areas.size() - 1; i++) {
             this.areas.add(new Area(areas.getJsonObject(i)));
-            this.areas.get(i).areaID = i;
+            this.areas.get(i).areaID = i; //***IMPORTANT DO NOT DELETE IN MERGE***
         }
     }
 
