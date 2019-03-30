@@ -32,4 +32,21 @@ public class ApplicationSettings {
     public static final double TIMERMINSPEED = 0.1;
     public static final double TIMERMAXSPEED = 3;
     public static final int SIMULATIONSTARTINGHOUR = 8;
+
+    public static boolean getHorizontalFirst(String room) {
+        boolean horizontalFirst = false;
+        switch (room) {
+            case "LA001": horizontalFirst=false; break;
+            case "LA002": horizontalFirst=false; break;
+            case "LA003": horizontalFirst=false; break;
+            case "LA004": horizontalFirst=false; break;
+            case "LA005": horizontalFirst=true; break;
+            case "LA006": horizontalFirst=false; break;
+            case "Library": horizontalFirst=false; break;
+            case "Teachersroom": horizontalFirst=false; break;
+            case "DiningRoom": horizontalFirst=true; break;
+            case "Square": horizontalFirst=false; break;
+        }
+        return horizontalFirst;
+    }
 }

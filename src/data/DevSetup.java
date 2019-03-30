@@ -3,6 +3,7 @@ package data;
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
 import data.sampledata.SampleData;
+import gui.settings.ApplicationSettings;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -32,7 +33,7 @@ public class DevSetup {
             if (Files.notExists(Paths.get("saves/school")))
                 Files.createDirectories(Paths.get("saves/school"));
 
-            if (Files.notExists(Paths.get("saves/school/school.txt"))) {
+            if (Files.notExists(Paths.get(ApplicationSettings.schoolPath))) {
                 SampleData sampleData = new SampleData();
                 DataWriter.writeSchool(sampleData.getSchool());
             } else if (!DataReader.readSchool().hasData()) {
