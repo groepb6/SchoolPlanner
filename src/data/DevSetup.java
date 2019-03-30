@@ -16,7 +16,7 @@ public class DevSetup {
      * Can be used as an example.
      * Sets up the save directories (safe to run multiple times).
      */
-    public static void setupSaveDirectories() { //TODO: do we need these save files?
+    public static void setupSaveDirectories() {
         try {
             if (Files.notExists(Paths.get("saves"))) {
                 Files.createDirectories(Paths.get("saves"));

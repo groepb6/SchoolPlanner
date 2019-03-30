@@ -91,7 +91,7 @@ public class Simulation {
      * Only runs when SimTime has been updated.
      */
     private void updateLessons() {
-        if (this.time.isUpdated()) {
+        if (this.time.isUpdated()) { //Will not be run during fire drill
             for (Schedule schedule : this.school.getSchedules()) {
                 if (schedule.getTime() == this.time.getTimeSlot()) {
                     this.startSchedule(schedule);
@@ -116,7 +116,6 @@ public class Simulation {
         Area area = this.map.searchArea(schedule.getRoom().getName());
         for (Student student : schedule.getGroup().getStudents()) {
             student.getSim().setTargetArea(area);
-            //System.out.println(area.areaID);
         }
         schedule.getTeacher().getSim().setTargetArea(area);
     }
