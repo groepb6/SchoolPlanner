@@ -45,7 +45,6 @@ public class Simulation {
             this.time.update(deltaTime);
             this.updateLessons();
 
-
             for (Sim sim : this.sims) {
                 sim.update(this.sims, this.map.getCollisionLayer());
                 sim.pathFind(this.map.getPathFinder().getAllNodes());
@@ -56,19 +55,20 @@ public class Simulation {
 
     public void draw(FXGraphics2D graphics) {
         this.map.restoreCanvas();
+        this.map.drawCollision();
 
         for (Sim sim : this.sims) {
             sim.draw();
         }
 
         this.map.drawWalls();
-        this.map.drawCollision();
-        this.map.drawStringPathFinder(9);
-        this.map.drawFireDrill();
-        //TODO: draw the timer
 
-//        graphics.setColor(Color.BLUE);
-//        graphics.drawString(this.time.toString(), 50, 50);
+        if (this.map.simToFollow != null) {
+            this.map.drawStringPathFinder(this.map.simToFollow.getTargetArea());
+        }
+
+        this.map.followPerson();
+        this.map.drawFireDrill();
     }
 
     /**
