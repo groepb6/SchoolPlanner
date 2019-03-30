@@ -13,7 +13,7 @@ public class SimTime {
     private int startingHour;
     private int hours;
     private double minutes;
-    private double speed;
+    private int speed;
     private boolean updated;
     private boolean updatesEnabled;
     private SimulationBar simulationBar;
@@ -54,7 +54,7 @@ public class SimTime {
     public void reset() { //TODO: test proper reset procedures
         this.hours = this.startingHour;
         this.minutes = 0.0;
-        this.speed = 1;
+        this.speed = ApplicationSettings.TIMERDEFAULTSPEED;
         this.updated = true;
     }
 
@@ -63,7 +63,7 @@ public class SimTime {
      * The speed cannot be increased above the maximum as set by the constant MAXSPEED. Any speed change that causes the speed
      * to go over/under the maximum/minimum will be reverted, in order to prevent the speed settings from getting out of sync.
      *
-     * @param speedChange A positive or negative double that will be added to the current speed.
+     * @param speedChange A positive or negative int that will be added to the current speed.
      */
     public void changeSpeed(double speedChange) {
         this.speed += speedChange;
@@ -98,20 +98,8 @@ public class SimTime {
     }
 
     /**
-     * Allows updated to be set to true again and sets updated to true.
+     * Allows the updating of lessons to be stopped/continued.
      */
-    public void enableUpdates() {
-        this.updated = true;
-        this.updatesEnabled = true;
-    }
-
-    /**
-     * Stops updated from being set to true.
-     */
-    public void disableUpdates() {
-        this.updatesEnabled = false;
-    }
-
     public void toggleUpdates() {
         this.updatesEnabled = !this.updatesEnabled;
     }

@@ -3,6 +3,7 @@ package simulation;
 import data.persons.Person;
 import data.readwrite.DataReader;
 import data.schoolrelated.School;
+import gui.settings.ApplicationSettings;
 import javafx.scene.canvas.Canvas;
 import org.jfree.fx.FXGraphics2D;
 import simulation.data.Area;
@@ -24,16 +25,12 @@ public class CreateSims {
     private Sim[] sims;
     private NameList nameList;
 
-    public static final int STUDENTSPERGROUP = 2;
-    public static final String SPAWNAREA = "ParkingLot";
-    public static final int MAXSPAWNATTEMPTS = 10;
-
     public CreateSims(School school, SchoolMap map, FXGraphics2D graphics, Canvas canvas) {
         this.school = school;
         this.map = map;
         //this.nameList = new NameList();
         this.checkSchool();
-        this.school.createStudents(this.STUDENTSPERGROUP);
+        this.school.createStudents(ApplicationSettings.STUDENTSPERGROUP);
         this.createSims(graphics, canvas);
         this.map.setSims(this.sims);
     }
@@ -89,7 +86,7 @@ public class CreateSims {
         //Get spawnArea
         Area spawnArea = null;
         for (Area area : this.map.areas) {
-            if (area.areaName.equals(this.SPAWNAREA)) {
+            if (area.areaName.equals(ApplicationSettings.SIMSPAWNAREA)) {
                 spawnArea = area;
             }
         }
@@ -111,7 +108,7 @@ public class CreateSims {
                     if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) {
                         if (canAdd(spawnPos, tempSims)) {
                             Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas, ""); //TODO: nameList.getName()
-                            sim.setTargetArea(this.map.searchArea(this.SPAWNAREA));
+                            sim.setTargetArea(this.map.searchArea(ApplicationSettings.SIMSPAWNAREA));
                             tempSims.add(sim);
                             person.setSim(sim);
                         }
@@ -122,8 +119,8 @@ public class CreateSims {
 
             //Gives up after too many tries
             amountOfTries++;
-            if (amountOfTries >= this.MAXSPAWNATTEMPTS) {
-                System.out.println("Was unable to spawn all sims after " + this.MAXSPAWNATTEMPTS + " tries!");
+            if (amountOfTries >= ApplicationSettings.MAXSPAWNATTEMPTS) {
+                System.out.println("Was unable to spawn all sims after " + ApplicationSettings.MAXSPAWNATTEMPTS + " tries!");
                 System.out.println("Created " + tempSims.size() + " sims out of " + this.school.getPeople().size());
                 break;
             }
