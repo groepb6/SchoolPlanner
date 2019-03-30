@@ -56,7 +56,7 @@ public class StartSim extends Sizeable {
     }
 
     public void clean() {
-
+        //TODO: make sure this StartSim is deleted and a new one is created every time the simulation is run
     }
 
     public Group getGroup() {

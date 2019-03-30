@@ -37,15 +37,8 @@ public class Group implements Serializable {
         return this.students;
     }
 
-//    public void setStudents(Set<Student> students) {
-//        this.students = students;
-//    } todo: remove unused methods
-
     public Set<Hour> getHours() {
         return hours;
     }
 
-//    public void setHours(Set<Hour> hours) {
-//        this.hours = hours;
-//    }
 }

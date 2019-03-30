@@ -10,13 +10,14 @@ import java.nio.file.Paths;
 
 /**
  * This class contains methods for developers to set up things that aren't synchronised within git
+ * @author Dustin Hendriks
  */
 public class DevSetup {
     /**
      * Can be used as an example.
      * Sets up the save directories (safe to run multiple times).
      */
-    public static void setupSaveDirectories() {
+    public static void setupSaveDirectories() { //TODO: do we need these save files?
         try {
             if (Files.notExists(Paths.get("saves")))
                 Files.createDirectories(Paths.get("saves"));
@@ -34,11 +35,9 @@ public class DevSetup {
                 Files.createDirectories(Paths.get("saves/school"));
 
             if (Files.notExists(Paths.get(ApplicationSettings.schoolPath))) {
-                SampleData sampleData = new SampleData();
-                DataWriter.writeSchool(sampleData.getSchool()); //TODO: write empty school with rooms
+                DataWriter.writeSchool(DataReader.emergencySchool()); //TODO: do we want empty or preset school?
             } else if (!DataReader.readSchool().hasData()) {
-                SampleData sampleData = new SampleData();
-                DataWriter.writeSchool(sampleData.getSchool());
+                DataWriter.writeSchool(DataReader.emergencySchool());
             }
 
         } catch (Exception exception) {

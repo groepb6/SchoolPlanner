@@ -17,7 +17,6 @@ import java.util.List;
 
 /**
  * Creates Sim objects for the simulation.
- * todo: documentation
  */
 public class CreateSims {
     private School school;
@@ -58,6 +57,7 @@ public class CreateSims {
 
     /**
      * Puts sims from a list into the sims array.
+     *
      * @param tempSims The List of Sim objects the simulation should have.
      */
     private void makeSimsArray(List<Sim> tempSims) {

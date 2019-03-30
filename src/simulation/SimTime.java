@@ -51,11 +51,12 @@ public class SimTime {
         this.simulationBar.updateTimeDisplay(this.getDisplay());
     }
 
-    public void reset() { //TODO: test proper reset procedures
+    public void reset() {
         this.hours = this.startingHour;
         this.minutes = 0.0;
         this.speed = ApplicationSettings.TIMERDEFAULTSPEED;
         this.updated = true;
+        this.updatesEnabled = true;
     }
 
     /**

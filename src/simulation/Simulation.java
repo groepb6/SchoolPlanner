@@ -10,10 +10,9 @@ import simulation.data.Area;
 import simulation.sims.Sim;
 
 /**
- * Runs the simulation
  * Updates and draws the simulation.
- * Sends students to their lessons.
- * todo: documentation
+ *
+ * @author Noah Walsmits
  */
 public class Simulation {
     private School school;
@@ -40,6 +39,12 @@ public class Simulation {
 
     }
 
+    /**
+     * Updates the simulation.
+     * Sim pathfinding updates are run multiple times based on speed. This allows for a faster speed, without having the pathfinding malfunction.
+     *
+     * @param deltaTime Given by the AnimationTimer.
+     */
     public void update(double deltaTime) {
         if (this.map.getPathFinder().loaded && !this.paused) {
             this.time.update(deltaTime);
@@ -58,6 +63,11 @@ public class Simulation {
 
     }
 
+    /**
+     * Draws the simulation.
+     *
+     * @param graphics This parameter is currently not used.
+     */
     public void draw(FXGraphics2D graphics) {
         this.map.restoreCanvas();
         this.map.drawCollision();
@@ -139,7 +149,6 @@ public class Simulation {
      * Resets the simulation so it can run from the beginning.
      */
     public void reset() {
-        //TODO: make and test method
         //It is preferable to create a new Simulation
         this.time.reset();
     }

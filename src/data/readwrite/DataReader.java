@@ -17,7 +17,6 @@ import java.io.*;
  * @author Noah Walsmits
  */
 public class DataReader {
-    public static final int ROOMCOUNT = 6; //TODO: move
 
     /**
      * This method reads school.txt and returns a School-object when found.
@@ -132,5 +131,5 @@ public class DataReader {
         DataWriter.writeSchool(school);
         return school;
     }
-    //TODO: **IMPORTANT** check if succesfully loaded School has the classrooms with proper names!
+
 }
