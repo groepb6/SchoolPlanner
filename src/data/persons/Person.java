@@ -1,8 +1,12 @@
 package data.persons;
-
 import simulation.sims.Sim;
 
 import java.io.Serializable;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 abstract public class Person implements Serializable {
     private String name;
@@ -11,7 +15,6 @@ abstract public class Person implements Serializable {
     public Person(String name) {
         this.name = name;
     }
-
     public String getName() {
         return name;
     }
@@ -23,4 +26,5 @@ abstract public class Person implements Serializable {
     public Sim getSim() {
         return this.sim;
     }
+
 }
