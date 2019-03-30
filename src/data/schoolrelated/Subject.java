@@ -2,6 +2,11 @@ package data.schoolrelated;
 
 import java.io.Serializable;
 
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
+
 public class Subject implements Serializable {
 
     private String name;

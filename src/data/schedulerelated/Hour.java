@@ -1,7 +1,11 @@
 package data.schedulerelated;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 public enum Hour implements Serializable {
     FIRST("8:00 - 9:00"),
@@ -13,7 +17,10 @@ public enum Hour implements Serializable {
     SEVENTH("14:00 - 15:00"),
     EIGHTH("15:00 - 16:00"),
     NINTH("16:00 - 17:00"),
-    TENTH("17:00 - 18:00");
+    TENTH("17:00 - 18:00"),
+    NONE("18:00 - 8:00 DONT MAKE IT SHOW UP");
+    //TODO: stop NONE from appearing in combobox
+    //TODO: make value of NONE "18:00 - 8:00" after completing previous todo
 
     public String time;
 

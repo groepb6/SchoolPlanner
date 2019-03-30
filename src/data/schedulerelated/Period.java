@@ -3,6 +3,11 @@ package data.schedulerelated;
 import java.io.Serializable;
 import java.time.LocalTime;
 
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
+
 public class Period implements Serializable {
     private LocalTime startTime;
     private LocalTime endTime;

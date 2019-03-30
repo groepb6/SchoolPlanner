@@ -1,24 +1,26 @@
 package data.sampledata;
 
-import data.persons.Person;
 import data.persons.Teacher;
 import data.rooms.Classroom;
-import data.rooms.Room;
 import data.schoolrelated.Group;
 import data.schoolrelated.School;
 import data.schoolrelated.Subject;
+
+/**
+ * @author Dustin Hendriks
+ */
 
 public class SampleData {
     private School school = new School("School");
 
     public SampleData() {
-        addGroups('A');
+        addGroups();
         addTeachers();
         addSubjects();
         addLocations();
     }
 
-    private void addGroups(Character classChar) {
+    private void addGroups() {
         school.getGroups().add(new Group("Klas-A"));
         school.getGroups().add(new Group("Klas-B"));
         school.getGroups().add(new Group("Klas-C"));
@@ -55,6 +57,7 @@ public class SampleData {
         school.getRooms().add(new Classroom("LA003"));
         school.getRooms().add(new Classroom("LA004"));
         school.getRooms().add(new Classroom("LA005"));
+        school.getRooms().add(new Classroom("LA006"));
     }
 
     public School getSchool() {

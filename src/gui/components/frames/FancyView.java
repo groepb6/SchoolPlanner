@@ -136,21 +136,20 @@ public class FancyView extends Sizeable {
             boolean foundDuplicate = false;
             try {
                 School school = DataReader.readSchool();
-                ArrayList<Schedule> scheduleData = school.getSchedules();
+                Set<Schedule> scheduleData = school.getSchedules();
                 if (searchResults.getSelectionModel().getSelectedItem() != null) {
                     Plan plan;
-                    for (int i = 0; i < scheduleData.size(); i++) {
+                    for (Schedule schedule : scheduleData) {
                         plan = (Plan) searchResults.getSelectionModel().getSelectedItem();
-                        if (plan.isEqualTo(scheduleData.get(i).getPlan())) {
-                            Hour hour = scheduleData.get(i).getTime();
-                            Teacher teacher = scheduleData.get(i).getTeacher();
-                            Room room = scheduleData.get(i).getRoom();
-                            Group group = scheduleData.get(i).getGroup();
+                        if (plan.isEqualTo(schedule.getPlan())) {
+                            Hour hour = schedule.getTime();
+                            Teacher teacher = schedule.getTeacher();
+                            Room room = schedule.getRoom();
+                            Group group = schedule.getGroup();
                             teacher.getHours().remove(hour);
                             room.getHours().remove(hour);
                             group.getHours().remove(hour);
-                            scheduleData.remove(i);
-                            i--;
+                            scheduleData.remove(schedule);
                             foundDuplicate = true;
                         }
                     }
@@ -280,7 +279,7 @@ public class FancyView extends Sizeable {
     private ArrayList<Plan> retrieveScheduleData() {
         List list = new ArrayList<Plan>();
         try {
-            ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
+            Set<Schedule> schedules = DataReader.readSchool().getSchedules();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }
@@ -384,7 +383,6 @@ public class FancyView extends Sizeable {
                 searchGroupBar.getChildren().add(successMessage);
                 this.successMessageSearch.getImageView().setOnMouseExited(eventExit -> {
                     searchGroupBar.getChildren().remove(searchGroupBar.getChildren().size() - 1);
-                    //removeSearchSuccessErrorMessage();
                 });
             });
         }
