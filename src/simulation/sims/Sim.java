@@ -282,8 +282,8 @@ public class Sim {
         this.targetArea = oldTargetArea;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    public void setName(String name) {
+        this.name = name;
     }
 
     private boolean simCollision(Point2D otherPos) {

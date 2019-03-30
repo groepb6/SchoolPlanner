@@ -20,7 +20,7 @@ public class NameList {
         if (scanner != null)
             if (scanner.hasNext())
                 return scanner.nextLine().trim();
-        return null;
+        return "";
     }
 
 }

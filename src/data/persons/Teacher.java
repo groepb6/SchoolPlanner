@@ -1,6 +1,7 @@
 package data.persons;
 
 import data.schedulerelated.Hour;
+import simulation.sims.Sim;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +17,12 @@ public class Teacher extends Person implements Serializable {
     public Teacher(String name) {
         super(name);
         this.hours = new ArrayList<>();
+    }
+
+    @Override
+    public void setSim(Sim sim) {
+        super.setSim(sim);
+        sim.setName(super.getName());
     }
 
     public ArrayList<Hour> getHours() {

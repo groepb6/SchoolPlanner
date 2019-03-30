@@ -27,7 +27,7 @@ public class CreateSims {
     public CreateSims(School school, SchoolMap map, FXGraphics2D graphics, Canvas canvas) {
         this.school = school;
         this.map = map;
-        //this.nameList = new NameList();
+        this.nameList = new NameList();
         this.checkSchool();
         this.school.createStudents(ApplicationSettings.STUDENTSPERGROUP);
         this.createSims(graphics, canvas);
@@ -107,7 +107,7 @@ public class CreateSims {
                     Point2D spawnPos = new Point2D.Double(spawnArea.x + (Math.random() * spawnArea.areaWidth), spawnArea.y + (Math.random() * spawnArea.areaHeight));
                     if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable) {
                         if (canAdd(spawnPos, tempSims)) {
-                            Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas, ""); //TODO: nameList.getName()
+                            Sim sim = new Sim(spawnPos, g2d, simSkins[((int) (Math.random() * simSkins.length - 1))], canvas, map.areas, nameList.getName());
                             sim.setTargetArea(this.map.searchArea(ApplicationSettings.SIMSPAWNAREA));
                             tempSims.add(sim);
                             person.setSim(sim);
