@@ -1,6 +1,8 @@
 package simulation;
 
+import data.objects.Chair;
 import gui.components.frames.StartSim;
+import gui.settings.ApplicationSettings;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -8,6 +10,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 import simulation.data.Area;
@@ -15,10 +18,13 @@ import simulation.data.Layer;
 import simulation.pathfinding.Node;
 import simulation.pathfinding.PathFinder;
 import simulation.sims.Sim;
+
 import javax.imageio.ImageIO;
 import javax.json.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -39,34 +45,37 @@ public class SchoolMap {
     private Scene scene;
     private double mousePosX;
     private double mousePosY;
-    private StartSim startSim; //TODO: remove this attribute
+    private StartSim startSim;
     private ScrollPane scrollPane;
     private PathFinder pathFinder;
-    public boolean followPerson = false;
+    public Sim simToFollow;
+    private boolean followPerson = false;
     private Group group;
     private Stage stage;
     private String map = "schoolmap.json";
     private ArrayList<Layer> layers = new ArrayList<>();
     public ArrayList<Area> areas = new ArrayList<>();
-    private ArrayList<PathFinder> pathFinders = new ArrayList<>();
     private Layer collisionLayer;
+    private Layer studentChairLayer;
     private java.awt.Image image;
     private int amountOfTilesWidth;
     private int amountOfTilesHeight;
     private boolean showDebug = false;
-    boolean activatedPathFinding = true;
+    boolean activatedPathFinding = false;
     private boolean showCollision = false;
-    private Sim[] sims;
+    private boolean fireDrill = false;
+    Sim[] sims;
 
     /**
      * The map class needs a few parameters to initialize.
-     * @param g2d Is needed to draw the map on a canvas.
-     * @param canvas All drawings are located on the canvas.
-     * @param scene Can be used to bind actions to.
-     * @param startSim Unused at the moment.
+     *
+     * @param g2d        Is needed to draw the map on a canvas.
+     * @param canvas     All drawings are located on the canvas.
+     * @param scene      Can be used to bind actions to.
+     * @param startSim   Unused at the moment.
      * @param scrollPane Contains the canvas. Can scroll independently from adjacent nodes.
-     * @param group Contains the scene, can be used for specific key input actions.
-     * @param stage Stage Needed to put the application on fullscreen, when a user presses f, for example.
+     * @param group      Contains the scene, can be used for specific key input actions.
+     * @param stage      Stage Needed to put the application on fullscreen, when a user presses f, for example.
      */
 
     public SchoolMap(FXGraphics2D g2d, Canvas canvas, Scene scene, StartSim startSim, ScrollPane scrollPane, Group group, Stage stage) {
@@ -87,16 +96,13 @@ public class SchoolMap {
         image = getImageOfCanvas();
     }
 
-    public void setSims(Sim[] sims) {
-        this.sims = sims;
-    }
-
     /**
      * Converts the canvas to 1 large picture, saves a lot of draw time and optimizes overall performance.
+     *
      * @return Receive the canvas as a picture
      */
 
-    private Image getImageOfCanvas() {
+    private BufferedImage getImageOfCanvas() {
         return SwingFXUtils.fromFXImage(this.canvas.snapshot(new SnapshotParameters(), new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight())), null);
     }
 
@@ -119,6 +125,7 @@ public class SchoolMap {
 
     /**
      * Receive an object of the PathFinder class. Can be used to guide Sims automatically to their target.
+     *
      * @return Receive a pathfinder object.
      */
 
@@ -128,11 +135,16 @@ public class SchoolMap {
 
     /**
      * Receive the collision layer nodes.
+     *
      * @return Receive all nodes of the collision layer.
      */
 
     Node[][] getCollisionLayer() {
         return collisionLayer.getNodes();
+    }
+
+    Chair[][] getStudentChairLayer() {
+        return studentChairLayer.getChairs();
     }
 
     /**
@@ -152,16 +164,14 @@ public class SchoolMap {
         JsonArray areas = mapFile.getJsonArray("layers").getJsonObject(mapFile.getJsonArray("layers").size() - 1).getJsonArray("objects");
         for (int i = 0; i < areas.size() - 1; i++) {
             this.areas.add(new Area(areas.getJsonObject(i)));
-            this.areas.get(i).areaID = i; //**VERY IMPORTANT DO NOT DELETE IN MERGE**
+            this.areas.get(i).areaID = i;
         }
     }
 
-    /**
-     * Searches for an Area by name. Any Classroom that is associated with a Schedule needs a name that matches the area layer name.
-     * @param searchedAreaName The name of the Area being searched.
-     * @return An Area that matches with the searched name or null if nothing is found.
-     * @author Noah Walsmits
-     */
+    public void setSims(Sim[] sims) {
+        this.sims = sims;
+    }
+
     public Area searchArea(String searchedAreaName) {
         Area foundArea = null;
         for (Area area : this.areas) {
@@ -173,6 +183,44 @@ public class SchoolMap {
             System.out.println("COULD NOT FIND AREA");
         }
         return foundArea;
+    }
+
+    public void fireDrill() {
+        if (pathFinder.loaded) {
+            fireDrill = !fireDrill;
+            int targetArea = -1;
+            if (fireDrill) {
+                for (int i = 0; i < areas.size(); i++)
+                    if (areas.get(i).areaName.equals("ParkingLot"))
+                        targetArea = i;
+                setTargetAreaSims(targetArea);
+            } else
+                setOldTargetAreaSims();
+
+        }
+    }
+
+    void drawFireDrill() {
+        if (fireDrill) {
+            int alpha = 80; // 50% transparent -- Alpha was 127
+            Color myColour = new Color(255, 0, 0, alpha);
+            Shape rectangle = new Rectangle2D.Double(0, 0, canvas.getWidth(), canvas.getHeight());
+            g2d.setColor(myColour);
+            g2d.fill(rectangle);
+            g2d.draw(rectangle);
+        }
+    }
+
+    private void setTargetAreaSims(int areaNumber) {
+        for (Sim sim : sims) {
+            sim.setTargetArea(areaNumber);
+        }
+    }
+
+    private void setOldTargetAreaSims() {
+        for (Sim sim : sims)
+            sim.setOldTargetArea();
+
     }
 
     /**
@@ -190,7 +238,9 @@ public class SchoolMap {
         for (int i = 0; i < data.size(); i++) {
             try {
                 sprites.add(ImageIO.read(getClass().getResourceAsStream("/json/tilesets/" + data.getJsonObject(i).getString("link"))));
-            } catch (Exception error) { error.printStackTrace(); }
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
         }
 
         sprites.forEach(sprite -> {
@@ -206,9 +256,13 @@ public class SchoolMap {
 
     private void saveLayers() {
         for (int i = 0; i < mapFile.getJsonArray("layers").size() - 1; i++) {
-            if (!mapFile.getJsonArray("layers").getJsonObject(i).getString("name").equals("Collision"))
-                layers.add(new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages));
-            else collisionLayer = new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages);
+            if (!mapFile.getJsonArray("layers").getJsonObject(i).getString("name").equals("Collision")) {
+                layers.add(new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages, canvas));
+
+                if (mapFile.getJsonArray("layers").getJsonObject(i).getString("name").equals("SchoolInteriorStudentChairs")) {
+                    studentChairLayer = layers.get(layers.size() - 1);
+                }
+            } else collisionLayer = new Layer(mapFile.getJsonArray("layers").getJsonObject(i), g2d, subImages, canvas);
         }
     }
 
@@ -217,8 +271,12 @@ public class SchoolMap {
      */
 
     void restoreCanvas() {
-        g2d.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
-        g2d.drawImage(image, null, null);
+        try {
+            g2d.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
+            g2d.drawImage(image, null, null);
+        } catch (OutOfMemoryError e)  {
+            System.out.println("Application is running low on memory!");
+        }
     }
 
     /**
@@ -255,6 +313,14 @@ public class SchoolMap {
         }
     }
 
+    public void sitOnChair() {
+        for (Sim sim : sims) {
+            if (sim.isInTargetArea()) {
+                System.out.println("I REACHED MY TARGET " + sim.name);
+            }
+        }
+    }
+
     /**
      * Draw the collision layer.
      */
@@ -266,6 +332,7 @@ public class SchoolMap {
 
     /**
      * Receive the canvas.
+     *
      * @return The canvas is being returned which contains all written data (shapes, objects, Sims, etc).
      */
 
@@ -275,15 +342,47 @@ public class SchoolMap {
 
     /**
      * Can be used to translate the camera position to a given x, or y. This way a Sim could be tracked and followed / stalked by the camera.
-     * @param x Defines the x value to translate to (this is just the X location of a Sim in above described case).
-     * @param y Defines the y value to translate to (this is just the Y location of a Sim in above described case).
+     * <p>
+     * x Defines the x value to translate to (this is just the X location of a Sim in above described case).
+     * y Defines the y value to translate to (this is just the Y location of a Sim in above described case).
      */
 
-    public void followPerson(double x, double y) {
-        if (followPerson) {
-            scrollPane.setHvalue((((x) - ((scrollPane.getWidth()) / 2)) / ((canvas.getWidth()) - (scrollPane.getWidth()))));
-            scrollPane.setVvalue((((y) - ((scrollPane.getHeight()) / 2)) / ((canvas.getHeight()) - (scrollPane.getHeight()))));
+    void followPerson() {
+        if (simToFollow != null) {
+            double x = simToFollow.getCurrentPos().getX();
+            double y = simToFollow.getCurrentPos().getY();
+            if (followPerson) {
+                scrollPane.setHvalue((((x) - ((scrollPane.getWidth()) / 2)) / ((canvas.getWidth()) - (scrollPane.getWidth()))));
+                scrollPane.setVvalue((((y) - ((scrollPane.getHeight()) / 2)) / ((canvas.getHeight()) - (scrollPane.getHeight()))));
+                g2d.setColor(Color.WHITE);
+                drawFollowText(simToFollow.name, (int) x, (int) y);
+            }
         }
+    }
+
+    private void drawFollowText(String text, int x, int y) {
+        int rectWidth = 32;
+        int rectHeight = 64;
+        y -= 50;
+        g2d.setFont(ApplicationSettings.font);
+        g2d.drawString(text + " -> " + simToFollow.areas.get(simToFollow.getTargetArea()).areaName, x, y - 5);
+        g2d.setColor(Color.WHITE);
+        g2d.drawRect(x, y, rectWidth, rectHeight);
+    }
+
+    private Sim getNearestSim(Point2D comparePos) {
+        double smallestDistance = Integer.MAX_VALUE;
+        if (sims.length > 0) {
+            Sim smallestDistanceSim = sims[0];
+            for (Sim sim : sims) {
+                if (sim.getCurrentPos().distance(comparePos) < smallestDistance) {
+                    smallestDistance = sim.getCurrentPos().distance(comparePos);
+                    smallestDistanceSim = sim;
+                }
+            }
+            return smallestDistanceSim;
+        }
+        return null;
     }
 
     /**
@@ -294,6 +393,19 @@ public class SchoolMap {
         scrollPane.setOnMouseMoved(event -> {
             mousePosX = scrollPane.getHvalue() * (canvas.getWidth() - scrollPane.getWidth()) + event.getX();
             mousePosY = scrollPane.getVvalue() * (canvas.getHeight() - scrollPane.getHeight()) + event.getY();
+        });
+
+        scene.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.MIDDLE) {
+                Sim sim = getNearestSim(new Point2D.Double(mousePosX, mousePosY));
+                if (sim != null) {
+                    simToFollow = sim;
+                    followPerson = true;
+                }
+            }
+            if (event.getButton() == MouseButton.SECONDARY) {
+                followPerson = false;
+            }
         });
 
         scrollPane.setOnKeyTyped(event -> {

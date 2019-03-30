@@ -112,6 +112,10 @@ public class SimTime {
         this.updatesEnabled = false;
     }
 
+    public void toggleUpdates() {
+        this.updatesEnabled = !this.updatesEnabled;
+    }
+
     /**
      * Finds a value from Hour that fits the current time in the simulation.
      *
@@ -179,4 +183,5 @@ public class SimTime {
                 ", updated=" + updated +
                 '}';
     }
+
 }

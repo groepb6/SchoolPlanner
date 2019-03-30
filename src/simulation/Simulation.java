@@ -64,6 +64,7 @@ public class Simulation {
         this.map.drawWalls();
         this.map.drawCollision();
         this.map.drawStringPathFinder(9);
+        this.map.drawFireDrill();
         //TODO: draw the timer
 
 //        graphics.setColor(Color.BLUE);
@@ -171,5 +172,9 @@ public class Simulation {
         animationTimer.start();
     }
 
+    public void fireDrill() {
+        this.map.fireDrill();
+        this.time.toggleUpdates();
+    }
 
 }

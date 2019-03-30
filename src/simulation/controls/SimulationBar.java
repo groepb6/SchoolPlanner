@@ -85,7 +85,7 @@ public class SimulationBar {
 
     private void setActions() {
         fire.setOnMouseClicked(fire -> {
-            //startSim.getMap().fireDrill();
+            this.startSim.getSimulation().fireDrill();
         });
         startstop.setOnMouseClicked(startstop -> {
             this.startSim.getSimulation().pausePlay();
