@@ -6,7 +6,11 @@ package data.objects;
  */
 
 public class Chair {
-    private boolean isAvailable;
+    public boolean isAvailable;
+    public enum Direction {
+        LEFT, RIGHT, UP, DOWN
+    }
+    public Direction direction;
     public int x;
     public int y;
     public boolean isChair = false;
@@ -15,5 +19,9 @@ public class Chair {
     }
     public void setAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
+    }
+
+    public void setDir(Direction dir) {
+        this.direction = dir;
     }
 }
