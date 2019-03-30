@@ -1,12 +1,17 @@
 package data.persons;
 
 import data.schedulerelated.Hour;
-import data.schoolrelated.Subject;
+import simulation.sims.Sim;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
+
 public class Teacher extends Person implements Serializable {
-    private Subject subject;
     private ArrayList<Hour> hours;
 
     public Teacher(String name) {
@@ -14,12 +19,10 @@ public class Teacher extends Person implements Serializable {
         this.hours = new ArrayList<>();
     }
 
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    @Override
+    public void setSim(Sim sim) {
+        super.setSim(sim);
+        sim.setName(super.getName());
     }
 
     public ArrayList<Hour> getHours() {
@@ -29,4 +32,5 @@ public class Teacher extends Person implements Serializable {
     public void setHours(ArrayList<Hour> hours) {
         this.hours = hours;
     }
+
 }

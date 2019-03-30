@@ -2,6 +2,11 @@ package data.rooms;
 
 import data.objects.Toilet;
 
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
+
 public class Bathroom extends Room {
 
     public Bathroom(String name, int capacity) {

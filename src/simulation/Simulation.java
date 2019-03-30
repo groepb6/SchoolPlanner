@@ -10,10 +10,9 @@ import simulation.data.Area;
 import simulation.sims.Sim;
 
 /**
- * Runs the simulation
  * Updates and draws the simulation.
- * Sends students to their lessons.
- * todo: documentation
+ *
+ * @author Noah Walsmits
  */
 public class Simulation {
     private School school;
@@ -40,19 +39,35 @@ public class Simulation {
 
     }
 
+    /**
+     * Updates the simulation.
+     * Sim pathfinding updates are run multiple times based on speed. This allows for a faster speed, without having the pathfinding malfunction.
+     *
+     * @param deltaTime Given by the AnimationTimer.
+     */
     public void update(double deltaTime) {
         if (this.map.getPathFinder().loaded && !this.paused) {
             this.time.update(deltaTime);
             this.updateLessons();
 
             for (Sim sim : this.sims) {
-                sim.update(this.sims, this.map.getCollisionLayer());
-                sim.pathFind(this.map.getPathFinder().getAllNodes());
+                for (int i = 0; i < this.time.getSpeed(); i++) {
+                    if (!sim.equals(this.map.simToFollow) || !this.map.hijackedSim) {
+                        sim.pathFind(this.map.getPathFinder().getAllNodes());
+                    }
+                    sim.update(this.sims, this.map.getCollisionLayer());
+                }
+                this.map.sitOnChair(sim);
             }
         }
 
     }
 
+    /**
+     * Draws the simulation.
+     *
+     * @param graphics This parameter is currently not used.
+     */
     public void draw(FXGraphics2D graphics) {
         this.map.restoreCanvas();
         this.map.drawCollision();
@@ -76,7 +91,7 @@ public class Simulation {
      * Only runs when SimTime has been updated.
      */
     private void updateLessons() {
-        if (this.time.isUpdated()) {
+        if (this.time.isUpdated()) { //Will not be run during fire drill
             for (Schedule schedule : this.school.getSchedules()) {
                 if (schedule.getTime() == this.time.getTimeSlot()) {
                     this.startSchedule(schedule);
@@ -101,7 +116,6 @@ public class Simulation {
         Area area = this.map.searchArea(schedule.getRoom().getName());
         for (Student student : schedule.getGroup().getStudents()) {
             student.getSim().setTargetArea(area);
-            //System.out.println(area.areaID);
         }
         schedule.getTeacher().getSim().setTargetArea(area);
     }
@@ -120,35 +134,30 @@ public class Simulation {
      */
     public void changeSpeed(double speedChange) {
         this.time.changeSpeed(speedChange);
-        this.updateSimSpeed();
     }
 
     public void minSpeed() {
         this.time.minSpeed();
-        this.updateSimSpeed();
     }
 
     public void maxSpeed() {
         this.time.maxSpeed();
-        this.updateSimSpeed();
-    }
-
-    private void updateSimSpeed() {
-        for (Sim sim : this.sims) {
-            sim.setSimSpeed(this.time.getSpeed() * ApplicationSettings.SIMDEFAULTSPEED);
-        }
     }
 
     /**
      * Resets the simulation so it can run from the beginning.
      */
     public void reset() {
-        //TODO: make and test method
         //It is preferable to create a new Simulation
+        this.time.reset();
     }
 
     public SimTime getTime() {
         return time;
+    }
+
+    public SchoolMap getMap() {
+        return map;
     }
 
     /**

@@ -1,6 +1,7 @@
 package gui.components.menu;
 
 import gui.assistclasses.Image;
+import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -25,7 +26,7 @@ public class UpperBar {
         pushPin.getImageView().setFitWidth(size);
         upperBar.setLeft(pushPin2.getImageView());
         upperBar.setRight(pushPin.getImageView());
-        upperBar.setBackground(new Background(new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        upperBar.setBackground(new Background(new BackgroundFill(ApplicationSettings.themeColor, CornerRadii.EMPTY, Insets.EMPTY)));
 
     }
 

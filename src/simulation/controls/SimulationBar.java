@@ -8,12 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
 public class SimulationBar {
-    private Stage controller = new Stage();
     private HBox hBox = new HBox();
     private ArrayList<ImageView> imageViews = new ArrayList<>();
     private ImageView fastBackward;
@@ -22,10 +19,12 @@ public class SimulationBar {
     private ImageView forward;
     private ImageView fastForward;
     private ImageView fire;
-    private Label timerMultiplier=new Label("Speed x1.0");
+    private ImageView control;
+    private ImageView pathfind;
+    private ImageView collision;
+    private Label timerMultiplier=new Label("x1.0");
     private Label timeDisplay;
     private StartSim startSim;
-    //private boolean paused = false;
 
     public SimulationBar(StartSim startSim) {
         String folder ="simbarimages";
@@ -48,21 +47,38 @@ public class SimulationBar {
             name = "fastfoward";
             fastForward = getImage(folder,name,extension);
             imageViews.add(fastForward);
+            name = "control";
+            control = getImage(folder, name, extension);
+            imageViews.add(control);
+            name = "pathfind";
+            pathfind = getImage(folder, name, extension);
+            imageViews.add(pathfind);
+            name = "collision";
+            collision = getImage(folder, name, extension);
+            imageViews.add(collision);
             name = "fire";
             fire = getImage(folder, name, extension);
             imageViews.add(fire);
+
             for (ImageView imageView : imageViews) {
                 imageView.setPickOnBounds(true);
                 imageView.setFitWidth(ApplicationSettings.simulatorImageWidthAndHeight);
                 imageView.setFitHeight(ApplicationSettings.simulatorImageWidthAndHeight);
                 hBox.getChildren().add(imageView);
             }
+
+            fixLayoutManually();
+
             addTimerMultiplier();
-            this.addTimeDisplay();
+            addTimeDisplay();
             hBox.setBackground(new Background(new BackgroundFill(ApplicationSettings.themeColor, CornerRadii.EMPTY, Insets.EMPTY)));
             hBox.setSpacing(50);
             setActions();
         } catch (Exception e) {e.printStackTrace();}
+    }
+
+    private void fixLayoutManually() {
+        control.setFitWidth(45);
     }
 
     private void addTimerMultiplier() {
@@ -92,11 +108,11 @@ public class SimulationBar {
             updateBox();
         });
         forward.setOnMouseClicked(forward-> {
-            this.startSim.getSimulation().changeSpeed(0.5);
+            this.startSim.getSimulation().changeSpeed(ApplicationSettings.TIMERTIMECHANGE);
             updateBox();
         });
         backward.setOnMouseClicked(backward -> {
-            this.startSim.getSimulation().changeSpeed(-0.5);
+            this.startSim.getSimulation().changeSpeed(-ApplicationSettings.TIMERTIMECHANGE);
             updateBox();
         });
         fastForward.setOnMouseClicked(fastForward -> {
@@ -107,10 +123,19 @@ public class SimulationBar {
             this.startSim.getSimulation().minSpeed();
             updateBox();
         });
+        control.setOnMouseClicked(control -> {
+            startSim.getMap().hijackedSim=!startSim.getMap().hijackedSim;
+        });
+        pathfind.setOnMouseClicked(pathfind -> {
+            startSim.getMap().showDebug=!startSim.getMap().showDebug;
+        });
+        collision.setOnMouseClicked(collision -> {
+            startSim.getMap().showCollision=!startSim.getMap().showCollision;
+        });
     }
 
     private void updateBox() {
-        timerMultiplier.setText("Speed x"+Double.toString(startSim.getSimulation().getTime().getSpeed()));
+        timerMultiplier.setText("x"+Double.toString(startSim.getSimulation().getTime().getSpeed()));
     }
 
     public void updateTimeDisplay(String display) {

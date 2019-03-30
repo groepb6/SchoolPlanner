@@ -1,5 +1,6 @@
 //package simulation;
 //
+//import gui.settings.ApplicationSettings;
 //import javafx.animation.AnimationTimer;
 //import javafx.scene.Scene;
 //import javafx.scene.canvas.Canvas;
@@ -13,8 +14,7 @@
 //
 ///**
 // * @author Dustin Hendriks
-// * The class SimUpdate handles drawing and controlling Sims, surroundings, objects and layers using the Map class. Everything has to be drawed on exactly the correct moment, this is what the SimUpdate class is for.
-// * @deprecated
+// * The class SimUpdate handles drawing and controlling Sims, surroundings, objects and layers using the SchoolMap class. Everything has to be drawed on exactly the correct moment, this is what the SimUpdate class is for.
 // */
 //
 //public class SimUpdate {
@@ -27,6 +27,8 @@
 //    private ArrayList<Sim> sims = new ArrayList<>();
 //    private AnimationTimer animationTimer;
 //    private ArrayList<SimSkin> simSkins = new ArrayList<>();
+//    //private NameList nameList = new NameList();
+//    private double timerMultiplier=1;
 //
 //    /**
 //     * The constructor initializes an animation timer.
@@ -34,7 +36,7 @@
 //     * @param g2d    Needed to draw Sims / objects / layers on canvas.
 //     * @param canvas Needed to draw on.
 //     * @param scene  Scene can be used to connect actions to. For example a mouse press or button click.
-//     * @param map    Map is used to draw layers, objects and calculate the pathfinding using the Pathfinding class.
+//     * @param map    SchoolMap is used to draw layers, objects and calculate the pathfinding using the Pathfinding class.
 //     */
 //
 //    public SimUpdate(FXGraphics2D g2d, Canvas canvas, Scene scene, SchoolMap map) {
@@ -56,6 +58,7 @@
 //            }
 //        };
 //        animationTimer.start();
+//        updatePositionSims();
 //    }
 //
 //
@@ -71,12 +74,12 @@
 //            if (area.areaName.equals("ParkingLot"))
 //                spawnArea = area;
 //
-//        int amountOfSimsToBeAdded = 50;
+//        int amountOfSimsToBeAdded = 100;
 //        int amountOfTries = 0;
 //        LinkedList<Point2D> spawnPositions = new LinkedList<>();
 //        while (sims.size() < amountOfSimsToBeAdded) {
 //            amountOfTries++;
-//            if (amountOfTries >= 10 * amountOfSimsToBeAdded) {
+//            if (amountOfTries >= 15 * amountOfSimsToBeAdded) {
 //                System.out.println("You are trying to spawn too many sims in a too small area");
 //                break;
 //            }
@@ -84,7 +87,7 @@
 //            if (map.getCollisionLayer()[(int) Math.round(spawnPos.getX() / 32)][(int) Math.round(spawnPos.getY() / 32)].walkable)
 //                if (canAdd(spawnPos)) {
 //                    spawnPositions.add(spawnPos);
-//                    sims.add(new Sim(spawnPos, g2d, simSkins.get((int) (Math.random() * simSkins.size() - 1)), canvas, map.areas));
+//                    sims.add(new Sim(spawnPos, g2d, simSkins.get((int) (Math.random() * simSkins.size() - 1)), canvas, map.areas, "")); //nameList.getName()
 //                }
 //        }
 //        map.sims = sims;
@@ -125,7 +128,17 @@
 //     */
 //
 //    public void stopTimer() {
+//        timerMultiplier=0.;
 //        animationTimer.stop();
+//    }
+//
+//    public void startTimer() {
+//        timerMultiplier=1.;
+//        animationTimer.start();
+//    }
+//
+//    public SchoolMap getMap() {
+//        return map;
 //    }
 //
 //    /**
@@ -135,21 +148,50 @@
 //     */
 //
 //    private void update(double deltatime) {
+//       deltatime*=timerMultiplier;
+//
 //        double startDelay = .075;
 //        if (map.getPathFinder().loaded) {
 //            delay += deltatime;
 //            counter = (int) (Math.round(delay * 10.) / 10.);
 //            if (delay >= startDelay) {
-//                delay = 0;
-//                map.restoreCanvas();
-//                updatePositionSims();
-//                drawSims();
-//                map.drawWalls();
-//                map.drawCollision();
-//                map.drawStringPathFinder(0);
-//                map.activatePathFindingOnSims();
+//                    delay = 0;
+//                    map.restoreCanvas();
+//                    map.drawCollision();
+//                    drawSims();
+//                    map.drawWalls();
+//                    if (map.simToFollow != null)
+//                        map.drawStringPathFinder(map.simToFollow.getTargetArea());
+//                    map.followPerson();
+//                    map.activatePathFindingOnSims(timerMultiplier);
+//                    map.drawFireDrill();
+//                    for (Sim sim : sims) {
+//                        map.sitOnChair(sim);
+//                    }
 //            }
 //        }
+//    }
+//
+//    public double getTimerMultiplier() {
+//        return this.timerMultiplier;
+//    }
+//
+//    public void increaseSpeed() {
+//        if (timerMultiplier*2<=ApplicationSettings.maxSimSpeed)
+//        timerMultiplier*=2.;
+//    }
+//
+//    public void decreaseSpeed() {
+//        if (timerMultiplier/2>=(1./ApplicationSettings.maxSimSpeed))
+//        timerMultiplier/=2.;
+//    }
+//
+//    public void maxSpeed() {
+//        timerMultiplier=ApplicationSettings.maxSimSpeed;
+//    }
+//
+//    public void minSpeed() {
+//        timerMultiplier=(1./ApplicationSettings.maxSimSpeed);
 //    }
 //
 //    /**
@@ -157,26 +199,33 @@
 //     */
 //
 //    private void drawSims() {
-//        sims.sort(new Comparator<Sim>() {
-//            @Override
-//            public int compare(Sim sim1, Sim sim2) {
-//                return (int) sim1.getCurrentPos().getY() < sim2.getCurrentPos().getY() ? -1 : sim1.getCurrentPos().getY() == sim2.getCurrentPos().getY() ? 0 : 1;
+//        try {
+//            sims.sort(new Comparator<Sim>() {
+//                @Override
+//                public int compare(Sim sim1, Sim sim2) {
+//                    return (int) sim1.getCurrentPos().getY() < sim2.getCurrentPos().getY() ? -1 : sim1.getCurrentPos().getY() == sim2.getCurrentPos().getY() ? 0 : 1;
+//                }
+//            });
+//            for (Sim sim : sims) {
+//                for (int i  = 0; i < timerMultiplier; i++) {
+//                    sim.update(sims, map.getCollisionLayer());
+//                }
+//                sim.draw();
 //            }
-//        });
-//        for (Sim sim : sims) {
-//            //sim.update(sims, map.getCollisionLayer());
-//            sim.draw();
+//        } catch (IllegalArgumentException e) {
+//            System.out.println("Comparison violated its general contract");
 //        }
 //    }
 //
 //    /**
-//     * When the mouse is moved every Sim is moved tto the mouse position, if enabled.
+//     * When the mouse is moved every Sim is moved to the mouse position, if enabled.
 //     */
 //
 //    private void updatePositionSims() {
 //        canvas.setOnMouseMoved(e -> {
-//            for (Sim sim : sims)
-//                if (sim.getSpeed() != 0 && !map.activatedPathFinding)
+//            Sim sim = map.simToFollow;
+//            if (sim!=null)
+//                if (sim.getSpeed() != 0 && map.hijackedSim && map.simToFollow!=null)
 //                    sim.setTargetPos(new Point2D.Double(e.getX(), e.getY()));
 //        });
 //

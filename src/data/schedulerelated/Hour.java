@@ -1,7 +1,11 @@
 package data.schedulerelated;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 public enum Hour implements Serializable {
     FIRST("8:00 - 9:00"),

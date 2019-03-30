@@ -1,5 +1,6 @@
 package simulation.pathfinding;
 
+import gui.settings.ApplicationSettings;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
@@ -21,9 +22,14 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ * @author Dustin Hendriks
+ * The PathFinder class generates distance maps that are used to guide Sims to specific locations.
+ */
+
 public class PathFinder {
-    private LinkedList<Node> openList = new LinkedList<>(); // Moet nog gedaan worden
-    private LinkedList<Node> closedList = new LinkedList<>(); // Is hier al geweest
+    private LinkedList<Node> openList = new LinkedList<>(); // The openlist defines nodes that should be checked.
+    private LinkedList<Node> closedList = new LinkedList<>();  // The closedlist defines nodes that are already checked.
     private int amountOfTilesWidth;
     private int amountOfTilesHeight;
     private int tileWidth;
@@ -56,6 +62,10 @@ public class PathFinder {
         initialize();
     }
 
+    /**
+     * PATHFINDER LOCATION IS BEING INITIALIZED HERE AT TARGET POINT.
+     */
+
     private void initialize() {
         Task<Void> task = new Task<Void>() {
             @Override
@@ -69,7 +79,7 @@ public class PathFinder {
                         }
                     });
                     Area area = areas.get(i);
-                    Point2D targetPoint = new Point2D.Double((int) (area.x / tileWidth), (int) (area.y / tileHeight));
+                    Point2D targetPoint = new Point2D.Double((int) ((area.x+(area.areaWidth*.5)) / tileWidth), (int) (((area.y+((area.areaHeight*.5)))) / tileHeight));
                     Node newNode = new Node((int) targetPoint.getX(), (int) targetPoint.getY(), -1);
                     newNode.addScore(i);
                     openList.add(newNode);
@@ -114,7 +124,6 @@ public class PathFinder {
     private void createProgressBar() {
         popUp = new HBox();
         this.scene = new Scene(popUp);
-        //popUp.getChildren().add(progressBar);
         popUp.getChildren().add(progressIndicator);
         stage.setScene(scene);
         progressBar.setProgress(0);
@@ -123,8 +132,6 @@ public class PathFinder {
         scene.setFill(Color.TRANSPARENT);
         this.popUp.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
         initProgress();
-        //stage.show();
-
     }
 
     private void clearLists() {
@@ -145,9 +152,8 @@ public class PathFinder {
         int index = 0;
         for (int y = 0; y < amountOfTilesHeight; y++)
             for (int x = 0; x < amountOfTilesWidth; x++) {
-                //System.out.println(allNodes[x][y].scores.size());
-                if (allNodes[x][y].scores[iWantToDrawAreaNumber] != 0)
-                    g2d.drawString(Integer.toString(allNodes[x][y].scores[iWantToDrawAreaNumber]), x * 32, y * 32);
+                if (allNodes[x][y].scores[iWantToDrawAreaNumber] != 0 && allNodes[x][y].scores[iWantToDrawAreaNumber] != -1)
+                    g2d.drawString(Integer.toString(allNodes[x][y].scores[iWantToDrawAreaNumber]), x * 32, y * 32+ ApplicationSettings.font.getSize());
                 index++;
             }
     }

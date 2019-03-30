@@ -16,7 +16,7 @@ import java.util.Set;
 
 /**
  * @author Dustin Hendriks
- * @since 27-03-2019
+ * @since 09-02-2019
  * <p>
  * The tableView class generates multiple columns in which data can be displayed. Data such as time, group, location, teacher and subject can be shown to generate a basic schedule.
  */
