@@ -60,9 +60,9 @@ public class SchoolMap {
     private java.awt.Image image;
     private int amountOfTilesWidth;
     private int amountOfTilesHeight;
-    private boolean showDebug = false;
-    boolean activatedPathFinding = false;
-    private boolean showCollision = false;
+    public boolean showDebug = false;
+    public boolean hijackedSim = false;
+    public boolean showCollision = false;
     private boolean fireDrill = false;
     Sim[] sims;
 
@@ -172,6 +172,12 @@ public class SchoolMap {
         this.sims = sims;
     }
 
+    /**
+     * Searches for an Area by name.
+     *
+     * @param searchedAreaName The name of the Area being searched.
+     * @return An Area that exactly matches the searched name or null.
+     */
     public Area searchArea(String searchedAreaName) {
         Area foundArea = null;
         for (Area area : this.areas) {
@@ -201,7 +207,7 @@ public class SchoolMap {
     }
 
     void drawFireDrill() {
-        if (fireDrill) {
+        if (fireDrill && System.currentTimeMillis()%500<250) {
             int alpha = 80; // 50% transparent -- Alpha was 127
             Color myColour = new Color(255, 0, 0, alpha);
             Shape rectangle = new Rectangle2D.Double(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -274,7 +280,7 @@ public class SchoolMap {
         try {
             g2d.clearRect(0, 0, (int) canvas.getWidth(), (int) canvas.getHeight());
             g2d.drawImage(image, null, null);
-        } catch (OutOfMemoryError e)  {
+        } catch (OutOfMemoryError e) {
             System.out.println("Application is running low on memory!");
         }
     }
@@ -313,12 +319,33 @@ public class SchoolMap {
         }
     }
 
-    public void sitOnChair() {
-        for (Sim sim : sims) {
+    void sitOnChair(Sim sim) {
+        if (!sim.gotoChair) {
             if (sim.isInTargetArea()) {
-                System.out.println("I REACHED MY TARGET " + sim.name);
+                Chair simChair = getChair(sim);
+                if (simChair != null) {
+                    sim.gotoChair(new Point2D.Double(simChair.x, simChair.y), simChair.direction, simChair);
+                }
             }
         }
+    }
+
+    private Chair getChair(Sim sim) {
+        Area targetArea = areas.get(sim.getTargetArea());
+        int areaX = targetArea.x / 32;
+        int areaY = targetArea.y / 32;
+        int width = targetArea.areaWidth / 32;
+        int height = targetArea.areaHeight / 32;
+        Chair[][] chairs = studentChairLayer.getChairs();
+        for (int y = areaY; y < (areaY + height); y++) {
+            for (int x = areaX; x < (areaX + width); x++) {
+                    if (chairs[x][y].isChair && chairs[x][y].isAvailable) {
+                        chairs[x][y].isAvailable = false;
+                        return chairs[x][y];
+                    }
+                }
+        }
+        return null;
     }
 
     /**
@@ -365,9 +392,12 @@ public class SchoolMap {
         int rectHeight = 64;
         y -= 50;
         g2d.setFont(ApplicationSettings.font);
+        if (!hijackedSim)
         g2d.drawString(text + " -> " + simToFollow.areas.get(simToFollow.getTargetArea()).areaName, x, y - 5);
+        else
+            g2d.drawString(text+" (mouse)", x, y-5);
         g2d.setColor(Color.WHITE);
-        g2d.drawRect(x, y, rectWidth, rectHeight);
+        g2d.drawRect(x, y + 16, rectWidth, rectHeight);
     }
 
     private Sim getNearestSim(Point2D comparePos) {
@@ -405,6 +435,7 @@ public class SchoolMap {
             }
             if (event.getButton() == MouseButton.SECONDARY) {
                 followPerson = false;
+                hijackedSim=false;
             }
         });
 
@@ -423,7 +454,7 @@ public class SchoolMap {
             }
 
             if (event.getCharacter().equals("l")) showDebug = !showDebug;
-            if (event.getCharacter().equals("k")) activatedPathFinding = !activatedPathFinding;
+            if (event.getCharacter().equals("k")) hijackedSim = !hijackedSim;
             if (event.getCharacter().equals("o")) showCollision = !showCollision;
 
             if (event.getCharacter().equals("-") || event.getCharacter().equals("_")) {
