@@ -3,12 +3,16 @@ package data.schoolrelated;
 import data.persons.Person;
 import data.persons.Student;
 import data.persons.Teacher;
-import data.rooms.Classroom;
 import data.rooms.Room;
 import data.schedulerelated.Schedule;
 
+import java.io.Serializable;
 import java.util.*;
-import java.io.*;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 public class School implements Serializable {
     private String name;
@@ -29,41 +33,41 @@ public class School implements Serializable {
         this.people = new HashSet<>();
     }
 
-    /**
-     * Finds all of the schedules that belong to a certain Group, and puts those in a HashMap.
-     * @return A Map that has every Group of the School as key, and a List of Schedule objects as value.
-     */
-    public Map<Group, Set<Schedule>> findGroupSchedules() {
-        Map<Group, Set<Schedule>> groupSchedules = new HashMap<>();
-        for (Group group : this.groups) {
-            Set<Schedule> foundSchedules = new HashSet<>();
-            for (Schedule schedule : this.schedules) {
-                if (schedule.getGroup().equals(group)) {
-                    foundSchedules.add(schedule);
-                }
-            }
-            groupSchedules.put(group, foundSchedules);
-        }
-        return groupSchedules;
-    }
-
-    /**
-     * Finds all of the schedules that belong to a certain Teacher, and puts those in a HashMap.
-     * @return A Map that has every Teacher of the School as key, and a List of Schedule objects as value.
-     */
-    public Map<Teacher, Set<Schedule>> findTeacherSchedules() {
-        Map<Teacher, Set<Schedule>> teacherSchedules = new HashMap<>();
-        for (Teacher teacher : this.teachers) {
-            Set<Schedule> foundSchedules = new HashSet<>();
-            for (Schedule schedule : this.schedules) {
-                if (schedule.getTeacher().equals(teacher)) {
-                    foundSchedules.add(schedule);
-                }
-            }
-            teacherSchedules.put(teacher, foundSchedules);
-        }
-        return teacherSchedules;
-    }
+//    /**
+//     * Finds all of the schedules that belong to a certain Group, and puts those in a HashMap.
+//     * @return A Map that has every Group of the School as key, and a List of Schedule objects as value.
+//     */
+//    public Map<Group, Set<Schedule>> findGroupSchedules() {
+//        Map<Group, Set<Schedule>> groupSchedules = new HashMap<>();
+//        for (Group group : this.groups) {
+//            Set<Schedule> foundSchedules = new HashSet<>();
+//            for (Schedule schedule : this.schedules) {
+//                if (schedule.getGroup().equals(group)) {
+//                    foundSchedules.add(schedule);
+//                }
+//            }
+//            groupSchedules.put(group, foundSchedules);
+//        }
+//        return groupSchedules;
+//    }
+//
+//    /**
+//     * Finds all of the schedules that belong to a certain Teacher, and puts those in a HashMap.
+//     * @return A Map that has every Teacher of the School as key, and a List of Schedule objects as value.
+//     */
+//    public Map<Teacher, Set<Schedule>> findTeacherSchedules() {
+//        Map<Teacher, Set<Schedule>> teacherSchedules = new HashMap<>();
+//        for (Teacher teacher : this.teachers) {
+//            Set<Schedule> foundSchedules = new HashSet<>();
+//            for (Schedule schedule : this.schedules) {
+//                if (schedule.getTeacher().equals(teacher)) {
+//                    foundSchedules.add(schedule);
+//                }
+//            }
+//            teacherSchedules.put(teacher, foundSchedules);
+//        }
+//        return teacherSchedules;
+//    }
 
     /**
      * Adds Student objects to each Group in the school if they don't have any. Executes the refreshPeople method after adding the students.
@@ -79,19 +83,6 @@ public class School implements Serializable {
         }
     }
 
-//    /**
-//     * Calculates the amount of Person objects contained within the school.
-//     * @return The amount of Person objects as an integer
-//     */
-//    public int amountOfPeople() {
-//        int amount = 0;
-//        amount += this.teachers.size();
-//        for (Group group : this.groups) {
-//            amount += group.getStudents().size();
-//        }
-//        return amount;
-//    }
-
     /**
      * Used to add any Person objects in students and teachers that are not yet contained in people.
      */
@@ -103,41 +94,37 @@ public class School implements Serializable {
     }
 
     public boolean hasData() {
-        return (rooms.size()+teachers.size()+groups.size()+subjects.size())>0;
+        return (teachers.size()+groups.size()+subjects.size())>0;
     }
 
     public void clearAll() {
-        rooms.clear();
         teachers.clear();
         groups.clear();
         schedules.clear();
         subjects.clear();
+        people.clear();
     }
 
-    public void addClassroom(String name, int capacity) {
-        this.rooms.add(new Classroom(name));
-    }
+//    public void addClassroom(String name, int capacity) {
+//        this.rooms.add(new Classroom(name));
+//    }
+//
+//    public void addClassroom(Classroom classroom) {
+//        this.rooms.add(classroom);
+//    }
+//
+//    public void addTeacher(String name, int id, Subject subject) {
+//        this.teachers.add(new Teacher(name));
+//    }
+//
+//    public void addTeacher(Teacher teacher) {
+//        this.teachers.add(teacher);
+//    }
+//
+//    public void addGroup(Group group) {
+//        this.groups.add(group);
+//    } TODO: remove unused methods
 
-    public void addClassroom(Classroom classroom) {
-        this.rooms.add(classroom);
-    }
-
-    public void addTeacher(String name, int id, Subject subject) {
-        this.teachers.add(new Teacher(name));
-    }
-
-    public void addTeacher(Teacher teacher) {
-        this.teachers.add(teacher);
-    }
-
-    public void addGroup(Group group) {
-        this.groups.add(group);
-    }
-
-    /**
-     * Adds a schedule and adds all schedule information to the school.
-     * @param schedule The Schedule that needs to be added.
-     */
     public void addSchedule(Schedule schedule) {
         this.schedules.add(schedule);
         this.rooms.add(schedule.getRoom());
@@ -155,22 +142,16 @@ public class School implements Serializable {
     }
 
     public Set<Group> getGroups() {
-
         return groups;
     }
 
-    /**
-     * This method was used for testing whether a list had groups in them.
-     * @return
-     */
-
-    public ArrayList<String> groupsToString(){
-        ArrayList<String> groupString = new ArrayList<>();
-        for (Group g : groups) {
-            groupString.add(g.getName());
-        }
-        return groupString;
-    }
+//    public ArrayList<String> groupsToString(){
+//        ArrayList<String> groupString = new ArrayList<>();
+//        for (Group g : groups) {
+//            groupString.add(g.getName());
+//        }
+//        return groupString;
+//    }
 
     public Set<Schedule> getSchedules() {
         return schedules;
@@ -192,4 +173,5 @@ public class School implements Serializable {
         this.refreshPeople();
         return people;
     }
+
 }

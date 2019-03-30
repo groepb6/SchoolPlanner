@@ -35,7 +35,7 @@ public class DevSetup {
 
             if (Files.notExists(Paths.get(ApplicationSettings.schoolPath))) {
                 SampleData sampleData = new SampleData();
-                DataWriter.writeSchool(sampleData.getSchool());
+                DataWriter.writeSchool(sampleData.getSchool()); //TODO: write empty school with rooms
             } else if (!DataReader.readSchool().hasData()) {
                 SampleData sampleData = new SampleData();
                 DataWriter.writeSchool(sampleData.getSchool());

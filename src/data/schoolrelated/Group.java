@@ -4,8 +4,15 @@ import data.persons.Student;
 import data.schedulerelated.Hour;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 public class Group implements Serializable {
     private String name;
@@ -27,18 +34,18 @@ public class Group implements Serializable {
     }
 
     public Set<Student> getStudents() {
-        return students;
+        return this.students;
     }
 
-    public void setStudents(Set<Student> students) {
-        this.students = students;
-    }
+//    public void setStudents(Set<Student> students) {
+//        this.students = students;
+//    } todo: remove unused methods
 
     public Set<Hour> getHours() {
         return hours;
     }
 
-    public void setHours(Set<Hour> hours) {
-        this.hours = hours;
-    }
+//    public void setHours(Set<Hour> hours) {
+//        this.hours = hours;
+//    }
 }
