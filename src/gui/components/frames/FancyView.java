@@ -12,6 +12,7 @@ import gui.assistclasses.Image;
 import gui.assistclasses.Plan;
 import gui.components.window.Sizeable;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,7 +24,7 @@ import java.util.*;
 
 /**
  * @author Dustin Hendriks
- * @since 27-03-2019
+ * @since 08-02-2019
  * <p>
  * The FancyView class creates a frame which can search Plans, and visualize them by plotting using the VirtualizedView class. Also plans can be removed completely using the search box and strict searching is also enabled (using [strict] after the search String).
  */
@@ -382,7 +383,6 @@ public class FancyView extends Sizeable {
                 searchGroupBar.getChildren().add(successMessage);
                 this.successMessageSearch.getImageView().setOnMouseExited(eventExit -> {
                     searchGroupBar.getChildren().remove(searchGroupBar.getChildren().size() - 1);
-                    //removeSearchSuccessErrorMessage();
                 });
             });
         }

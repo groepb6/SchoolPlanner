@@ -57,7 +57,7 @@ public class SampleData {
         school.getRooms().add(new Classroom("LA003"));
         school.getRooms().add(new Classroom("LA004"));
         school.getRooms().add(new Classroom("LA005"));
-        //school.getRooms().add(new Classroom("LA006"));
+        school.getRooms().add(new Classroom("LA006"));
     }
 
     public School getSchool() {

@@ -35,10 +35,10 @@ public class School implements Serializable {
 
 //    /**
 //     * Finds all of the schedules that belong to a certain Group, and puts those in a HashMap.
-//     * @return A Map that has every Group of the School as key, and a List of Schedule objects as value.
+//     * @return A SchoolMap that has every Group of the School as key, and a List of Schedule objects as value.
 //     */
-//    public Map<Group, Set<Schedule>> findGroupSchedules() {
-//        Map<Group, Set<Schedule>> groupSchedules = new HashMap<>();
+//    public SchoolMap<Group, Set<Schedule>> findGroupSchedules() {
+//        SchoolMap<Group, Set<Schedule>> groupSchedules = new HashMap<>();
 //        for (Group group : this.groups) {
 //            Set<Schedule> foundSchedules = new HashSet<>();
 //            for (Schedule schedule : this.schedules) {
@@ -53,10 +53,10 @@ public class School implements Serializable {
 //
 //    /**
 //     * Finds all of the schedules that belong to a certain Teacher, and puts those in a HashMap.
-//     * @return A Map that has every Teacher of the School as key, and a List of Schedule objects as value.
+//     * @return A SchoolMap that has every Teacher of the School as key, and a List of Schedule objects as value.
 //     */
-//    public Map<Teacher, Set<Schedule>> findTeacherSchedules() {
-//        Map<Teacher, Set<Schedule>> teacherSchedules = new HashMap<>();
+//    public SchoolMap<Teacher, Set<Schedule>> findTeacherSchedules() {
+//        SchoolMap<Teacher, Set<Schedule>> teacherSchedules = new HashMap<>();
 //        for (Teacher teacher : this.teachers) {
 //            Set<Schedule> foundSchedules = new HashSet<>();
 //            for (Schedule schedule : this.schedules) {
