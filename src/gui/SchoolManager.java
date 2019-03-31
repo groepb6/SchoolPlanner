@@ -15,6 +15,11 @@ import javafx.stage.Stage;
 public class SchoolManager extends javafx.application.Application {
     private BorderPane layoutPane;
 
+    /**
+     * The start method initializes the School manager application.
+     * @param stage Received by extending Application (JAVAFX).
+     */
+
     public void start(Stage stage) {
         DevSetup.setupSaveDirectories();
         stage.setTitle("School manager");
