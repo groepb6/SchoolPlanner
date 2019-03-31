@@ -6,9 +6,13 @@ import data.rooms.Classroom;
 import data.rooms.Room;
 import data.schedulerelated.Schedule;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.io.*;
-import java.util.List;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 public class School implements Serializable {
     private String name;
@@ -28,11 +32,10 @@ public class School implements Serializable {
     }
 
     public boolean hasData() {
-        return (rooms.size()+teachers.size()+groups.size()+subjects.size())>0;
+        return (teachers.size()+groups.size()+subjects.size())>0;
     }
 
     public void clearAll() {
-        rooms.clear();
         teachers.clear();
         groups.clear();
         schedules.clear();
@@ -72,7 +75,6 @@ public class School implements Serializable {
     }
 
     public ArrayList<Group> getGroups() {
-
         return groups;
     }
 

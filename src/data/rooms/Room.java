@@ -1,13 +1,16 @@
 package data.rooms;
 
 import data.objects.Chair;
-
-import java.util.List;
-
 import data.schedulerelated.Hour;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 abstract public class Room implements Serializable {
 

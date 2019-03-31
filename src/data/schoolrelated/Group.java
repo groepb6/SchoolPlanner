@@ -1,13 +1,16 @@
 package data.schoolrelated;
 
-import data.persons.Person;
 import data.persons.Student;
 import data.schedulerelated.Hour;
-import sun.nio.cs.ArrayEncoder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 public class Group implements Serializable {
     private String name;
