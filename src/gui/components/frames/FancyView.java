@@ -384,7 +384,6 @@ public class FancyView extends Sizeable {
                 searchGroupBar.getChildren().add(successMessage);
                 this.successMessageSearch.getImageView().setOnMouseExited(eventExit -> {
                     searchGroupBar.getChildren().remove(searchGroupBar.getChildren().size() - 1);
-                    //removeSearchSuccessErrorMessage();
                 });
             });
         }
