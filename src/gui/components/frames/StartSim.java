@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import org.jfree.fx.FXGraphics2D;
 import simulation.Map;
 import simulation.SimUpdate;
+import simulation.controls.SimulationBar;
+import simulation.logic.TimerHandler;
 
 
 /**
@@ -35,6 +37,14 @@ public class StartSim extends Sizeable {
         group.getChildren().add(map.getCanvas());
         group.setAutoSizeChildren(false);
         this.simUpdate = new SimUpdate(g2d, canvas, scene, map);
+    }
+
+    public SimUpdate getSimUpdate() {
+        return simUpdate;
+    }
+
+    public Map getMap() {
+        return simUpdate.getMap();
     }
 
     public void clean() {
