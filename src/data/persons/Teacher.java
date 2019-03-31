@@ -1,8 +1,14 @@
 package data.persons;
 
 import data.schedulerelated.Hour;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 public class Teacher extends Person implements Serializable {
     private ArrayList<Hour> hours;
