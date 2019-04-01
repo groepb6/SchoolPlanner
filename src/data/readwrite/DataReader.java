@@ -1,5 +1,7 @@
 package data.readwrite;
 
+import data.rooms.Classroom;
+import data.rooms.Room;
 import data.schoolrelated.School;
 import gui.settings.ApplicationSettings;
 import javafx.scene.Node;
@@ -26,8 +28,19 @@ public class DataReader {
             FileInputStream fileInputStream = new FileInputStream(saveFile);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             return (School) objectInputStream.readObject();
-        } catch (Exception e) { e.printStackTrace(); }
-        return null;
+        } catch (FileNotFoundException exception) {
+            System.out.println("Save file not found!");
+            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+        } catch (IOException exception) {
+            System.out.println("An IOException has occurred!");
+            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+        } catch (ClassNotFoundException exception) {
+            System.out.println("No object found in file!");
+            System.out.println("YOUR FILE COULD NOT BE LOADED!");
+        }
+        System.out.println("Loading has failed!");
+        System.out.println("The program will probably stop working now.");
+        return DataReader.emergencySchool();
     }
 
     public static School readDefaults() {
@@ -48,7 +61,7 @@ public class DataReader {
         }
         System.out.println("Loading has failed!");
         System.out.println("The program will probably stop working now.");
-        return null;
+        return DataReader.emergencySchool();
     }
 
     public static Node[][] readAllNodes() {
@@ -73,9 +86,9 @@ public class DataReader {
     }
 
     /**
-     * Checks if the School has the right rooms.
      * @param school The School that is checked.
      * @return True if the School does have the right rooms, and otherwise false.
+     * @deprecated Checks if the School has the right rooms.
      */
     public static boolean hasRooms(School school) {
         boolean b001 = false;
@@ -104,9 +117,8 @@ public class DataReader {
     }
 
     /**
-     * Creates a School with the rooms needed for the simulation and writes it to the save file.
-     *
      * @return A School object with 6 rooms and nothing else.
+     * @deprecated Creates a School with the rooms needed for the simulation and writes it to the save file.
      */
     public static School emergencySchool() {
         System.out.println("No proper school could be loaded, creating a new one...");
