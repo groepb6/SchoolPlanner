@@ -1,50 +1,44 @@
 package data.schoolrelated;
 
-import data.persons.Person;
 import data.persons.Student;
 import data.schedulerelated.Hour;
-import sun.nio.cs.ArrayEncoder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+/**
+ * @author Hanno Brandwijk
+ * @author Wout Stevens
+ */
 
 public class Group implements Serializable {
     private String name;
-    private ArrayList<Student> students;
-    private ArrayList<Hour> hours;
+    private Set<Student> students;
+    private Set<Hour> hours;
 
     public Group(String name) {
         this.name = name;
-        this.students = new ArrayList<>();
-        this.hours = new ArrayList<>();
+        this.students = new HashSet<>();
+        this.hours = new HashSet<>();
     }
 
-    public void addStudents(Student student) {
+    public void addStudent(Student student) {
         this.students.add(student);
-    }
-
-    public void addStudents(String name, int id) {
-        this.students.add(new Student(name));
     }
 
     public String getName() {
         return name;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public Set<Student> getStudents() {
+        return this.students;
     }
 
-    public void setStudents(ArrayList<Student> students) {
-        this.students = students;
-    }
-
-    public ArrayList<Hour> getHours() {
+    public Set<Hour> getHours() {
         return hours;
     }
 
-    public void setHours(ArrayList<Hour> hours) {
-        this.hours = hours;
-    }
 }

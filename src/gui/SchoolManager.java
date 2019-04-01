@@ -1,5 +1,6 @@
 package gui;
 
+import data.DevSetup;
 import gui.components.menu.MainPane;
 import gui.components.menu.UpperBar;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ public class SchoolManager extends javafx.application.Application {
     private BorderPane layoutPane;
 
     public void start(Stage stage) {
+        DevSetup.setupSaveDirectories();
         stage.setTitle("School manager");
         layoutPane = new BorderPane();
         Scene scene = new Scene(layoutPane);

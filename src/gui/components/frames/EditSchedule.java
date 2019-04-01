@@ -78,6 +78,10 @@ public class EditSchedule extends Sizeable {
         super.setProportions(0, 2560, 0, 1080, 1100, 500, stage);
     }
 
+    /**
+     * setLayout initiates all objects that build up the layout
+     */
+
     private void setLayout() {
         this.borderPane = new BorderPane();
         this.vBox = new VBox();
@@ -142,6 +146,10 @@ public class EditSchedule extends Sizeable {
         this.hBox5.getChildren().addAll(this.labelTime, this.timeComboBox);
         this.hBox6.getChildren().addAll(this.buttonAddSchedule, this.buttonClearAll, this.buttonLoadPreset, this.buttonSavePreset);
 
+        /**
+         * Layout-Settings
+         */
+
         this.buttonWidth = 150;
 
         this.labelGroup.setMinWidth(buttonWidth / 2);
@@ -181,8 +189,13 @@ public class EditSchedule extends Sizeable {
         this.borderPane.setPadding(new javafx.geometry.Insets(10, 0, 0, 10));
     }
 
+    /**
+     * setComboBox fills all the comboBoxes in the GUI with the right items
+     */
+
     private void setComboBox() {
         EnumSet.allOf(Hour.class).forEach(Hour -> this.timeOptions.add(Hour.getTime()));
+        this.timeOptions.remove(Hour.NONE.getTime());
         this.timeComboBox.setItems(this.timeOptions);
         this.timeComboBox.setMinWidth(150);
 
@@ -213,6 +226,9 @@ public class EditSchedule extends Sizeable {
         this.subjectComboBox.setMinWidth(150);
     }
 
+    /**
+     * setActions sets all the actions of the buttons in the GUI
+     */
 
     private void setActions() {
         this.buttonAddSchedule.setOnAction(event -> {
@@ -327,7 +343,7 @@ public class EditSchedule extends Sizeable {
             if (alert.getResult() == ButtonType.YES) {
                 File presetFile = new File("saves/school/preset.txt");
                 if (presetFile.exists()) {
-                    this.school = DataReader.readPreset();
+                    this.school = DataReader.readDefaults();
                     DataWriter.writeSchool(this.school);
                     displayInfoMessage(false, "Preset loaded.");
                 } else {
@@ -342,7 +358,7 @@ public class EditSchedule extends Sizeable {
             alert.setTitle("Confirm");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.YES) {
-                DataWriter.writePreset(this.school);
+                DataWriter.writeDefaults(this.school);
                 displayInfoMessage(false, "Preset saved.");
             }
         });

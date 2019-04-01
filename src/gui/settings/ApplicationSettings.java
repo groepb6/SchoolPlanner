@@ -1,9 +1,8 @@
 package gui.settings;
 
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
-import java.util.ArrayList;
+import java.awt.*;
 
 /**
  * @author Dustin Hendriks
@@ -14,6 +13,8 @@ import java.util.ArrayList;
 
 public class ApplicationSettings {
     public static final Color themeColor = Color.CORNFLOWERBLUE;
+    public static final int simulatorImageWidthAndHeight=35;
+    public static final int maxSimSpeed=32;
     public static final int minWidth = 200;
     public static final int maxWidth = 200;
     public static final int minHeight = 200;
@@ -21,5 +22,34 @@ public class ApplicationSettings {
     public static final int margin = 5;
     public static final int standardTextSize = 10;
     public static final int headerTextSize = 20;
-    public static final Font headerFont = new Font(javafx.scene.text.Font.getFamilies().get(7), 30);
+    public static final java.awt.Font font = new java.awt.Font("Courier", Font.PLAIN, 15);
+    public static final String saveSlotPath = "saves/school/defaults.txt";
+    public static final String schoolPath = "saves/school/school.txt";
+    public static final String saveNodePath = "saves/school/nodes.txt";
+    public static final String namePath = "/additional/names.txt";
+    public static final int TIMERDEFAULTSPEED = 1;
+    public static final int TIMERMINSPEED = 1;
+    public static final int TIMERMAXSPEED = 20;
+    public static final int TIMERTIMECHANGE = 1;
+    public static final int SIMULATIONSTARTINGHOUR = 8;
+    public static final int STUDENTSPERGROUP = 20;
+    public static final String SIMSPAWNAREA = "ParkingLot";
+    public static final int MAXSPAWNATTEMPTS = 10;
+
+    public static boolean getHorizontalFirst(String room) {
+        boolean horizontalFirst = false;
+        switch (room) {
+            case "LA001": horizontalFirst=false; break;
+            case "LA002": horizontalFirst=false; break;
+            case "LA003": horizontalFirst=false; break;
+            case "LA004": horizontalFirst=false; break;
+            case "LA005": horizontalFirst=true; break;
+            case "LA006": horizontalFirst=false; break;
+            case "Library": horizontalFirst=false; break;
+            case "Teachersroom": horizontalFirst=false; break;
+            case "DiningRoom": horizontalFirst=true; break;
+            case "Square": horizontalFirst=false; break;
+        }
+        return horizontalFirst;
+    }
 }

@@ -3,6 +3,7 @@ package gui.components.menu;
 import data.schoolrelated.School;
 import gui.components.window.Window;
 import gui.assistclasses.Image;
+import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
@@ -37,7 +38,7 @@ public class MainPane {
         this.stage.getIcons().add(new javafx.scene.image.Image("images/functionimages/schoolplannericon.png"));
         mainPane.setHgap(5);
         mainPane.setVgap(5);
-        mainPane.setBackground(new Background(new BackgroundFill(Color.CORNFLOWERBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        mainPane.setBackground(new Background(new BackgroundFill(ApplicationSettings.themeColor, CornerRadii.EMPTY, Insets.EMPTY)));
         putImagesInGrid();
         onHover();
         stage.setMinWidth(460);
