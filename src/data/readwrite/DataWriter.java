@@ -49,21 +49,4 @@ public class DataWriter {
         }
     }
 
-    public static void writeAllNodes(Node[][] allNodes) {
-        try {
-            File saveFile = new File(ApplicationSettings.saveNodePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(saveFile);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            objectOutputStream.writeObject(allNodes);
-            System.out.println("Object saved successfully.");
-        } catch (FileNotFoundException exception) {
-            System.out.println("Save destination not found!");
-            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
-            System.out.println("Please try again.");
-        } catch (IOException exception) {
-            System.out.println("An IOException has occurred!");
-            System.out.println("YOUR FILE MIGHT NOT HAVE BEEN SAVED!");
-            System.out.println("Please try again.");
-        }
-    }
 }

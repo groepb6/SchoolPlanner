@@ -64,61 +64,10 @@ public class DataReader {
         return DataReader.emergencySchool();
     }
 
-    public static Node[][] readAllNodes() {
-        try {
-            File saveFile = new File(ApplicationSettings.saveNodePath);
-            FileInputStream fileInputStream = new FileInputStream(saveFile);
-            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-            return (Node[][]) objectInputStream.readObject();
-        } catch (FileNotFoundException exception) {
-            System.out.println("Save file not found!");
-            System.out.println("YOUR FILE COULD NOT BE LOADED!");
-        } catch (IOException exception) {
-            System.out.println("An IOException has occurred!");
-            System.out.println("YOUR FILE COULD NOT BE LOADED!");
-        } catch (ClassNotFoundException exception) {
-            System.out.println("No object found in file!");
-            System.out.println("YOUR FILE COULD NOT BE LOADED!");
-        }
-        System.out.println("Loading has failed!");
-        System.out.println("The program will probably stop working now.");
-        return null;
-    }
-
     /**
-     * @param school The School that is checked.
-     * @return True if the School does have the right rooms, and otherwise false.
-     * @deprecated Checks if the School has the right rooms.
-     */
-    public static boolean hasRooms(School school) {
-        boolean b001 = false;
-        boolean b002 = false;
-        boolean b003 = false;
-        boolean b004 = false;
-        boolean b005 = false;
-        boolean b006 = false;
-
-        for (Room room : school.getRooms()) {
-            if (room.getName().equals("LA001")) {
-                b001 = true;
-            } else if (room.getName().equals("LA002")) {
-                b002 = true;
-            } else if (room.getName().equals("LA003")) {
-                b003 = true;
-            } else if (room.getName().equals("LA004")) {
-                b004 = true;
-            } else if (room.getName().equals("LA005")) {
-                b005 = true;
-            } else if (room.getName().equals("LA006")) {
-                b006 = true;
-            }
-        }
-        return b001 && b002 && b003 && b004 && b005 && b006;
-    }
-
-    /**
+     * Creates a School with the rooms needed for the simulation and writes it to the save file.
+     *
      * @return A School object with 6 rooms and nothing else.
-     * @deprecated Creates a School with the rooms needed for the simulation and writes it to the save file.
      */
     public static School emergencySchool() {
         System.out.println("No proper school could be loaded, creating a new one...");
