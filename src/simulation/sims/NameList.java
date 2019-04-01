@@ -19,7 +19,7 @@ public class NameList {
         try {
             scanner = new Scanner(new File(getClass().getResource(ApplicationSettings.namePath).getPath()));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Could not load names.txt from resources");
         }
     }
 
@@ -32,7 +32,7 @@ public class NameList {
         if (scanner != null)
             if (scanner.hasNext())
                 return scanner.nextLine().trim();
-        return null;
+        return "no_name";
     }
 
 }
