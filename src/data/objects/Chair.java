@@ -8,7 +8,7 @@ package data.objects;
 public class Chair {
     public boolean isAvailable;
     public enum Direction {
-        LEFT, RIGHT, UP, DOWN
+        LEFT, RIGHT, UP, DOWN, TOILET
     }
     public Direction direction;
     public int x;

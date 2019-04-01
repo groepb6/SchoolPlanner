@@ -5,6 +5,7 @@ import gui.components.window.Window;
 import gui.assistclasses.Image;
 import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -45,6 +46,7 @@ public class MainPane {
         stage.setMinHeight(505);
         stage.setMaxWidth(460);
         stage.setMaxHeight(505);
+        scene.setCursor(Cursor.OPEN_HAND);
     }
 
     /**

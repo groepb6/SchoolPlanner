@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Dustin Hendriks
@@ -107,7 +106,7 @@ public class TableView extends Sizeable {
     private List retrieveDataList() {
         List list = new ArrayList<Plan>();
         try {
-            Set<Schedule> schedules = DataReader.readSchool().getSchedules();
+            ArrayList<Schedule> schedules = DataReader.readSchool().getSchedules();
             for (Schedule schedule : schedules) {
                 list.add(schedule.getPlan());
             }

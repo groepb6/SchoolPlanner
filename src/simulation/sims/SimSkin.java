@@ -1,8 +1,12 @@
 package simulation.sims;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+/**
+ * @author Dustin Hendriks
+ * The SimSkin class creates animations and specific animation frames that can be used in a Sim.
+ */
 
 public class SimSkin {
     private BufferedImage simSpriteSheet;
@@ -26,6 +30,12 @@ public class SimSkin {
     }
 
     public Role role;
+
+    /**
+     * @author Dustin Hendriks
+     * @param role The role defines if a Sim resembles a student or teacher. When it resembles a teacher an entirely different sprite sheet is used.
+     * @param numberOfOutfit The numberOfOutfit defines which output should be used (don't use higher numbers then defined in the resource folder).
+     */
 
     public SimSkin(Role role, int numberOfOutfit) {
         try {
@@ -55,7 +65,7 @@ public class SimSkin {
             for (int x = 0; x < 6; x++)
                 pointWithStickRightFrontFacing.add(getSpriteImage(x, rowNumber));
             rowNumber = 0;
-            int x =3;
+            int x =2;
             peeImage = getSpriteImage(x, rowNumber);
 
         } catch (Exception error) {
@@ -63,55 +73,118 @@ public class SimSkin {
         }
     }
 
+    /**
+     * Receive a specific sprite image, used as a helper method.
+     * @param pictureNumb Defines which picture should be grabbed.
+     * @param rowNumb Defines the row number of the picture
+     * @return Return a bufferedImage of the cut out sprite sheet.
+     */
+
     private BufferedImage getSpriteImage(int pictureNumb, int rowNumb) {
         return simSpriteSheet.getSubimage(pictureNumb * tileWidth, rowNumb * tileHeight, tileWidth, tileHeight);
     }
 
-    public BufferedImage stationaryLeft() {
+    /**
+     * Receive the stationary left image.
+     * @return stationary left image.
+     */
+
+    BufferedImage stationaryLeft() {
         return walkLeftAnimation.get(0);
     }
 
-    public BufferedImage stationaryRight() {
+    /**
+     * Receive the stationary right image.
+     * @return stationary right image.
+     */
+
+    BufferedImage stationaryRight() {
         return walkRightAnimation.get(0);
     }
 
-    public BufferedImage stationaryUp() {
+    /**
+     * Receive the stationary up image.
+     * @return stationary up image.
+     */
+
+    BufferedImage stationaryUp() {
         return walkUpAnimation.get(0);
     }
 
-    public BufferedImage stationaryDown() {
+    /**
+     * Receive the stationary down image.
+     * @return stationary down image.
+     */
+
+    BufferedImage stationaryDown() {
         return walkDownAnimation.get(0);
     }
 
-    public BufferedImage walkLeft(Sim sim) {
+    /**
+     * Receive the next walkLeft image.
+     * @param sim Parse to know which image should be returned next.
+     * @return Return walkLeft frame.
+     */
+
+    BufferedImage walkLeft(Sim sim) {
         if (sim.index + 1 > walkLeftAnimation.size())
             sim.index = 1;
         return walkLeftAnimation.get(sim.index++);
     }
 
-    public BufferedImage walkRight(Sim sim) {
+    /**
+     * Receive the next walkRight image.
+     * @param sim Parse to know which image should be returned next.
+     * @return Return walkRight frame.
+     */
+
+    BufferedImage walkRight(Sim sim) {
         if (sim.index + 1 > walkRightAnimation.size())
             sim.index = 1;
         return walkRightAnimation.get(sim.index++);
     }
 
-    public BufferedImage walkUp(Sim sim) {
+    /**
+     * Receive the next walkUp image.
+     * @param sim Parse to know which image should be returned next.
+     * @return Return walkUp frame.
+     */
+
+    BufferedImage walkUp(Sim sim) {
         if (sim.index + 1 > walkUpAnimation.size())
             sim.index = 1;
         return walkUpAnimation.get(sim.index++);
     }
 
-    public BufferedImage walkDown(Sim sim) {
+    /**
+     * Receive the next walkDown image.
+     * @param sim Parse to know which image should be returned next.
+     * @return Return walkDown frame.
+     */
+
+    BufferedImage walkDown(Sim sim) {
         if (sim.index + 1 > walkDownAnimation.size())
             sim.index = 1;
         return walkDownAnimation.get(sim.index++);
     }
 
-    public BufferedImage toiletPee(Sim sim) {
-        return null;
+    /**
+     * Receive the image that can be used as a toilet animation.
+     * @param sim --> Not used atm.
+     * @return Return the corresponding frame.
+     */
+
+    BufferedImage toiletPee() {
+        return peeImage;
     }
 
-    public BufferedImage pointWithStickLeftFrontFacing(Sim sim) {
+    /**
+     * Teacher animation, do not use for student.
+     * @param sim Defines the TEACHER.
+     * @return Return the next pointWithStickLeftFrontFacing frame.
+     */
+
+    BufferedImage pointWithStickLeftFrontFacing(Sim sim) {
         if (sim.index + 1 > pointWithStickLeftFrontFacing.size()) {
             sim.index = 0;
             finishedAnimation = true;
@@ -119,11 +192,23 @@ public class SimSkin {
         return pointWithStickLeftFrontFacing.get(sim.index++);
     }
 
-    public BufferedImage pointWithStickLeftFrontFacingStationary() {
+
+    /**
+     * Teacher animation, do not use for student.
+     * @return Return the stationary pointWithStickLeftFrontFacingStationary frame.
+     */
+
+    BufferedImage pointWithStickLeftFrontFacingStationary() {
         return pointWithStickLeftFrontFacing.get(pointWithStickLeftFrontFacing.size()-1);
     }
 
-    public BufferedImage pointWithStickRightFrontFacing(Sim sim) {
+    /**
+     * Teacher animation, do not use for student.
+     * @param sim Defines the TEACHER.
+     * @return Return the next pointWithStickRightFrontFacing frame.
+     */
+
+    BufferedImage pointWithStickRightFrontFacing(Sim sim) {
         if (sim.index + 1 > pointWithStickRightFrontFacing.size()) {
             sim.index = 0;
             finishedAnimation = true;
@@ -131,11 +216,22 @@ public class SimSkin {
         return pointWithStickRightFrontFacing.get(sim.index++);
     }
 
-    public BufferedImage pointWithStickRightFrontFacingStationary() {
+    /**
+     * Teacher animation, do not use for student.
+     * @return Return the stationary pointWithStickRightFrontFacingStationary frame.
+     */
+
+    BufferedImage pointWithStickRightFrontFacingStationary() {
         return pointWithStickRightFrontFacing.get(pointWithStickRightFrontFacing.size()-1);
     }
 
-    public BufferedImage pointWithStickRightBackFacing(Sim sim) {
+    /**
+     * Teacher animation, do not use for student.
+     * @param sim Defines the TEACHER.
+     * @return Return the next pointWithStickRightBackFacing frame.
+     */
+
+    BufferedImage pointWithStickRightBackFacing(Sim sim) {
         if (sim.index + 1 > pointWithStickRightBackFacing.size()) {
             sim.index = 0;
             finishedAnimation = true;
@@ -143,11 +239,22 @@ public class SimSkin {
         return pointWithStickRightBackFacing.get(sim.index++);
     }
 
-    public BufferedImage pointWithStickRightBackFacingStationary() {
+    /**
+     * Teacher animation, do not use for student.
+     * @return Return the next pointWithStickRightBackFacingStationary frame.
+     */
+
+    BufferedImage pointWithStickRightBackFacingStationary() {
         return pointWithStickRightBackFacing.get(pointWithStickRightBackFacing.size()-1);
     }
 
-    public BufferedImage hitStudent(Sim sim) {
+    /**
+     * Teacher animation, do not use for student.
+     * @param sim Defines the TEACHER.
+     * @return Return the next hitStudent frame.
+     */
+
+    BufferedImage hitStudent(Sim sim) {
         if (sim.index + 1 > hitStudentWithStick.size()) {
             sim.index = 0;
             finishedAnimation = true;
@@ -155,9 +262,19 @@ public class SimSkin {
         return hitStudentWithStick.get(sim.index++);
     }
 
+    /**
+     * For future purposes when multiple animations should be played consequently.
+     * @return Return true or false value corresponding to the attribute finishedAnimation.
+     */
+
     public boolean animationIsFinished() {
         return finishedAnimation;
     }
+
+    /**
+     * Define if an animation is finished (can be used for future purposes).
+     * @param isFinished Set true or false value for the attribute finishedAnimation.
+     */
 
     public void setFinishedAnimation(boolean isFinished) {
         this.finishedAnimation = isFinished;

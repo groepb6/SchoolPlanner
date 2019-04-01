@@ -1,14 +1,25 @@
 package simulation.controls;
 
+import com.sun.javafx.collections.ObservableListWrapper;
 import gui.components.frames.StartSim;
 import gui.settings.ApplicationSettings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @author Joëlle de Vries (creator of the functionality's and the class).
+ * @author Dustin Hendriks (added some commentary and added a few buttons with the exception of the simulation controls).
+ * The class SimulationBar pops up when opening the simulation. It contains labels to display information and buttons to run specific actions on the simulator (such as accelerating, pausing, slowing, starting firedrill, etc).
+ */
 
 public class SimulationBar {
     private HBox hBox = new HBox();
@@ -22,15 +33,23 @@ public class SimulationBar {
     private ImageView control;
     private ImageView pathfind;
     private ImageView collision;
+    private ComboBox timeComboBox;
+    private Label timeLabel;
     private Label timerMultiplier=new Label("x1.0");
-    private Label timeDisplay;
     private StartSim startSim;
+    private boolean paused = false;
+
+    /**
+     * The constructor adds all images to the topbar and allocates a specific width and height for each image.
+     * @param startSim Is needed to bind actions when clicking on an icon / image.
+     */
 
     public SimulationBar(StartSim startSim) {
         String folder ="simbarimages";
         this.startSim = startSim;
         String name;
         String extension = ".png";
+        addTimeComboBox();
         try {
             name = "fastbackward";
             fastBackward = getImage(folder, name, extension);
@@ -71,15 +90,41 @@ public class SimulationBar {
 
             addTimerMultiplier();
             addTimeDisplay();
+            hBox.getChildren().add(timeLabel);
             hBox.setBackground(new Background(new BackgroundFill(ApplicationSettings.themeColor, CornerRadii.EMPTY, Insets.EMPTY)));
             hBox.setSpacing(50);
             setActions();
         } catch (Exception e) {e.printStackTrace();}
     }
 
+    /**
+     * Was needed to change the width manually of an icon to 45, since the width and height ratio wasn't 1 : 1 or acceptably close, 4:3.
+     */
+
     private void fixLayoutManually() {
         control.setFitWidth(45);
     }
+
+    /**
+     * The addTimeComboBox method creates a selection box with specific times.
+     */
+
+    private void addTimeComboBox() {
+        this.timeComboBox = new ComboBox();
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        for (int time = 8; time < 19; time++) {
+            observableList.add(Integer.toString(time)+":00");
+        }
+        timeComboBox.setItems(observableList);
+        timeComboBox.setBackground(new Background(new BackgroundFill(Color.WHEAT, CornerRadii.EMPTY, Insets.EMPTY)));
+        timeComboBox.setPrefHeight(ApplicationSettings.simulatorImageWidthAndHeight+5);
+        timeComboBox.setPrefWidth(100);
+        hBox.getChildren().add(timeComboBox);
+    }
+
+    /**
+     * The addTimerMultiplier adds a label that displays the current multiplication.
+     */
 
     private void addTimerMultiplier() {
         hBox.getChildren().add(timerMultiplier);
@@ -89,38 +134,34 @@ public class SimulationBar {
         timerMultiplier.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.DOTTED, null, new BorderWidths(2))));
     }
 
-    private void addTimeDisplay() {
-        this.timeDisplay = new Label(this.startSim.getSimulation().getTime().getDisplay());
-        hBox.getChildren().add(this.timeDisplay);
-        Font font = new Font("Courier", 25);
-        timeDisplay.setFont(font);
-        timeDisplay.setBackground(Background.EMPTY);
-        timeDisplay.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.DOTTED, null, new BorderWidths(2))));
-        this.startSim.getSimulation().getTime().connectToSimulationBar(this);
-    }
+    /**
+     * The setActions() method binds all actions the buttons.
+     */
 
     private void setActions() {
         fire.setOnMouseClicked(fire -> {
-            this.startSim.getSimulation().fireDrill();
+            startSim.getMap().fireDrill();
         });
         startstop.setOnMouseClicked(startstop -> {
-            this.startSim.getSimulation().pausePlay();
+            paused=!paused;
+            if (paused) startSim.getSimUpdate().stopTimer();
+            else startSim.getSimUpdate().startTimer();
             updateBox();
         });
         forward.setOnMouseClicked(forward-> {
-            this.startSim.getSimulation().changeSpeed(ApplicationSettings.TIMERTIMECHANGE);
+            startSim.getSimUpdate().increaseSpeed();
             updateBox();
         });
         backward.setOnMouseClicked(backward -> {
-            this.startSim.getSimulation().changeSpeed(-ApplicationSettings.TIMERTIMECHANGE);
+            startSim.getSimUpdate().decreaseSpeed();
             updateBox();
         });
         fastForward.setOnMouseClicked(fastForward -> {
-            this.startSim.getSimulation().maxSpeed();
+            startSim.getSimUpdate().maxSpeed();
             updateBox();
         });
         fastBackward.setOnMouseClicked(fastBackward -> {
-            this.startSim.getSimulation().minSpeed();
+            startSim.getSimUpdate().minSpeed();
             updateBox();
         });
         control.setOnMouseClicked(control -> {
@@ -132,21 +173,68 @@ public class SimulationBar {
         collision.setOnMouseClicked(collision -> {
             startSim.getMap().showCollision=!startSim.getMap().showCollision;
         });
+        timeComboBox.setOnAction(timeComboBox ->{
+            this.startSim.getSimUpdate().getTimerHandler().updateTime(this.timeComboBox.getValue().toString());
+        });
     }
+
+    /**
+     * Add a time display label.
+     */
+
+    private void addTimeDisplay() {
+        this.timeLabel = new Label(this.startSim.getSimUpdate().getTimerHandler().getDisplayTime());
+        startSim.getSimUpdate().getTimerHandler().bindSimulationBar(this);
+        Font font = new Font("Courier", 25);
+        timeLabel.setFont(font);
+        timeLabel.setBackground(Background.EMPTY);
+        timeLabel.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.DOTTED, null, new BorderWidths(2))));
+    }
+
+    /**
+     * Update the label.
+     * @param time Defines the time.
+     */
+
+    public void updateTimeDisplay(String time) {
+        this.timeLabel.setText(time);
+    }
+
+    /**
+     * The updateBox method updates the label text that displays the current simulation multiplication speed.
+     */
 
     private void updateBox() {
-        timerMultiplier.setText("x"+Double.toString(startSim.getSimulation().getTime().getSpeed()));
+        timerMultiplier.setText("x"+Double.toString(startSim.getSimUpdate().getTimerMultiplier()));
     }
 
-    public void updateTimeDisplay(String display) {
-        this.timeDisplay.setText(display);
-    }
+    /**
+     * Receive the hBox to put in a borderPane / other layout component.
+     * @return hBox SimulationBar (contains all images, button actions, etc).
+     */
 
     public HBox getHBox() {
         return hBox;
     }
 
+    /**
+     * Receive an ImageView from a specific folder.
+     * @param folder Defines the folder location of the ImageView.
+     * @param name Defines the name of the imageView.
+     * @param extension Defines the extension of the Image (most of the times .png / .jpeg
+     * @return Receive the ImageView.
+     */
+
     private ImageView getImage(String folder, String name, String extension) {
         return new ImageView(getClass().getResource("/images/" + folder + "/" + name + extension).toString());
+    }
+
+    /**
+     * Receive the comboBox which contains the selected time.
+     * @return Return the ComboBox which contains information about the selected time.
+     */
+
+    public ComboBox getTimeComboBox() {
+        return timeComboBox;
     }
 }

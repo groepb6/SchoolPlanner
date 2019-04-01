@@ -1,13 +1,13 @@
 package data.schoolrelated;
 
 import data.persons.Person;
-import data.persons.Student;
 import data.persons.Teacher;
+import data.rooms.Classroom;
 import data.rooms.Room;
 import data.schedulerelated.Schedule;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * @author Hanno Brandwijk
@@ -16,49 +16,19 @@ import java.util.*;
 
 public class School implements Serializable {
     private String name;
-    private Set<Room> rooms;
-    private Set<Teacher> teachers;
-    private Set<Group> groups;
-    private Set<Schedule> schedules;
-    private Set<Subject> subjects;
-    private Set<Person> people;
+    private ArrayList<Room> rooms;
+    private ArrayList<Person> teachers;
+    private ArrayList<Group> groups;
+    private ArrayList<Schedule> schedules;
+    private ArrayList<Subject> subjects;
 
     public School(String name) {
         this.name = name;
-        this.rooms = new HashSet<>();
-        this.teachers = new HashSet<>();
-        this.groups = new HashSet<>();
-        this.schedules = new HashSet<>();
-        this.subjects = new HashSet<>();
-        this.people = new HashSet<>();
-    }
-
-    /**
-     * Adds Student objects to each Group in the school if they don't have any. Executes the refreshPeople method after adding the students.
-     * @param studentsPerGroup The amount of students a group should have.
-     */
-    public void createStudents(int studentsPerGroup) {
-        for (Group group : this.groups) {
-            if (group.getStudents().size() < 1) {
-                for (int i = 0; i < studentsPerGroup; i++) {
-                    group.addStudent(new Student(""));
-                }
-            }
-        }
-    }
-
-    /**
-     * Used to add any Person objects in students and teachers that are not yet contained in people.
-     */
-    public void refreshPeople() {
-        this.people.addAll(this.teachers);
-        for (Group group : this.groups) {
-            this.people.addAll(group.getStudents());
-        }
-    }
-
-    public void sort() {
-        //todo: sorting on name.
+        this.rooms = new ArrayList<>();
+        this.teachers = new ArrayList<>();
+        this.groups = new ArrayList<>();
+        this.schedules = new ArrayList<>();
+        this.subjects = new ArrayList<>();
     }
 
     public boolean hasData() {
@@ -70,48 +40,61 @@ public class School implements Serializable {
         groups.clear();
         schedules.clear();
         subjects.clear();
-        people.clear();
+    }
+
+    public void addClassroom(String name, int capacity) {
+        this.rooms.add(new Classroom(name));
+    }
+
+    public void addClassroom(Classroom classroom) {
+        this.rooms.add(classroom);
+    }
+
+    public void addTeacher(String name, int id, Subject subject) {
+        this.teachers.add(new Teacher(name));
+    }
+
+    public void addTeacher(Teacher teacher) {
+        this.teachers.add(teacher);
+    }
+
+    public void addGroup(Group group) {
+        this.groups.add(group);
     }
 
     public void addSchedule(Schedule schedule) {
         this.schedules.add(schedule);
-        this.rooms.add(schedule.getRoom());
-        this.teachers.add(schedule.getTeacher());
-        this.groups.add(schedule.getGroup());
-        this.subjects.add(schedule.getSubject());
     }
 
-    public Set<Room> getRooms() {
+    public ArrayList<Room> getRooms() {
         return rooms;
     }
 
-    public Set<Teacher> getTeachers() {
+    public ArrayList<Person> getTeachers() {
         return teachers;
     }
 
-    public Set<Group> getGroups() {
+    public ArrayList<Group> getGroups() {
         return groups;
     }
 
-    public Set<Schedule> getSchedules() {
+    public ArrayList<String> groupsToString(){
+        ArrayList<String> groupString = new ArrayList<>();
+        for (Group g : groups) {
+            groupString.add(g.getName());
+        }
+        return groupString;
+    }
+
+    public ArrayList<Schedule> getSchedules() {
         return schedules;
     }
 
-    public Set<Subject> getSubjects() {
+    public ArrayList<Subject> getSubjects() {
         return subjects;
     }
 
-    public void setSchedules(Set<Schedule> schedules) {
+    public void setSchedules(ArrayList<Schedule> schedules) {
         this.schedules = schedules;
     }
-
-    /**
-     * A getter for people that executes refreshPeople.
-     * @return A Set with all of the Person objects contained within the School.
-     */
-    public Set<Person> getPeople() {
-        this.refreshPeople();
-        return people;
-    }
-
 }

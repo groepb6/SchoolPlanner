@@ -4,6 +4,7 @@ import gui.assistclasses.Image;
 import gui.components.frames.StartSim;
 import gui.settings.ApplicationSettings;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -87,9 +88,11 @@ public class Window {
         backButton.getImageView().setOnMouseClicked(event -> {
             if (startSim!=null) {
                 startSim.clean();
+                startSim.getMap().getPathFinder().terminate();
                 startSim=null;
             }
             stage.setScene(originalScene);
+            originalScene.setCursor(Cursor.OPEN_HAND);
             stage.setMinWidth(460);
             stage.setMaxWidth(200);
             stage.setMinHeight(505);

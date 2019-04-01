@@ -3,6 +3,11 @@ package simulation.data;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 
+/**
+ * @author Dustin Hendriks
+ * The Area class contains information about a specific zone. Information such as x value, y value, width, height can be retrieved.
+ */
+
 public class Area {
     public JsonArray data;
     public String areaName;
@@ -12,13 +17,18 @@ public class Area {
     public int x;
     public int y;
 
-    public Area(JsonObject layer) {
-        data = layer.getJsonArray("data");
-        areaName = layer.getString("name");
-        areaID = layer.getInt("id");
-        areaWidth = layer.getInt("width");
-        areaHeight = layer.getInt("height");
-        x = layer.getInt("x");
-        y = layer.getInt("y");
+    /**
+     * The area constructor gets parsed a JsonObject area. Out of the area information can be retrieved.
+     * @param area Is needed to retrieve information.
+     */
+
+    public Area(JsonObject area) {
+        data = area.getJsonArray("data");
+        areaName = area.getString("name");
+        areaID = area.getInt("id");
+        areaWidth = area.getInt("width");
+        areaHeight = area.getInt("height");
+        x = area.getInt("x");
+        y = area.getInt("y");
     }
 }
