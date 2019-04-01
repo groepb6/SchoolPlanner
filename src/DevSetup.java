@@ -1,28 +1,24 @@
-package unused;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
- * @deprecated
  * This class contains methods for developers to set up things that aren't synchronised within git
- * @author Noah Walsmits
  */
-public class OldDevSetup {
+public class DevSetup {
 
     /**
      * Main method to run the setup
      * @param args Can be used to parse extra command line arguments.
      */
     public static void main(String[] args) {
-        OldDevSetup.setupEverything();
+        DevSetup.setupEverything();
     }
 
     /**
      * Executes all DevSetup methods (might not be safe to run multiple
      */
     private static void setupEverything() {
-        OldDevSetup.setupSaveDirectories();
+        DevSetup.setupSaveDirectories();
     }
 
     /**

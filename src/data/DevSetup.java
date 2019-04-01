@@ -2,6 +2,7 @@ package data;
 
 import data.readwrite.DataReader;
 import data.readwrite.DataWriter;
+import data.sampledata.SampleData;
 import gui.settings.ApplicationSettings;
 
 import java.nio.file.Files;
@@ -9,7 +10,6 @@ import java.nio.file.Paths;
 
 /**
  * This class contains methods for developers to set up things that aren't synchronised within git
- * @author Dustin Hendriks
  */
 public class DevSetup {
     /**
@@ -25,9 +25,11 @@ public class DevSetup {
                 Files.createDirectories(Paths.get("saves/school"));
             }
             if (Files.notExists(Paths.get(ApplicationSettings.schoolPath))) {
-                DataWriter.writeSchool(DataReader.emergencySchool()); //TODO: do we want empty or preset school?
+                SampleData sampleData = new SampleData();
+                DataWriter.writeSchool(sampleData.getSchool());
             } else if (!DataReader.readSchool().hasData()) {
-                DataWriter.writeSchool(DataReader.emergencySchool());
+                SampleData sampleData = new SampleData();
+                DataWriter.writeSchool(sampleData.getSchool());
             }
 
         } catch (Exception exception) {
